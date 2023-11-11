@@ -1,56 +1,56 @@
 package me.reklessmitch.mitchprisonscore.mitchbackpack.gui;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import com.massivecraft.massivecore.util.ItemBuilder;
+import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackConf;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackPlayer;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class BackpackSkins extends ChestGui {
 
-    Player player;
+    private final Player player;
 
     public BackpackSkins(Player player){
-        setInventory(Bukkit.createInventory(null, 9, "Backpack Skins"));
+        setInventory(Bukkit.createInventory(null, 27, MessageUtils.colorize(LangConf.get().getPickaxeSkinsGuiTitle())));
         this.player = player;
-        setupInventory();
+        BackpackConf.get().getBackpackSkins().forEach((pickaxeName, displayItem) -> getBackpackSkinItem(displayItem.getItemName(), displayItem.getItemLore(), displayItem.getCustomModelData(), displayItem.getSlot()));
         setAutoclosing(false);
         setSoundOpen(null);
         setSoundClose(null);
         add();
     }
 
-    private void getBackpackSkinItem(String name, String lore, int customDataModel, int slot){
-        ItemStack item = new ItemBuilder(Material.DRAGON_EGG).displayname(name).lore(lore).modelData(customDataModel).build();
+    private void getBackpackSkinItem(String name, List<String> lore, int customDataModel, int slot){
+        final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, customDataModel, name, lore);
         getInventory().setItem(slot, item);
         this.setAction(slot, event -> {
             event.setCancelled(true);
             if(!player.hasPermission("mitchprisonscore.backpack." + customDataModel)){
-                player.sendMessage("§cYou do not have permission to use this skin!");
+                MessageUtils.sendMessages(player, LangConf.get().getBackpackSkinNoPerm());
                 return false;
             }
             BackpackPlayer bp = BackpackPlayer.get(player.getUniqueId());
             if(bp.getSkinID() == customDataModel){
-                player.sendMessage("§cYou already have this skin selected!");
+                MessageUtils.sendMessages(player, LangConf.get().getBackpackSkinAlreadyEquipped());
                 return false;
             }
-            player.sendMessage("§aYou have selected the " + name + " backpack skin!");
+            final TagResolver skinNameResolver = Placeholder.parsed("skin", name);
+            MessageUtils.sendMessages(player, LangConf.get().getBackpackSkinEquipped(), skinNameResolver);
             bp.setSkin(customDataModel);
             player.closeInventory();
             return true;
         });
     }
 
-    private void setupInventory() {
-        getBackpackSkinItem("§aDefault", "§7The default pickaxe skin.", 0, 0);
-        getBackpackSkinItem("§bPenguin Backpack", "§b ", 10000, 1);
-        getBackpackSkinItem("§bDuck Backpack", "§b ", 10001, 2);
-        getBackpackSkinItem("§bCat Backpack", "§b ", 10002, 3);
-        getBackpackSkinItem("§bHappy Shark Backpack", "§b ", 2192002, 4);
-        getBackpackSkinItem("§bSad Shark Backpack", "§b ", 2192001, 5);
-    }
 
     public void open(){
         player.openInventory(getInventory());

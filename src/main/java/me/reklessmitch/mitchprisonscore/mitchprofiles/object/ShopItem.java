@@ -1,7 +1,7 @@
 package me.reklessmitch.mitchprisonscore.mitchprofiles.object;
 
-import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,6 +32,6 @@ public class ShopItem {
     public ItemStack getGuiItem(){
         List<String> modifiedLore = new ArrayList<>(lore);
         modifiedLore.replaceAll(s -> s.replace("%cost%", "" + cost));
-        return new ItemBuilder(material).displayname(name).lore(modifiedLore).build();
+        return ItemCreator.createItem(material, 1, 0, name, modifiedLore);
     }
 }

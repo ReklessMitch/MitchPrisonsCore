@@ -1,12 +1,12 @@
 package me.reklessmitch.mitchprisonscore.mitchboosters.objects;
 
-import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterType;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.TimeFormat;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -30,15 +30,15 @@ public class Booster{
     }
 
     public ItemStack getBoosterItem(){
-        ItemStack i =  new ItemBuilder(PickaxeConf.get().getBoosterItems().get(type)).displayname("§a" + type.name() + " Booster")
-            .lore(List.of("§7Multiplier: " + multiplier, "§7Time: " + TimeFormat.formatSeconds((int) timeInSeconds)))
-            .glow().build();
-        ItemMeta meta = i.getItemMeta();
+        ItemStack item = ItemCreator.createItem(PickaxeConf.get().getBoosterItems().get(type), 1, 0,
+                "<green>" + type.name() + " Booster", List.of("<grey>Multiplier: " + multiplier, "<grey>Time: "
+                        + TimeFormat.formatSeconds((int) timeInSeconds)));
+        ItemMeta meta = item.getItemMeta();
         PersistentDataContainer container = meta.getPersistentDataContainer();
         container.set(MitchPrisonsCore.get().getTypeKey(), PersistentDataType.STRING, type.toString());
         container.set(MitchPrisonsCore.get().getMultiKey(), PersistentDataType.DOUBLE, multiplier);
         container.set(MitchPrisonsCore.get().getDurationKey(), PersistentDataType.LONG, timeInSeconds);
-        i.setItemMeta(meta);
-        return i;
+        item.setItemMeta(meta);
+        return item;
     }
 }

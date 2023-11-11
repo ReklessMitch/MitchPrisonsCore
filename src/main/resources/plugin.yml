@@ -6,7 +6,6 @@ author: ReklessMitch
 description: MitchPrisonsCore
 depend:
   - MassiveCore
-  - ItemsAdder
   - WorldBorderAPI
   - ProtocolLib
 

@@ -23,7 +23,9 @@ import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.SerLoc;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -62,14 +64,14 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
 
         if(isInMine(BlockVector3.at(l.getX(), l.getY(), l.getZ()))){
             getPlayer().teleport(middleLocation.toLocation().add(0, 1, 0));
-            getPlayer().sendMessage(LangConf.get().getMineReset());
+            MessageUtils.sendMessage(getPlayer(), LangConf.get().getMineReset());
         }
     }
 
 
     public void addBooster(int amount){
         booster += amount;
-        getPlayer().sendMessage(LangConf.get().getMineBoosterAdded());
+        MessageUtils.sendMessage(getPlayer(), LangConf.get().getMineBoosterAdded());
         changed();
     }
 
@@ -131,7 +133,7 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         if(set){
             size = amount;
         }else{
-            getPlayer().sendMessage("§a§lYour Mine has been upgraded to size: " + size);
+            MessageUtils.sendMessage(getPlayer(), "<green><bold>Your Mine has been upgraded to size: " + size);
             size += amount;
         }
         min = new SerLoc(-size, -70, -size).addS(middleLocation);
@@ -168,7 +170,7 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
             }
         }
         volumeMined += blocks;
-        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(multiplyBeaconBooster(beacons));
+        ProfilePlayer.get(getPlayer()).addCurrency(Currency.BEACON, multiplyBeaconBooster(beacons));
         volumeMinedCheck();
         return blocks;
     }

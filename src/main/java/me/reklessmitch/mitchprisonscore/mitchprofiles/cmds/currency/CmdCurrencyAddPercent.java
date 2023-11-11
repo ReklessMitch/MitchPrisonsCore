@@ -5,9 +5,12 @@ import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
-import org.bukkit.Bukkit;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
 import java.math.BigInteger;
@@ -31,13 +34,6 @@ public class CmdCurrencyAddPercent extends CurrencyCommands {
         int percent = this.readArg();
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         BigInteger cost = RankupConf.get().getCost(pp.getRank());
-        MitchCurrency money = pp.getCurrency("money");
-
-        BigInteger amountToAdd = cost.multiply(BigInteger.valueOf(percent)).divide(BigInteger.valueOf(100));
-
-        player.sendMessage("§7You have been given §a" + percent + "% §7of §a" + cost + " §7of your next rankup §a" + amountToAdd + "§7.");
-
-        money.add(amountToAdd);
-        pp.changed();
+        pp.addPercentToNextRankup(Currency.MONEY, percent, cost);
     }
 }

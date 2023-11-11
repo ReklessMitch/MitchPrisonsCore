@@ -1,7 +1,7 @@
 package me.reklessmitch.mitchprisonscore.mitchrankup.object;
 
-import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,10 +30,10 @@ public class RankupReward {
     }
 
     public ItemStack getRewardItem() {
-        return new ItemBuilder(material).displayname(itemName).lore(itemLore).modelData(customModelData).build();
+        return ItemCreator.createItem(material, 1, customModelData, itemName, itemLore);
     }
 
     public ItemStack getRewardItem(Material newMaterial) {
-        return new ItemBuilder(newMaterial).displayname(itemName).lore(itemLore).modelData(customModelData).build();
+        return ItemCreator.createItem(newMaterial, 1, customModelData, itemName, itemLore);
     }
 }

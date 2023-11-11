@@ -27,12 +27,12 @@ public class CmdCellInfo extends CellCommands {
             msg("<b>You are not in a cell");
             return;
         }
-        msg("§7§m------------§r §6§lCell Info §7§m------------" +
-                "\n§7Cell Name: §6" + cell.getName() +
-                "\n§7Cell Owner: §6" + IdUtil.getOfflinePlayer(cell.getOwner()).getName() +
-                "\n§7Cell Members: §6" + getAllMembers(cell) +
-                "\n§7Beacons: §6" + cell.getBeacons() +
-                "\n§7§m----------------------------------");
+        msg("<grey>------------<reset> <gold><bold>Cell Info <grey>------------" +
+                "\n<grey>Cell Name: <gold>" + cell.getName() +
+                "\n<grey>Cell Owner: <gold>" + IdUtil.getOfflinePlayer(cell.getOwner()).getName() +
+                "\n<grey>Cell Members: <gold>" + getAllMembers(cell) +
+                "\n<grey>Beacons: <gold>" + cell.getBeacons() +
+                "\n<grey>----------------------------------");
     }
 
     // turn Set<List> of cell.getAllMembers() into a string with commas
@@ -41,7 +41,7 @@ public class CmdCellInfo extends CellCommands {
         for(UUID playerID : cell.getAllMembers()){
             if(playerID.equals(cell.getOwner())) continue; // skip owner (already displayed)
             OfflinePlayer player = IdUtil.getOfflinePlayer(playerID);
-            allMembers.append(player.isOnline() ? "§a" + player.getName() + " " : "§7" + player.getName() + " ");
+            allMembers.append(player.isOnline() ? "<green>" + player.getName() + " " : "<grey>" + player.getName() + " ");
         }
         return allMembers.toString();
     }

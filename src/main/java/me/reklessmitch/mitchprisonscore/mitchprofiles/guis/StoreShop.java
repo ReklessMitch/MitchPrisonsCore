@@ -3,8 +3,12 @@ package me.reklessmitch.mitchprisonscore.mitchprofiles.guis;
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.object.ShopItem;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -31,21 +35,21 @@ public class StoreShop extends ChestGui {
     }
 
     private void setUpInventory() {
-        MitchCurrency currency = profilePlayer.getCurrency("credits");
+
         shopItems.forEach(shopItem -> {
             this.getInventory().setItem(shopItem.getSlot(), shopItem.getGuiItem());
             int cost = shopItem.getCost();
             this.setAction(shopItem.getSlot(), event -> {
-                if (currency.getAmount().compareTo(BigInteger.valueOf(cost)) >= 0) {
-                    currency.take(cost);
-                    profilePlayer.changed();
-                    player.sendMessage("§aYou have purchased " + shopItem.getName() + " for " + cost + " credits!");
+                if (profilePlayer.getCurrencyAmount(Currency.CREDIT).compareTo(BigInteger.valueOf(cost)) >= 0) {
+                    profilePlayer.take(Currency.CREDIT, BigInteger.valueOf(cost));
+                    TagResolver shopItemName = Placeholder.parsed("item", shopItem.getName());
+                    TagResolver shopItemCost = Placeholder.parsed("cost", String.valueOf(cost));
+                    MessageUtils.sendMessages(player, LangConf.get().getStorePurchaseSuccess(), shopItemName, shopItemCost);
                     List<String> commands = new ArrayList<>(shopItem.getCommands());
                     commands.replaceAll(c -> c.replace("%player%", player.getName()));
                     commands.forEach(c -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), c));
                 } else {
-                    player.sendMessage("§cYou do not have enough credits to purchase this item!");
-                }
+                    MessageUtils.sendMessages(player, LangConf.get().getStoreNotEnoughCredits());}
                 return true;
             });
         });

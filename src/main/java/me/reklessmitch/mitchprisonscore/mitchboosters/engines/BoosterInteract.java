@@ -5,6 +5,7 @@ import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterType;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -38,10 +39,10 @@ public class BoosterInteract extends Engine {
             long time = pdc.get(MitchPrisonsCore.get().getDurationKey(), PersistentDataType.LONG);
             BoosterPlayer boosterPlayer = BoosterPlayer.get(event.getPlayer().getUniqueId());
             if(boosterPlayer.getBoosters().size() >= 35){
-                event.getPlayer().sendMessage("§cYou can't have more than 35 boosters! (Combine them!)");
+                MessageUtils.sendMessage(event.getPlayer(), "<red>You can't have more than 35 boosters! (Combine them!)");
                 return;
             }
-            event.getPlayer().sendMessage("§aAdded booster with " + multiplier + "x to /boosters");
+            MessageUtils.sendMessage(event.getPlayer(), "<green>Added booster with " + multiplier + "x to /boosters");
             boosterPlayer.getBoosters().add(new Booster(type, multiplier, time));
             event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
         }

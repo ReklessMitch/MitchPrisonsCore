@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterType;
+import me.reklessmitch.mitchprisonscore.mitchpets.util.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import me.reklessmitch.mitchprisonscore.utils.CrateReward;
@@ -31,6 +32,10 @@ public class PickaxeConf extends Entity<PickaxeConf> {
     private int explosiveLevelsPerIncrease = 50;
     private List<CrateReward> supplyDropRewards = List.of(new CrateReward(0.2, List.of("addc %player% token 1000"), "Tokens 1"));
     private Map<BoosterType, Material> boosterItems = Map.of(BoosterType.MONEY, Material.DIAMOND, BoosterType.BEACON, Material.BEACON, BoosterType.TOKEN, Material.EMERALD);
+
+    private Map<String, DisplayItem> pickaxeSkins = Map.of(
+            "default", new DisplayItem(Material.DIAMOND_PICKAXE, "Default", List.of("Default Pickaxe"), 0, 0),
+            "emerald", new DisplayItem(Material.EMERALD, "Emerald", List.of("Emerald Pickaxe"), 1, 1));
 
     public CrateReward getReward(){
         double totalChance = 0;
@@ -74,8 +79,4 @@ public class PickaxeConf extends Entity<PickaxeConf> {
         return enchants.get(type);
     }
 
-
-    public void sendEnchantMessage(EnchantType type, Player player) {
-        player.sendMessage(PlaceholderAPI.setPlaceholders(player, enchants.get(type).getEnchantMessage()));
-    }
 }

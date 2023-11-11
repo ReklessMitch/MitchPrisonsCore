@@ -19,14 +19,14 @@ public class BoosterActiveTask extends BukkitRunnable{
         long timeLeft = booster.getTimeInSeconds();
         if (timeLeft <= 0) {
             cancel();
-            player.getPlayer().sendMessage("§cYour " + booster.getType() + " booster has expired");
+            player.getPlayer().sendMessage("<red>Your " + booster.getType() + " booster has expired");
             player.getBoosters().remove(booster);
             player.deactivateBooster(booster);
             player.changed();
             return;
         }
         if(!booster.isActive()){
-            player.getPlayer().sendMessage("§cYour " + booster.getType() + " booster has been deactivated");
+            player.getPlayer().sendMessage("<red>Your " + booster.getType() + " booster has been deactivated");
             player.deactivateBooster(booster);
             player.changed();
             cancel();

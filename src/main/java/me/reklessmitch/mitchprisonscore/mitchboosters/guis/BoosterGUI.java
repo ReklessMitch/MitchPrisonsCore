@@ -1,10 +1,11 @@
 package me.reklessmitch.mitchprisonscore.mitchboosters.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public class BoosterGUI extends ChestGui {
     public BoosterGUI(UUID p) {
         this.player = BoosterPlayer.get(p);
         player.changed();
-        setInventory(Bukkit.createInventory(null, 54, LangConf.get().getBoosterGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 54, MessageUtils.colorize(LangConf.get().getBoosterGuiTitle())));
         setAutoclosing(false);
         setAutoremoving(true);
         setSoundOpen(null);
@@ -73,7 +74,7 @@ public class BoosterGUI extends ChestGui {
             }
             return true;
         });
-        return new ItemBuilder(Material.MAGMA_BLOCK).displayname("&aCombine Boosters").lore("&7Click to combine your boosters").build();
+        return ItemCreator.createItem(Material.MAGMA_BLOCK, 1, 0, "&aCombine Boosters", "&7Click to combine your boosters");
     }
 
     public void open(Player player) {

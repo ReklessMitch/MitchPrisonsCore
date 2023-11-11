@@ -6,13 +6,15 @@ import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.config.BazaarConf;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.object.ShopValue;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 
 import java.math.BigInteger;
 
 public class CmdBazaarSell extends BazaarCommands{
 
     public CmdBazaarSell(){
-        this.addAliases("sell");
+        this.addAliases("bazaarsell");
         this.addParameter(TypeString.get(), "currencyToSell");
         this.addParameter(TypeLong.get(), "amount");
         this.addParameter(TypeString.get(), "currencyToSellFor");
@@ -21,21 +23,22 @@ public class CmdBazaarSell extends BazaarCommands{
 
     @Override
     public void perform() throws MassiveException {
-        String sell = this.readArg();
+        String cts = this.readArg();
+        Currency currencyToSell = Currency.valueOf(cts.toUpperCase());
         long amount = this.readArg();
-        String buy = this.readArg();
+        String ctb = this.readArg();
+        Currency currencyToBuy = Currency.valueOf(ctb.toUpperCase());
         long price = this.readArg();
 
         BazaarConf conf = BazaarConf.get();
         ProfilePlayer pp = ProfilePlayer.get(me.getUniqueId());
-        if (pp.getCurrency(sell).getAmount().compareTo(BigInteger.valueOf(amount)) < 0) {
-            msg("§cYou do not have enough %s", sell);
+        if(pp.getCurrencyAmount(currencyToSell).compareTo(BigInteger.valueOf(amount)) < 0){
+            MessageUtils.sendMessage(me, "<red>You do not have enough " + cts);
             return;
         }
-        conf.getSellPrices().get(sell).get(buy).add(new ShopValue(me.getUniqueId(), amount, price));
+        conf.getSellPrices().get(currencyToSell).get(currencyToBuy).add(new ShopValue(me.getUniqueId(), amount, price));
         conf.changed();
-        msg("§aYou have added §e%s %s §ato the sell shop for §e%s %s/s", amount, sell, price, buy);
-        pp.getCurrency(sell).take(amount);
-        pp.changed();
+        MessageUtils.sendMessage(me, "<green>You have added " + amount + " " + cts + " to the sell shop for " + price + " " + ctb + "/s");
+        pp.take(currencyToSell, amount);
     }
 }

@@ -6,6 +6,7 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,11 +19,15 @@ public class TogglesGUI extends ChestGui {
     private final PPickaxe pickaxe;
     private final int toggle;// true = Enchant Toggles, false = Enchant Message Toggles
 
+    //- Message Toggles :red_circle: - 0
+    //- Enchant Toggles :red_circle: - 1
+    //- Enchant Sounds :red_circle: - 2
+
     public TogglesGUI(@NotNull Player player, int toggle) {
         this.toggle = toggle;
         this.player = player;
         this.pickaxe = PPickaxe.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(null, 27, LangConf.get().getPickaxeTogglesGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 27, MessageUtils.colorize(LangConf.get().getPickaxeTogglesGuiTitle())));
         refresh();
         setAutoclosing(false);
         setSoundOpen(null);
@@ -40,10 +45,14 @@ public class TogglesGUI extends ChestGui {
             this.setAction(startSlot, event -> {
                 event.setCancelled(true);
 
+                //- Message Toggles :red_circle: - 0
+                //- Enchant Toggles :red_circle: - 1
+                //- Enchant Sounds :red_circle: - 2
+
                 switch (toggle) {
-                    case 0 -> pickaxe.toggleEnchant(type);
-                    case 2 -> pickaxe.toggleEnchantMessage(type);
-                    case 1 -> pickaxe.toggleEnchantSound(type);
+                    case 1 -> pickaxe.toggleEnchant(type);
+                    case 0 -> pickaxe.toggleEnchantMessage(type);
+                    case 2 -> pickaxe.toggleEnchantSound(type);
                     default -> {
                     }
                 }

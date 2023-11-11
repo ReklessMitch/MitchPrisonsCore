@@ -6,7 +6,12 @@ import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
 import java.math.BigInteger;
@@ -28,38 +33,40 @@ public class CmdCurrencyPay extends CurrencyCommands {
         Player player = this.readArg();
         ProfilePlayer receiver = ProfilePlayer.get(player.getUniqueId());
         ProfilePlayer sender = ProfilePlayer.get(me.getUniqueId());
+        LangConf conf = LangConf.get();
         if(receiver == null){
-            msg("§cPlayer has not joined the server before");
+            MessageUtils.sendMessages(me, conf.getTransferPlayerNotJoinedServer());
             return;
         }
         if(player.getUniqueId() == me.getUniqueId()){
-            msg("§cYou cannot pay yourself");
+            MessageUtils.sendMessages(me, conf.getTransferCannotPayYourself());
             return;
         }
-        String currency = this.readArg();
-        if(!ProfilesConf.get().getCurrencyList().contains(currency)){
+        String c = this.readArg();
+        Currency currencyEnum = Currency.valueOf(c.toUpperCase());
+        if(currencyEnum == null){
+            MessageUtils.sendMessage(me, "<red>Currency not found");
             return;
         }
 
         String amount = this.readArg();
         BigInteger amountInt = CurrencyUtils.parse(amount);
-        if(amountInt.longValue() == -1){
-            msg("§cInvalid amount / character (k, m, b)");
+        if(amountInt.longValue() == -1 || amountInt.longValue() <= 0){
+            MessageUtils.sendMessages(me, conf.getTransferInvalidAmount());
             return;
         }
-        if(amountInt.longValue() <= 0){
-            msg("§cAmount must be greater than 0");
-            return;
-        }
-        if (sender.getCurrency(currency).getAmount().compareTo(amountInt) < 0) {
-            msg("§bYou do not have enough " + currency + "/s");
+        if (sender.getCurrencyAmount(currencyEnum).compareTo(amountInt) < 0) {
+            final TagResolver currencyResolver = Placeholder.parsed("currency", currencyEnum.getName());
+            MessageUtils.sendMessages(me, conf.getTransferNotEnoughCurrency(), currencyResolver);
         }else{
-            sender.getCurrency(currency).take(amountInt);
-            receiver.getCurrency(currency).add(amountInt);
-            sender.changed();
-            receiver.changed();
-            msg("§aYou have sent " + amount + " " + currency + "/s to " + player.getName());
-            player.sendMessage("§aYou have received " + amount + " " + currency + "/s from " + me.getName());
+            sender.take(currencyEnum, amountInt);
+            receiver.addCurrency(currencyEnum, amountInt);
+            final TagResolver senderResolver = Placeholder.parsed("sender", me.getName());
+            final TagResolver receiverResolver = Placeholder.parsed("receiver", player.getName());
+            final TagResolver amountResolver = Placeholder.parsed("amount", CurrencyUtils.format(amountInt));
+            final TagResolver currencyResolver = Placeholder.parsed("currency", currencyEnum.getName());
+            MessageUtils.sendMessages(me, conf.getTransferSuccessSend(), senderResolver, receiverResolver, amountResolver, currencyResolver);
+            MessageUtils.sendMessages(player, conf.getTransferSuccessReceive(), senderResolver, receiverResolver, amountResolver, currencyResolver);
         }
     }
 }

@@ -1,13 +1,14 @@
 package me.reklessmitch.mitchprisonscore.mitchmines.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import com.massivecraft.massivecore.util.ItemBuilder;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.MineConf;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class MineGUI extends ChestGui {
     public MineGUI(Player player){
         this.player = player;
         this.playerMine = PlayerMine.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(null, 54, langConf.getMineGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 54, MessageUtils.colorize(langConf.getMineGuiTitle())));
         init();
         setAutoclosing(false);
         add();
@@ -33,8 +34,8 @@ public class MineGUI extends ChestGui {
     private void addMineInformationItem(){
         int[] slots = {0, 1, 2, 9, 10, 11, 18, 19, 20, 27, 28, 29, 36, 37, 38, 45, 46, 47};
         for(int slot: slots) {
-            getInventory().setItem(slot, new ItemBuilder(Material.PAPER).displayname("§9Mine GO").modelData(10006)
-                    .lore(PlaceholderAPI.setPlaceholders(player, langConf.getMineGoGUIItem())).build());
+            final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Mine GO", PlaceholderAPI.setPlaceholders(player, langConf.getMineGoGUIItem()));
+            getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
                 playerMine.teleport();
                 return true;
@@ -50,11 +51,11 @@ public class MineGUI extends ChestGui {
         int maxLevel = conf.getMineBoosterMax();
 
         boolean maxed = playerMine.getBooster() >= maxLevel;
-        ItemStack item = maxed ?
-                new ItemBuilder(Material.PAPER).displayname("§9Upgrade Booster").modelData(10006)
-                .lore(PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterMaxed())).build() :
-                new ItemBuilder(Material.PAPER).displayname("§9Upgrade Booster").modelData(10006)
-                        .lore(PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterNotMaxed())).build();
+        final ItemStack item = maxed ?
+                ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Upgrade Booster",
+                        PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterMaxed())) :
+                ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Upgrade Booster",
+                        PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterNotMaxed()));
         for(int slot: slots) {
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
@@ -62,14 +63,13 @@ public class MineGUI extends ChestGui {
                     event.getWhoClicked().sendMessage(PlaceholderAPI.setPlaceholders(player, langConf.getMineMaxMineBooster()));
                     return true;
                 }
-                ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
-                MitchCurrency currency = profile.getCurrency("credits");
-                if (currency.getAmount().intValue() >= cost) {
-                    currency.take(BigInteger.valueOf(cost));
+                final ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
+                if (profile.getCurrencyAmount(Currency.CREDIT).intValue() >= cost) {
+                    profile.take(Currency.CREDIT, BigInteger.valueOf(cost));
                     playerMine.addBooster(1);
                     addUpgradeBoosterItem();
                 } else {
-                    player.sendMessage(langConf.getMineNotEnoughCredits());
+                    MessageUtils.sendMessage(player, langConf.getMineNotEnoughCredits());
                 }
                 return true;
             });
@@ -79,8 +79,8 @@ public class MineGUI extends ChestGui {
     private void addResetItem(){
         int[] slots = {3, 4 ,5, 12, 13, 14, 21, 22, 23, 30, 31, 32, 39, 40, 41, 48, 49, 50};
         for(int slot: slots) {
-            getInventory().setItem(slot, new ItemBuilder(Material.PAPER).displayname("§9Reset Mine").modelData(10006)
-                    .lore("§cReset your mine").build());
+            final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, LangConf.get().getInvisibleCustomData(), "<gold>Reset Mine", "<red>Reset your mine");
+            getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
                 playerMine.reset();
                 return true;

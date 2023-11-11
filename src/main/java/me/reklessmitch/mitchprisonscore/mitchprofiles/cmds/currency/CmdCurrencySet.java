@@ -8,7 +8,9 @@ import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.Perm;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
 import java.math.BigInteger;
@@ -31,12 +33,11 @@ public class CmdCurrencySet extends CurrencyCommands {
         String amount = this.readArg();
         BigInteger amountInt = CurrencyUtils.parse(amount);
         if(amountInt.equals(BigInteger.valueOf(-1))){
-            msg("§cInvalid amount / character (k, m, b)");
+            MessageUtils.sendMessage(sender, "<red>Invalid amount");
             return;
         }
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
-        pp.getCurrency(currency).set(amountInt);
-        pp.changed();
-        msg("§aYou have set §c%s §ato §c%s's §cbalance", amountInt, player.getName());
+        pp.set(Currency.valueOf(currency.toUpperCase()), amountInt);
+        MessageUtils.sendMessage(player, "<green>You have set <red>" + amountInt + "%s <green>to <red>" + player.getName() + "'s <green>balance");
     }
 }

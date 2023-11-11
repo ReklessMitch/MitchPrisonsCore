@@ -55,6 +55,11 @@
 
     <repositories>
         <repository>
+            <id>nexus</id>
+            <name>Lumine Releases</name>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
+        <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
@@ -81,6 +86,10 @@
         <repository>
             <id>eldonexus</id>
             <url>https://eldonexus.de/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>sonatype-oss-snapshots1</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -121,6 +130,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.3</version>
@@ -133,22 +148,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.LoneDev6</groupId>
-            <artifactId>api-itemsadder</artifactId>
-            <version>3.5.0b</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>massivecore</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/MassiveCore-MC-1.19-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/libs/MassiveCore-1.0.0-SNAPSHOT-1.19x-Addon.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.20.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -162,6 +171,24 @@
             <artifactId>annotations</artifactId>
             <version>24.0.1</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>4.16.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.16.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.lumine</groupId>
+            <artifactId>Mythic-Dist</artifactId>
+            <version>5.3.5</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

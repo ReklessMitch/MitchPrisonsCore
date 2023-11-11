@@ -6,6 +6,7 @@ import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.object.Reward;
 import me.reklessmitch.mitchprisonscore.colls.PassPlayerColl;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,9 +37,9 @@ public class PassPlayer extends SenderEntity<PassPlayer> {
         TreeMap<Integer, List<Reward>> sortedMap = new TreeMap<>(rewards);
         SortedMap<Integer, List<Reward>> subMap = sortedMap.subMap(lastClaimedLevel + 1, level + 1);
         if(subMap.isEmpty()) {
-            getPlayer().sendMessage(LangConf.get().getBattlePassNoRewards());
+            MessageUtils.sendMessage(getPlayer(), LangConf.get().getBattlePassNoRewards());
         }else{
-            getPlayer().sendMessage(LangConf.get().getBattlePassClaimed());
+            MessageUtils.sendMessage(getPlayer(), LangConf.get().getBattlePassClaimed());
             subMap.forEach((l, r) -> r.forEach(reward -> reward.getCommands().forEach(
                     command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", getPlayer().getName())))));
             lastClaimedLevel = level;

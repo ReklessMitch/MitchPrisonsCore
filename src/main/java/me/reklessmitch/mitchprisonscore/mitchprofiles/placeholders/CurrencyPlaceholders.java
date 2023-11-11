@@ -30,9 +30,10 @@ public class CurrencyPlaceholders extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        return ProfilePlayer.get(player.getUniqueId()).getCurrencyList().stream()
+        ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
+        return pp.getPlayerCurrencies().keySet().stream()
                 .filter(currency -> params.equalsIgnoreCase(currency.getName()))
-                .map(currency -> CurrencyUtils.format(currency.getAmount()))
+                .map(currency -> CurrencyUtils.format(pp.getCurrencyAmount(currency)))
                 .findFirst()
                 .orElse("Invalid Currency");
     }

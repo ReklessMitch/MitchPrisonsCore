@@ -6,6 +6,8 @@ import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 
 import java.math.BigInteger;
 
@@ -20,21 +22,20 @@ public class CmdAddBeacons extends CellCommands {
     public void perform() throws MassiveException {
         Cell cell = CellConf.get().getCellByMember(me.getUniqueId());
         if(cell == null){
-            msg("§cYou are not in a cell");
+            MessageUtils.sendMessage(me, "<red>You are not in a cell");
             return;
         }
         BigInteger amount = BigInteger.valueOf(this.readArg());
         ProfilePlayer profile = ProfilePlayer.get(me.getUniqueId());
 
-        BigInteger beaconAmount = profile.getCurrency("beacon").getAmount(); // Assuming getAmount() returns a BigInteger
+        BigInteger beaconAmount = profile.getCurrencyAmount(Currency.BEACON);
 
         if (amount.compareTo(BigInteger.ZERO) > 0 && beaconAmount.compareTo(amount) > 0) {
-            profile.getCurrency("beacon").take(amount); // Assuming subtract() is a method to subtract a BigInteger
-            profile.changed();
+            profile.take(Currency.BEACON, amount);
             cell.addBeacons(amount);
-            msg("§aAdded " + amount + " beacons to your cell");
+            MessageUtils.sendMessage(me, "Added " + amount + " beacons to your cell");
         } else {
-            msg("§cYou do not have enough beacons");
+            MessageUtils.sendMessage(me, "<red>You do not have enough beacons");
         }
     }
 }

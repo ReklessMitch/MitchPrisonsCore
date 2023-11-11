@@ -5,6 +5,7 @@ import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 
 public class CmdCellJoin extends CellCommands {
 
@@ -20,25 +21,25 @@ public class CmdCellJoin extends CellCommands {
         cellName = cellName.toLowerCase();
         CellConf conf = CellConf.get();
         if(conf.getAllPlayersInCells().contains(me.getUniqueId())){
-            msg("§cYou are already in a cell");
+            MessageUtils.sendMessage(me, "<red>You are already in a cell");
             return;
         }
         Cell cell = conf.getCellByName(cellName);
         if(cell == null){
-            msg("§cCell does not exist");
+            MessageUtils.sendMessage(me, "<red>Cell does not exist");
             return;
         }
         if(cell.getMembers().size() >= conf.getMaxCellSize()){
-            msg("§cCell is full");
+            MessageUtils.sendMessage(me, "<red>Cell is full");
             return;
         }
         if(cell.getInvites().contains(me.getUniqueId())){
             cell.getMembers().add(me.getUniqueId());
-            msg("§aJoined cell " + cellName);
+            MessageUtils.sendMessage(me, "<green>Joined cell " + cellName);
             cell.getInvites().remove(me.getUniqueId());
             conf.changed();
         }else{
-            msg("§cYou are not invited to this cell");
+            MessageUtils.sendMessage(me, "<red>You are not invited to this cell");
         }
 
 

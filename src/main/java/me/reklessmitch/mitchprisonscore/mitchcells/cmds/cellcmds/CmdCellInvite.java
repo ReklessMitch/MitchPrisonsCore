@@ -5,6 +5,7 @@ import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
 public class CmdCellInvite extends CellCommands {
@@ -20,21 +21,21 @@ public class CmdCellInvite extends CellCommands {
         Cell cell = conf.getCellByMember(me.getUniqueId());
 
         if(cell == null){
-            msg("§cYou are not in a cell");
+            MessageUtils.sendMessage(me, "<red>You are not in a cell");
             return;
         }
         if(!cell.getAllHigherUps().contains(me.getUniqueId())){
-            msg("§cYou are not a higher up in this cell");
+            MessageUtils.sendMessage(me, "<red>You are not a higher up in this cell");
             return;
         }
         Player player = this.readArg();
         if(cell.getInvites().contains(player.getUniqueId())){
-            msg("§cPlayer is already invited");
+            MessageUtils.sendMessage(me, "<red>Player is already invited");
             return;
         }
         cell.getInvites().add(player.getUniqueId());
-        msg("§aInvited §c" + player.getName() + "§a to your cell");
-        player.sendMessage("§aYou have been invited to §c" + cell.getName() + "§a's cell");
+        MessageUtils.sendMessage(me, "<green>Invited " + player.getName() + " to your cell");
+        MessageUtils.sendMessage(player, "<green>You have been invited to " + cell.getName() + "'s cell");
         conf.changed();
     }
 

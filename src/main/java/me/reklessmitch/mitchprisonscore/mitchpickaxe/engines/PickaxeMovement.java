@@ -11,9 +11,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 public class PickaxeMovement extends Engine {
 
     private static PickaxeMovement i = new PickaxeMovement();
@@ -24,7 +21,6 @@ public class PickaxeMovement extends Engine {
         Player player = e.getPlayer();
         PPickaxe ppickaxe = PPickaxe.get(player.getUniqueId());
         player.getInventory().setItem(0, ppickaxe.getPickaxeGuiItem());
-        player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false));
     }
 
     @EventHandler
@@ -40,11 +36,11 @@ public class PickaxeMovement extends Engine {
     public void onItemDrop(PlayerDropItemEvent e){
         if(e.getItemDrop().getItemStack().getType().equals(Material.DIAMOND_PICKAXE)){
             e.setCancelled(true);
-            e.getPlayer().sendMessage("§cYou cannot drop your pickaxe!");
+            e.getPlayer().sendMessage("<red>You cannot drop your pickaxe!");
         }
         if(e.getItemDrop().getItemStack().getType().equals(Material.DRAGON_EGG)){
             e.setCancelled(true);
-            e.getPlayer().sendMessage("§cYou cannot drop your backpack!");
+            e.getPlayer().sendMessage("<red>You cannot drop your backpack!");
         }
     }
 

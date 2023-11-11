@@ -8,7 +8,9 @@ import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.Perm;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
 import java.math.BigInteger;
@@ -31,8 +33,7 @@ public class CmdCurrencyRemove extends CurrencyCommands {
         String amount = this.readArg();
         BigInteger amountInt = CurrencyUtils.parse(amount);
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
-        pp.getCurrency(currency).take(amountInt);
-        pp.changed();
-        this.msg("§aYou have removed §c%s §ato §c%s's §abalance", amount, player.getName());
+        pp.take(Currency.valueOf(currency.toUpperCase()), amountInt);
+        MessageUtils.sendMessage(player, "<green>You have removed <red>" + amount + "%s <green>from <red>" + player.getName() + "'s <green>balance");
     }
 }

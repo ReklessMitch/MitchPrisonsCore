@@ -1,9 +1,10 @@
 package me.reklessmitch.mitchprisonscore.mitchpets.util;
 
-import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -28,16 +29,12 @@ public class DisplayItem {
 
     public ItemStack getGuiItem(int level) {
         List<String> newLore = new ArrayList<>(itemLore);
-        newLore.replaceAll(lore -> lore.replace("{level}", level + ""));
-        return new ItemBuilder(material).displayname(itemName).lore(newLore).modelData(customModelData).unbreakable(true)
-                .flag(ItemFlag.HIDE_ATTRIBUTES)
-                .build();
+        final TagResolver levelResolver = Placeholder.parsed("level", level + "");
+        return ItemCreator.createItem(material, 1, customModelData, itemName, newLore, levelResolver);
     }
 
     public ItemStack getGuiItem() {
-        return new ItemBuilder(material).displayname(itemName).lore(itemLore).modelData(customModelData).unbreakable(true)
-                .flag(ItemFlag.HIDE_ATTRIBUTES)
-                .build();
+        return ItemCreator.createItem(material, 1, customModelData, itemName, itemLore);
     }
 
 

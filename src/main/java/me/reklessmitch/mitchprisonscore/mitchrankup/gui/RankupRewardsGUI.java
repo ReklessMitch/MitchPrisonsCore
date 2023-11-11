@@ -4,6 +4,7 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
 import me.reklessmitch.mitchprisonscore.mitchrankup.object.RankupReward;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,13 +27,13 @@ public class RankupRewardsGUI extends ChestGui {
         if(pp.getClaimedRewards().contains(levelRequired)){
             getInventory().setItem(item.getSlot(), item.getRewardItem(Material.RED_WOOL));
             setAction(item.getSlot(), event -> {
-                player.sendMessage("§cYou have already claimed this reward!");
+                MessageUtils.sendMessage(player, "<red>You have already claimed this reward!");
                 return true;
             });
         } else if (pp.getRank() < levelRequired) {
             getInventory().setItem(item.getSlot(), item.getRewardItem(Material.RED_STAINED_GLASS_PANE));
             setAction(item.getSlot(), event -> {
-                player.sendMessage("§cYou have not unlocked this reward yet!");
+                MessageUtils.sendMessage(player, "<red>You have not unlocked this reward yet!");
                 return true;
             });
         }else {

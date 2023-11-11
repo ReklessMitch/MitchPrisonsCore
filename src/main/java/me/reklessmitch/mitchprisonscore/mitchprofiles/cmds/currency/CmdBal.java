@@ -17,10 +17,10 @@ public class CmdBal extends CurrencyCommands {
     @Override
     public void perform() {
         Player player = (Player) sender;
-        msg("§b§l+--- BALANCE ---+");
-        msg(PlaceholderAPI.setPlaceholders(player, "§3| §a %mitchcurrency_token% Tokens"));
-        msg(PlaceholderAPI.setPlaceholders(player, "§3| §b %mitchcurrency_money% Money"));
-        msg(PlaceholderAPI.setPlaceholders(player,"§3| §e %mitchcurrency_beacon% Beacons"));
-        msg(PlaceholderAPI.setPlaceholders(player,"§3| §d %mitchcurrency_credits% Credits"));
+        msg("<green><bold>+--- BALANCE ---+");
+        msg(PlaceholderAPI.setPlaceholders(player, "<green>| <green> %mitchcurrency_token% Tokens"));
+        msg(PlaceholderAPI.setPlaceholders(player, "<green>| <green> %mitchcurrency_money% Money"));
+        msg(PlaceholderAPI.setPlaceholders(player,"<green>| <yellow> %mitchcurrency_beacon% Beacons"));
+        msg(PlaceholderAPI.setPlaceholders(player,"<green>| <green> %mitchcurrency_credits% Credits"));
     }
 }

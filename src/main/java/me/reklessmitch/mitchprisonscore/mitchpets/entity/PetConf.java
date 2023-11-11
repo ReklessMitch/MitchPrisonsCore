@@ -23,29 +23,36 @@ public class PetConf extends Entity<PetConf> {
             PetType.CRATE, new PetBoost(1.1, 0.1),
             PetType.SUPPLY_DROP, new PetBoost(1.1, 0.1));
 
+    private Map<PetType, String> petMythicMobs = Map.of(
+            PetType.JACKHAMMER_BOOST, "Pet_Angel",
+            PetType.MONEY, "Pet_Demon",
+            PetType.TOKEN, "Pet_Eagle",
+            PetType.CRATE, "Pet_Fire_Dragon",
+            PetType.SUPPLY_DROP, "Pet_Ice_Dragon");
+
 
     private Map<PetType, DisplayItem> petDisplayItems = Map.of(
             PetType.JACKHAMMER_BOOST, new DisplayItem(Material.SKELETON_SKULL,
-                    "§bJACKHAMMER-BOOST PET",
-                    List.of("§7Increases proc chance of jackhammer",
-                            "§7 ",
-                            "§7Level: §a{level}"),
+                    "<green>JACKHAMMER-BOOST PET",
+                    List.of("<gray>Increases proc chance of jackhammer",
+                            "<gray> ",
+                            "<gray>Level: <green>{level}"),
                     0, 0),
-            PetType.MONEY, new DisplayItem(Material.CREEPER_HEAD, "§bMONEY PET",
-                    List.of("§7Increases money made from backpack",
-                            "§7 ",
-                            "§7Level: §a{level}"), 0, 1),
-            PetType.TOKEN, new DisplayItem(Material.WITHER_SKELETON_SKULL, "§bTOKEN PET",
-                    List.of("§7Increases token amount per block",
-                            "§7 ",
-                            "§7Level: §a{level}"), 0, 2),
+            PetType.MONEY, new DisplayItem(Material.CREEPER_HEAD, "<green>MONEY PET",
+                    List.of("<gray>Increases money made from backpack",
+                            "<gray> ",
+                            "<gray>Level: <green>{level}"), 0, 1),
+            PetType.TOKEN, new DisplayItem(Material.WITHER_SKELETON_SKULL, "<green>TOKEN PET",
+                    List.of("<gray>Increases token amount per block",
+                            "<gray> ",
+                            "<gray>Level: <green>{level}"), 0, 2),
 
-            PetType.CRATE, new DisplayItem(Material.ZOMBIE_HEAD, "§bCRATE PET",
-                    List.of("§7Increases proc chance of key enchantment",
-                            "§7 ",
-                            "§7Level: §a{level}"), 0, 3),
-            PetType.SUPPLY_DROP, new DisplayItem(Material.CHEST, "§bSUPPLY DROP PET",
-                   List.of("§7Increases proc chance of Supply Drop Pet",
-                           "§7 ",
-                           "§7Level: §a{level}"), 0, 4));
+            PetType.CRATE, new DisplayItem(Material.ZOMBIE_HEAD, "<green>CRATE PET",
+                    List.of("<gray>Increases proc chance of key enchantment",
+                            "<gray> ",
+                            "<gray>Level: <green>{level}"), 0, 3),
+            PetType.SUPPLY_DROP, new DisplayItem(Material.CHEST, "<green>SUPPLY DROP PET",
+                   List.of("<gray>Increases proc chance of Supply Drop Pet",
+                           "<gray> ",
+                           "<gray>Level: <green>{level}"), 0, 4));
 }

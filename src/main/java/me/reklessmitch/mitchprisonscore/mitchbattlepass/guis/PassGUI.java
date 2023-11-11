@@ -1,14 +1,17 @@
 package me.reklessmitch.mitchprisonscore.mitchbattlepass.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassConf;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassPlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.math.BigInteger;
 
@@ -18,35 +21,34 @@ public class PassGUI extends ChestGui {
 
     public PassGUI(Player player){
         this.player = player;
-        setInventory(Bukkit.createInventory(null, 27, LangConf.get().getPassGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 27, MessageUtils.colorize(LangConf.get().getPassGuiTitle())));
         setupInventory();
         add();
     }
 
-    private void setUpUnpaid(ProfilePlayer profile, PassPlayer pp, int cost) {
-        getInventory().setItem(15, new ItemBuilder(Material.BARRIER).displayname("§aBuy Battle Pass")
-                .lore("§7Click to buy the battle pass", "", "§aCost: §f" + cost).build());
+    private void setUpUnpaid(ProfilePlayer profilePlayer, PassPlayer pp, int cost) {
+        final ItemStack item = ItemCreator.createItem(Material.BARRIER, 1, 0, "<green>Buy Battle Pass", "<grey>Click to buy the battle pass", "", "<green>Cost: <white>" + cost);
+        getInventory().setItem(15, item);
         setAction(15, event -> {
-            if (profile.getCurrency("credits").getAmount().compareTo(BigInteger.valueOf(cost)) < 0) {
-                player.sendMessage("§cYou do not have enough credits to buy the battle pass");
+            if (profilePlayer.getCurrencyAmount(Currency.CREDIT).compareTo(BigInteger.valueOf(cost)) < 0) {
+                MessageUtils.sendMessages(player, LangConf.get().getBattlePassNotEnoughCredits());
                 return true;
             }
-            profile.getCurrency("credits").take(cost);
-            profile.changed();
-            player.sendMessage("§aYou have bought the battle pass");
             pp.setPremium(true);
-            pp.changed();
+            profilePlayer.take(Currency.CREDIT, BigInteger.valueOf(cost));
+            MessageUtils.sendMessages(player, LangConf.get().getBattlePassPurchaseSuccess());
             return true;
         });
     }
 
     private void setUpPaid() {
-        getInventory().setItem(15, new ItemBuilder(Material.DIAMOND).displayname("§aPaid Rewards").lore("§7Click to claim paid rewards").build());
+        final ItemStack item = ItemCreator.createItem(Material.BARRIER, 1, 0, "<green>Battle Pass", "<grey>You already have the battle pass", "", "<green>Click to claim rewards");
+        getInventory().setItem(15, item);
         setAction(15, event -> {
             PassPlayer.get(player.getUniqueId()).claimPaidRewards();
             return true;
         });
-        getInventory().setItem(26, new ItemBuilder(Material.EMERALD).displayname("§aClaim All").lore("§7Click to claim all rewards").build());
+        getInventory().setItem(26, ItemCreator.createItem(Material.BARRIER, 1, 0, "<green>Battle Pass", "<green>Click to claim all rewards"));
         setAction(26, event -> {
             PassPlayer.get(player.getUniqueId()).claimAllRewards();
             return true;
@@ -62,7 +64,7 @@ public class PassGUI extends ChestGui {
         } else {
             setUpPaid();
         }
-        getInventory().setItem(11, new ItemBuilder(Material.IRON_INGOT).displayname("§aFree Rewards").lore("§7Click to claim free rewards").build());
+        getInventory().setItem(11, ItemCreator.createItem(Material.IRON_INGOT, 1, 0, "<green>Free Rewards", "<grey>Click to claim free rewards"));
         setAction(11, event -> {
             PassPlayer.get(player.getUniqueId()).claimFreeRewards();
             return true;

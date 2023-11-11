@@ -7,6 +7,7 @@ import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.Perm;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
 public class CmdSetRank extends RankupCommands{
@@ -27,8 +28,8 @@ public class CmdSetRank extends RankupCommands{
     public void perform() throws MassiveException {
         Player player = this.readArg();
         int rank = this.readArg();
-        msg("§aYou have set " + player.getName() + "'s rank to " + rank);
-        player.sendMessage("§aYour rank has been set to " + rank);
+        MessageUtils.sendMessage(me, "<green>You have set " + player.getName() + "'s rank to " + rank);
+        MessageUtils.sendMessage(player, "<green>Your rank has been set to " + rank);
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         pp.setRank(rank);
         pp.changed();

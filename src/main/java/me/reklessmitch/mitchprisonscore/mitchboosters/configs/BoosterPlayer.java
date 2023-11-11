@@ -8,6 +8,7 @@ import me.reklessmitch.mitchprisonscore.colls.BoosterPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterActiveTask;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterType;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -53,13 +54,13 @@ public class BoosterPlayer extends SenderEntity<BoosterPlayer> {
             multipliersToTime.forEach((type, multipliers) ->
                     multipliers.forEach((multiplier, time) ->
                             boosters.add(new Booster(type, multiplier, time))));
-            getPlayer().sendMessage("§aYour boosters have been combined! (Reactivate your boosters!)");
+            MessageUtils.sendMessage(getPlayer(), "<green>Your boosters have been combined! (Reactivate your boosters!)");
             activeBeaconBooster = null;
             activeMoneyBooster = null;
             activeTokenBooster = null;
             return true;
         }else{
-            getPlayer().sendMessage("§cYou have no boosters to combine!");
+            MessageUtils.sendMessage(getPlayer(), "<red>You have no boosters to combine!");
             return false;
         }
     }

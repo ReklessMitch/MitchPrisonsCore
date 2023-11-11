@@ -8,12 +8,12 @@ import me.reklessmitch.mitchprisonscore.mitchmines.configs.MineConf;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.BlockInPmineBrokeEvent;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -40,7 +40,7 @@ public class MineEvents extends Engine {
         BlockVector3 blockVector3 = BlockVector3.at(block.getX(), block.getY(), block.getZ());
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
         if(!playerMine.isInMine(blockVector3)){
-            e.getPlayer().sendMessage("§cYou can only break blocks in your mine");
+            MessageUtils.sendMessage(e.getPlayer(), "<red>You can only break blocks in your mine");
             return;
         }
         block.setType(Material.AIR);

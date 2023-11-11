@@ -3,6 +3,7 @@ package me.reklessmitch.mitchprisonscore.mitchcells.object;
 import com.massivecraft.massivecore.util.IdUtil;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -33,7 +34,7 @@ public class Cell {
         getAllMembers().forEach(uuid -> {
             OfflinePlayer player = IdUtil.getOfflinePlayer(uuid);
             if(player.isOnline() && player.getPlayer() != null){
-                player.getPlayer().sendMessage("§6" + amount + " §7beacons deposited into cell from §6" + player.getName());
+                MessageUtils.sendMessage(player.getPlayer(), "<gold>" + amount + " <gray>beacons deposited into cell from <gold>" + player.getName());
             }
         });
     }
@@ -42,7 +43,7 @@ public class Cell {
         getAllMembers().forEach(uuid -> {
             OfflinePlayer player = IdUtil.getOfflinePlayer(uuid);
             if(player.isOnline() && player.getPlayer() != null){
-                player.getPlayer().sendMessage("§7Your cell has been disbanded");
+                MessageUtils.sendMessage(player.getPlayer(), "<gray>Your cell has been disbanded");
             }
         });
         CellConf cellConf = CellConf.get();
@@ -70,9 +71,9 @@ public class Cell {
         officers.remove(uniqueId);
         invites.remove(uniqueId);
         OfflinePlayer player = IdUtil.getOfflinePlayer(uniqueId);
-        remover.sendMessage("§aYou have kicked §c" + player.getName() + "§a from your cell");
+        MessageUtils.sendMessage(remover, "<green>You have kicked <red>" + player.getName() + "<green> from your cell");
         if(player.isOnline() && player.getPlayer() != null){
-            player.getPlayer().sendMessage("§cYou have been kicked from your cell");
+            MessageUtils.sendMessage(player.getPlayer(), "<red>You have been kicked from your cell");
         }
     }
 

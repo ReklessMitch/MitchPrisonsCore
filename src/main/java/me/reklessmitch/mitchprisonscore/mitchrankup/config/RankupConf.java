@@ -31,8 +31,8 @@ public class RankupConf extends Entity<RankupConf> {
         for (int l = 0; l < maxRanks; l += rewardsEveryXRanks) {
             rewardsMap.put(l, new RankupReward(
                     Material.BEACON,
-                    "§aRankup Reward",
-                    List.of("§aYou have reached rank " + l),
+                    "<green>Rankup Reward",
+                    List.of("<green>You have reached rank " + l),
                     List.of("currency give %player% token 1000"),
                     0,
                     l,

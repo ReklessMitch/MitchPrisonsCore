@@ -12,7 +12,12 @@ import com.comphenix.protocol.wrappers.WrappedBlockData;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.guis.FinaliseBazaarPayment;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,13 +30,13 @@ public class SignOverGUI extends BukkitRunnable {
 
     private final Player player;
     @Getter private BigInteger amount = BigInteger.ZERO;
-    @Getter private final String itemToBeBrought;
-    @Getter private final String currencyToBuyWith;
+    @Getter private final Currency currencyToBeBrought;
+    @Getter private final Currency currencyToBuyWith;
     private final BigInteger maxAmount;
 
-    public SignOverGUI(Player player, String itemToBeBrought, String currencyToBuyWith, BigInteger maxAmount) {
+    public SignOverGUI(Player player, Currency currencyToBeBrought, Currency currencyToBuyWith, BigInteger maxAmount) {
         this.player = player;
-        this.itemToBeBrought = itemToBeBrought;
+        this.currencyToBeBrought = currencyToBeBrought;
         this.currencyToBuyWith = currencyToBuyWith;
         this.maxAmount = maxAmount;
     }
@@ -60,9 +65,9 @@ public class SignOverGUI extends BukkitRunnable {
 
             String[] lines = new String[4];
             lines[0] = "";
-            lines[1] = "§a§lEnter the amount";
-            lines[2] = "§a§lyou want to buy";
-            lines[3] = "§a§l==========";
+            lines[1] = "<green><bold>Enter the amount";
+            lines[2] = "<green><bold>you want to buy";
+            lines[3] = "<green><bold>==========";
             player.sendSignChange(signLocation, lines);
 
             // open sign editor
@@ -91,11 +96,12 @@ public class SignOverGUI extends BukkitRunnable {
                     if (!lines[0].isEmpty()) {
                         amount = CurrencyUtils.parse(lines[0]);
                         if(amount.compareTo(maxAmount) > 0){
-                            player.sendMessage("§7This item only has §c" + maxAmount + " in stock");
+                            final TagResolver maxAmountResolver = Placeholder.parsed("amount", maxAmount.toString());
+                            MessageUtils.sendMessage(player, LangConf.get().getBazaarNotEnoughInStock(), maxAmountResolver);
                             return;
                         }
                         Bukkit.getScheduler().runTask(MitchPrisonsCore.get(), () -> {
-                            FinaliseBazaarPayment gui = new FinaliseBazaarPayment(player, amount, itemToBeBrought, currencyToBuyWith);
+                            FinaliseBazaarPayment gui = new FinaliseBazaarPayment(player, amount, currencyToBeBrought, currencyToBuyWith);
                             gui.open();
                         });
                     }

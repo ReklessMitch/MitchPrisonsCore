@@ -4,6 +4,7 @@ package me.reklessmitch.mitchprisonscore.mitchcells.cmds.cellcmds;
 import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 
 public class CmdCellDisband extends CellCommands {
 
@@ -16,11 +17,11 @@ public class CmdCellDisband extends CellCommands {
         CellConf conf = CellConf.get();
         Cell cell = conf.getCellByMember(me.getUniqueId());
         if(cell == null){
-            msg("§bYou are not in a cell");
+            MessageUtils.sendMessage(me, "<red>You are not in a cell");
             return;
         }
         if(!cell.getOwner().equals(me.getUniqueId())){
-            msg("§bYou are not the owner of this cell");
+            MessageUtils.sendMessage(me, "<red>You are not the owner of this cell");
             return;
         }
         cell.disband();

@@ -7,6 +7,7 @@ import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetConf;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import me.reklessmitch.mitchprisonscore.mitchpets.util.DisplayItem;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 
 import java.util.Map;
@@ -18,7 +19,7 @@ public class PetGUI extends ChestGui {
 
     public PetGUI(UUID pID){
         this.petPlayer = PetPlayer.get(pID);
-        setInventory(Bukkit.createInventory(null, 18, LangConf.get().getPetGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 18, MessageUtils.colorize(LangConf.get().getPetGuiTitle())));
         setUpInventory();
         setAutoclosing(false);
         setSoundOpen(null);

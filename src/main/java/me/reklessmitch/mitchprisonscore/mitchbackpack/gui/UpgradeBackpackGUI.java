@@ -1,14 +1,17 @@
 package me.reklessmitch.mitchprisonscore.mitchbackpack.gui;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import com.massivecraft.massivecore.util.ItemBuilder;
 
 import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackConf;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackPlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,7 +29,7 @@ public class UpgradeBackpackGUI extends ChestGui {
         this.player = player;
         this.backpackPlayer = BackpackPlayer.get(player.getUniqueId());
         this.profilePlayer = ProfilePlayer.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(null, 54, LangConf.get().getBackpackGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 54, MessageUtils.colorize(LangConf.get().getBackpackGuiTitle())));
         setAutoclosing(false);
         setSoundOpen(null);
         setSoundClose(null);
@@ -35,22 +38,19 @@ public class UpgradeBackpackGUI extends ChestGui {
     }
 
     private void getUpgradeItem(int[] slots, BigInteger amount, BigInteger cost){
-        MitchCurrency currency = profilePlayer.getCurrency("token");
-        ItemStack item = new ItemBuilder(Material.PAPER)
-                .displayname("§aUpgrade §c§l" + amount + " §aslots")
-                .lore("§cCost: §f" + CurrencyUtils.format(cost))
-                .modelData(10006)
-                .build();
+        final LangConf conf = LangConf.get();
+        final ItemStack item = ItemCreator.createItem(Material.PAPER, 1,  conf.getInvisibleCustomData(),
+                "<green>Upgrade <red><bold>" + amount + " <green>slots", "<red>Cost: <white>" + CurrencyUtils.format(cost));
         for(int slot : slots) {
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
-                if (currency.getAmount().compareTo(cost) >= 0) { // Use compareTo for BigInteger comparison
+                if (profilePlayer.getCurrencyAmount(Currency.TOKEN).compareTo(cost) >= 0) {
                     backpackPlayer.addSlot(amount);
-                    currency.take(cost);
+                    profilePlayer.take(Currency.TOKEN, cost);
                     refresh();
                     return false;
                 } else {
-                    player.sendMessage("§cYou do not have enough tokens to upgrade your backpack");
+                    MessageUtils.sendMessages(player, conf.getBackpackUpgradeNotEnoughTokens());
                 }
                 return true;
             });
@@ -72,8 +72,7 @@ public class UpgradeBackpackGUI extends ChestGui {
 
     private void getBackpackSkinItem() {
         int[] slots = new int[]{36,37,38,45,46,47};
-        ItemStack item = new ItemBuilder(Material.PAPER).displayname("§cBackpack Skin").modelData(10006)
-                .lore("§7Click to edit your backpack skin").build();
+        final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, LangConf.get().getInvisibleCustomData(), "<red>Backpack Skin", "<grey>Click to edit your backpack skin");
         for(int slot: slots){
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
@@ -85,13 +84,13 @@ public class UpgradeBackpackGUI extends ChestGui {
 
     private void togglesButton(){
         int[] slots = new int[]{41,42,43,44,50, 51, 52, 53};
-        ItemStack item = new ItemBuilder(Material.PAPER).displayname("§cToggles").modelData(10006)
-                .lore("§7Click to toggle backpack messages!").build();
+        final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, LangConf.get().getInvisibleCustomData(), "<red>Toggles", "<grey>Click to toggle backpack messages!");
         for(int slot: slots){
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
                 backpackPlayer.setMessages(!backpackPlayer.isMessages());
-                player.sendMessage("§aYou have toggled backpack messages " + (backpackPlayer.isMessages() ? "§aon" : "§coff"));
+                TagResolver isMessages = Placeholder.parsed("toggle", backpackPlayer.isMessages() ? "<green<on" : "<red>off");
+                MessageUtils.sendMessage(player, LangConf.get().getBackpackMessagesToggled(), isMessages);
                 event.setCancelled(true);
                 return true;
             });
@@ -100,28 +99,26 @@ public class UpgradeBackpackGUI extends ChestGui {
 
     private void getAutoSellItem() {
         int[] slots = new int[]{39,40,48,49};
+        final LangConf conf = LangConf.get();
         long cost = BackpackConf.get().getAutoSellCost();
-        MitchCurrency token = profilePlayer.getCurrency("token");
-        ItemStack item = new ItemBuilder(Material.PAPER).displayname("§cAuto Sell").modelData(10006)
-                .lore("§7Instantly sells your backpack when it fills up!", backpackPlayer.isAutoSell() ?
-                                "§aEnabled" : "§cDisabled", "§7 ",
-                        "§cCost: §e" + BackpackConf.get().getAutoSellCost()).build();
+        final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, conf.getInvisibleCustomData(), "<red>Auto Sell", backpackPlayer.isAutoSell() ?
+                "<green>Enabled" : "<red>Disabled", "<grey> ", "<red>Cost: <yellow>" + cost);
         for(int slot: slots){
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
                 event.setCancelled(true);
                 if(backpackPlayer.isAutoSell()){
-                    player.sendMessage("§cYou already have auto sell!");
+                    MessageUtils.sendMessages(player, conf.getAutoSellAlreadyPurchased());
                     return false;
                 }
-                if (token.getAmount().compareTo(BigInteger.valueOf(cost)) < 0) {
-                    player.sendMessage("§cYou do not have enough tokens to purchase auto sell");
+                if (profilePlayer.getCurrencyAmount(Currency.TOKEN).compareTo(BigInteger.valueOf(cost)) < 0) {
+                    MessageUtils.sendMessages(player, conf.getAutoSellNotEnoughTokens());
                     return false;
                 }
-                token.take(cost);
-                profilePlayer.changed();
+                profilePlayer.take(Currency.TOKEN, BigInteger.valueOf(cost));
                 backpackPlayer.setAutoSell(true);
-                player.sendMessage("§aYou have purchased auto sell for " + cost + " tokens");
+                final TagResolver tokenAmountResolver = Placeholder.parsed("cost", String.valueOf(cost));
+                MessageUtils.sendMessages(player, conf.getAutoSellPurchased(), tokenAmountResolver);
                 refresh();
                 return true;
             });
