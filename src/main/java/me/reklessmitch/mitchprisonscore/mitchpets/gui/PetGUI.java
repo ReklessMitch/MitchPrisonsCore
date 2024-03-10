@@ -5,7 +5,7 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetConf;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
-import me.reklessmitch.mitchprisonscore.mitchpets.util.DisplayItem;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
@@ -28,19 +28,18 @@ public class PetGUI extends ChestGui {
     }
 
     private void setUpInventory() {
-        Map<PetType, DisplayItem> displayItems = PetConf.get().getPetDisplayItems();
-        petPlayer.getPets().values().forEach(pet -> {
-            int slot = displayItems.get(pet.getType()).getSlot();
-            getInventory().setItem(slot, displayItems.get(pet.getType()).getGuiItem(pet.getLevel()));
-            setAction(slot, event -> {
-                if(petPlayer.getActivePet() == pet.getType()) {
-                    event.getWhoClicked().sendMessage("You already have the " + pet.getType().name() + " pet selected.");
+        final Map<PetType, DisplayItem> displayItems = PetConf.get().getPetDisplayItems();
+        displayItems.forEach((petType, displayItem) -> {
+            int petLevel = petPlayer.getPetLevel(petType);
+            getInventory().setItem(displayItem.getSlot(), displayItem.getPetGuiItem(petLevel));
+            setAction(displayItem.getSlot(), event -> {
+                if(petPlayer.getActivePet() == petType) {
+                    event.getWhoClicked().sendMessage("You already have the " + petType.name() + " pet selected.");
                     return true;
                 }
-                petPlayer.setActivePet(pet.getType());
-                event.getWhoClicked().sendMessage("You have selected the " + pet.getType().name() + " pet." + " Level: " + pet.getLevel());
+                petPlayer.setActivePet(petType);
+                event.getWhoClicked().sendMessage("You have selected the " + petType.name() + " pet." + " Level: " + petLevel);
                 setUpInventory();
-                petPlayer.changed();
                 return true;
             });
         });

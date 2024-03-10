@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
@@ -15,7 +14,6 @@ import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -28,9 +26,9 @@ public class ProfilePlayer extends SenderEntity<ProfilePlayer> {
         return ProfilePlayerColl.get().get(oid);
     }
 
-    private EnumMap<Currency, BigInteger> playerCurrencies = Arrays.stream(Currency.values())
+    private Map<Currency, BigInteger> playerCurrencies = Arrays.stream(Currency.values())
             .collect(Collectors.toMap(currency -> currency, currency -> BigInteger.ZERO,
-                    (u, v) -> u, () -> new EnumMap<>(Currency.class)));
+                    (u, v) -> u, HashMap::new));
 
     private List<UUID> friends = new ArrayList<>();
     @Setter private String joinMessage = "";
@@ -38,6 +36,7 @@ public class ProfilePlayer extends SenderEntity<ProfilePlayer> {
     @Setter private int rank = 0;
     @Setter private String currentChatColour = "mpc.chatcolour.red";
     @Setter private String currentNameColour = "mpc.namecolour.red";
+    private String activeWings = "none";
 
     @Override
     public ProfilePlayer load(@NotNull ProfilePlayer that)
@@ -49,7 +48,6 @@ public class ProfilePlayer extends SenderEntity<ProfilePlayer> {
     public void rankUpMax(){
         new RankUpTask(getPlayer(), this, RankupConf.get()).runTaskAsynchronously(MitchPrisonsCore.get());
     }
-
 
     public BigInteger getCurrencyAmount(Currency currency){
         return playerCurrencies.get(currency);

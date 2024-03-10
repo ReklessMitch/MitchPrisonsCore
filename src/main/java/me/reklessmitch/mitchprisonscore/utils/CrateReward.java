@@ -10,9 +10,9 @@ import java.util.List;
 
 public class CrateReward {
 
-    @Getter double chance;
-    List<String> commands;
-    String message;
+    @Getter private double chance;
+    private List<String> commands;
+    private String message;
 
     public CrateReward(double chance, List<String> commands, String message) {
         this.chance = chance;

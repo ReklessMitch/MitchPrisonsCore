@@ -5,6 +5,7 @@ import io.lumine.mythic.api.exceptions.InvalidMobTypeException;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import lombok.Getter;
 import lombok.Setter;
+import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.colls.PPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchpets.util.PetUtils;
 import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
@@ -24,6 +25,7 @@ public class PetPlayer extends SenderEntity<PetPlayer> {
 
     private transient Entity petEntity = null;
     @Setter private boolean showPet = true;
+    private Map<PetType, Integer> playerPets = initializePets();
 
     public void despawnPet() {
         if(petEntity != null){
@@ -38,8 +40,6 @@ public class PetPlayer extends SenderEntity<PetPlayer> {
         super.load(that);
         return this;
     }
-
-    private Map<PetType, Pet> pets = initializePets();
 
     private PetType activePet = PetType.TOKEN;
 
@@ -61,21 +61,41 @@ public class PetPlayer extends SenderEntity<PetPlayer> {
             petEntity.remove();
         }
         spawnPet(type);
+        changed();
     }
 
 
-    private Map<PetType, Pet> initializePets() {
-        Map<PetType, Pet> petsCreate = new EnumMap<>(PetType.class);
-        petsCreate.put(PetType.CRATE, new Pet(PetType.CRATE));
-        petsCreate.put(PetType.MONEY, new Pet(PetType.MONEY));
-        petsCreate.put(PetType.SUPPLY_DROP, new Pet(PetType.SUPPLY_DROP));
-        petsCreate.put(PetType.JACKHAMMER_BOOST, new Pet(PetType.JACKHAMMER_BOOST));
-        petsCreate.put(PetType.TOKEN, new Pet(PetType.TOKEN));
+    private Map<PetType, Integer> initializePets() {
+        Map<PetType, Integer> petsCreate = new EnumMap<>(PetType.class);
+        PetType[] petTypes = PetType.values();
+        for (PetType petType : petTypes) {
+            petsCreate.put(petType, 0);
+        }
         return petsCreate;
     }
 
-    public Pet getPet(PetType type) {
-        return pets.getOrDefault(type, null);
+    public int getPetLevel(PetType type) {
+        return playerPets.get(type);
+    }
+
+    public void addPetLevel(PetType type, int level) {
+        playerPets.replace(type, playerPets.get(type) + level);
+        changed();
+    }
+
+    public void removePetLevel(PetType type, int level) {
+        playerPets.replace(type, playerPets.get(type) - level);
+        changed();
+    }
+
+    public void setPetLevel(PetType type, int level) {
+        playerPets.replace(type, level);
+        changed();
+    }
+
+    public double getPetBooster(PetType type){
+        return Double.parseDouble(MitchPrisonsCore.get().getDecimalFormat()
+                .format(PetConf.get().getPetBoosts().get(type).getBoost(getPetLevel(type))));
     }
 
 

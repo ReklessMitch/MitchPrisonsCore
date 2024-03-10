@@ -5,14 +5,12 @@ import com.massivecraft.massivecore.store.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterType;
-import me.reklessmitch.mitchprisonscore.mitchpets.util.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import me.reklessmitch.mitchprisonscore.utils.CrateReward;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 import java.util.EnumMap;
 import java.util.List;

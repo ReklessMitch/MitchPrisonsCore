@@ -3,10 +3,13 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.utils;
 import lombok.Getter;
 import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -37,6 +40,13 @@ public class DisplayItem {
     public ItemStack getGuiItem(){
         return ItemCreator.createItem(material, 1, customModelData, itemName, itemLore);
     }
+
+    public ItemStack getPetGuiItem(int level){
+        List<String> newLore = new ArrayList<>(itemLore);
+        final TagResolver levelResolver = Placeholder.parsed("level", level + "");
+        return ItemCreator.createItem(material, 1, customModelData, itemName, newLore, levelResolver);
+    }
+
 
 
 

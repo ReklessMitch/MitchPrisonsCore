@@ -1,10 +1,8 @@
 package me.reklessmitch.mitchprisonscore.mitchrankup.cmds;
 
-import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
+import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CmdRankTop extends RankupCommands {
 
@@ -19,15 +17,6 @@ public class CmdRankTop extends RankupCommands {
 
     @Override
     public void perform() {
-        List<ProfilePlayer> sortedPlayers = ProfilePlayerColl.get().getAll().stream()
-                .sorted(Comparator.comparingInt(ProfilePlayer::getRank).reversed())
-                .limit(10).toList();
-
-        Map<String, Integer> topRankPlayers = new HashMap<>();
-        sortedPlayers.forEach(player -> topRankPlayers.put(player.getName(), player.getRank()));
-        msg("<yellow>Top 10 Ranks:");
-        for (Map.Entry<String, Integer> entry : topRankPlayers.entrySet()) {
-            msg("<yellow>" + entry.getKey() + "<gray>: <yellow>" + entry.getValue());
-        }
+        MessageUtils.sendMessages(sender, MitchPrisonsCore.get().getLeaderboard().getRankTop());
     }
 }

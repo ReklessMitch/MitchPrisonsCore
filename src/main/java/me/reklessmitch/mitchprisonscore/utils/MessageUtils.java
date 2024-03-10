@@ -14,13 +14,11 @@ import org.bukkit.entity.Player;
 
 public class MessageUtils {
 
-    private static MessagesConfig config;
     private static List<TagResolver> cachedGlobalTags;
 
 
     static {
         cachedGlobalTags = new ArrayList<>();
-        config = MessagesConfig.get();
         cacheTags();
     }
 

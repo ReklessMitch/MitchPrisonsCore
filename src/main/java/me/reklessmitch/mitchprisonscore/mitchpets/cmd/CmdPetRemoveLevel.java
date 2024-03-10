@@ -19,11 +19,11 @@ public class CmdPetRemoveLevel extends PetCommand{
 
     @Override
     public void perform() throws MassiveException {
-        Player player = this.readArg();
-        String petType = this.readArg();
+        final Player player = this.readArg();
+        final String petType = this.readArg();
+        PetType petTypeEnum = PetType.valueOf(petType.toUpperCase());
         int level = this.readArg();
-        PetPlayer petPlayer = PetPlayer.get(player.getUniqueId());
-        petPlayer.getPet(PetType.valueOf(petType.toUpperCase())).removeLevel(level);
-        petPlayer.changed();
+        final PetPlayer petPlayer = PetPlayer.get(player.getUniqueId());
+        petPlayer.removePetLevel(petTypeEnum, level);
     }
 }

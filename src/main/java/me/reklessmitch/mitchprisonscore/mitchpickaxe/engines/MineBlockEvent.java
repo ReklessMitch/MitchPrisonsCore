@@ -10,7 +10,6 @@ import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.BlockInPmineBrokeEvent;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetPlayer;
-import me.reklessmitch.mitchprisonscore.mitchpets.entity.Pet;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
@@ -45,12 +44,14 @@ public class MineBlockEvent extends Engine {
     private static MineBlockEvent i = new MineBlockEvent();
     public static MineBlockEvent get() { return i; }
 
-    private double getProcChance(Pet pet, EnchantType type, int level){
+    private double getProcChance(Player player, EnchantType type, int level){
         double procChance = PickaxeConf.get().getEnchantByType(type).getProcChance(level);
-        if(pet.getType() == PetType.CRATE && type == EnchantType.KEY_FINDER ||
-                pet.getType() == PetType.SUPPLY_DROP && type == EnchantType.SUPPLY_DROP ||
-                pet.getType() == PetType.JACKHAMMER_BOOST && type == EnchantType.JACKHAMMER) {
-            procChance *= pet.getPetBooster();
+        PetPlayer petPlayer = PetPlayer.get(player);
+        PetType petType = petPlayer.getActivePet();
+        if(petType == PetType.CRATE && type == EnchantType.KEY_FINDER ||
+                petType == PetType.SUPPLY_DROP && type == EnchantType.SUPPLY_DROP ||
+                petType == PetType.JACKHAMMER_BOOST && type == EnchantType.JACKHAMMER) {
+            procChance *= petPlayer.getPetBooster(petType);
         }
         return procChance;
 
@@ -71,15 +72,15 @@ public class MineBlockEvent extends Engine {
 
     @EventHandler(ignoreCancelled = true)
     public void mineBlock(BlockInPmineBrokeEvent e) {
-        PetPlayer petPlayer = PetPlayer.get(e.getPlayer().getUniqueId());
+        Player player = e.getPlayer();
         PPickaxe pickaxe = PPickaxe.get(e.getPlayer().getUniqueId());
-        Pet pet = petPlayer.getPet(petPlayer.getActivePet());
         ProfilePlayer currency = ProfilePlayer.get(e.getPlayer().getUniqueId());
-        addRawBlock(pet, currency, e.getPlayerMine(), pickaxe);
+        addRawBlock(currency, e.getPlayerMine(), pickaxe);
+
 
         pickaxe.getEnchants().forEach((type, level) -> {
             if(!pickaxe.getEnchantToggle().get(type)) return;
-            double procChance = getProcChance(pet, type, level);
+            double procChance = getProcChance(player, type, level);
             if(type == EnchantType.NUKE){
                 procChance *= 1 + pickaxe.getEnchantPrestiges().get(type);
             }
@@ -87,39 +88,41 @@ public class MineBlockEvent extends Engine {
             boolean enchantMessage = pickaxe.getEnchantMessages().get(type);
             int prestige = pickaxe.getEnchantPrestiges().get(type);
             switch (type) {
-                case APOCALYPSE -> apocalypse(e, pet, currency, enchantMessage);
+                case APOCALYPSE -> apocalypse(e, currency, enchantMessage);
                 case BEACON -> beacon(e, enchantMessage);
                 case HASTE -> haste(e.getPlayer(), level);
-                case JACKHAMMER -> jackhammer(e, pet, currency, enchantMessage, prestige);
+                case JACKHAMMER -> jackhammer(e, currency, enchantMessage, prestige);
                 case KEY_FINDER -> keyFinder(e.getPlayer(), enchantMessage);
                 case LOOT_FINDER -> lootFinder(e.getPlayer(), enchantMessage);
                 case SCAVENGER -> scavenger(e.getPlayer(), enchantMessage);
                 case SPEED -> speed(e.getPlayer(), level);
                 case SUPPLY_DROP -> supplyDrop(e, enchantMessage);
                 case TOKEN_POUCH -> tokenPouch(level, currency, enchantMessage);
-                case NUKE -> nuke(e, pet, currency, enchantMessage);
-                case EXPLOSIVE -> explosive(e, pet, currency, level, enchantMessage);
+                case NUKE -> nuke(e, currency, enchantMessage);
+                case EXPLOSIVE -> explosive(e, currency, level, enchantMessage);
                 default -> {}
             }
         });
         currency.changed();
     }
 
-    private void addRawBlock(Pet pet, ProfilePlayer currency, PlayerMine mine, PPickaxe pickaxe) {
+    private void addRawBlock(ProfilePlayer currency, PlayerMine mine, PPickaxe pickaxe) {
         pickaxe.addRawBlockBroken();
-        addTokens(1, pet, currency, mine);
+        addTokens(1, currency, mine);
         addBlocksToBackpack(pickaxe.getPlayer(), 1);
     }
 
-    private void addTokens(int blocks, Pet pet, ProfilePlayer profilePlayer, PlayerMine mine) {
+    private void addTokens(int blocks, ProfilePlayer profilePlayer, PlayerMine mine) {
         PPickaxe pickaxe = PPickaxe.get(mine.getPlayer().getUniqueId());
         int fortuneLevel = pickaxe.getEnchants().get(EnchantType.FORTUNE);
         if(fortuneLevel > 0) {
             blocks *= 1 + ((double) fortuneLevel / 1000);
         }
         int tokensToAdd = blocks;
-        if(pet.getType() == PetType.TOKEN) {
-            tokensToAdd = (int) (blocks * pet.getPetBooster());
+        PetPlayer petPlayer = PetPlayer.get(mine.getPlayer().getUniqueId());
+        PetType petType = petPlayer.getActivePet();
+        if(petType == PetType.TOKEN) {
+            tokensToAdd = (int) (blocks * petPlayer.getPetBooster(PetType.TOKEN));
         }
         tokensToAdd *= mine.getBooster();
         Booster booster = BoosterPlayer.get(mine.getPlayer().getUniqueId()).getActiveTokenBooster();
@@ -139,22 +142,22 @@ public class MineBlockEvent extends Engine {
         MessageUtils.sendMessage(player, message, tagResolver);
     }
 
-    private void explosive(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency, int level, boolean enchantMessage) {
+    private void explosive(BlockInPmineBrokeEvent e, ProfilePlayer currency, int level, boolean enchantMessage) {
         PlayerMine mine = e.getPlayerMine();
         int radiusIncrease = level / PickaxeConf.get().getExplosiveLevelsPerIncrease();
         int radius = PickaxeConf.get().getExplosiveStartRadius() + radiusIncrease;
         int blocks = mine.getExplosiveBlocks(e.getBlock().getLocation(), radius);
-        addTokens(blocks, pet, currency, mine);
+        addTokens(blocks, currency, mine);
         addBlocksToBackpack(e.getPlayer(), blocks);
         if(enchantMessage) {
             sendEnchantMessage(e.getPlayer(), EnchantType.EXPLOSIVE);
         }
     }
 
-    private void nuke(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency, boolean enchantMessage) {
+    private void nuke(BlockInPmineBrokeEvent e, ProfilePlayer currency, boolean enchantMessage) {
         PlayerMine mine = e.getPlayerMine();
         int blocks = (int) (mine.getVolume() - mine.getVolumeMined());
-        addTokens(blocks, pet, currency, mine);
+        addTokens(blocks, currency, mine);
         addBlocksToBackpack(e.getPlayer(), blocks);
         mine.reset();
         if(enchantMessage) {
@@ -162,9 +165,9 @@ public class MineBlockEvent extends Engine {
         }
     }
 
-    private void apocalypse(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency, boolean enchantMessage) {
+    private void apocalypse(BlockInPmineBrokeEvent e, ProfilePlayer currency, boolean enchantMessage) {
         int blocks = e.getPlayerMine().apocalypse();
-        addTokens(blocks, pet, currency, e.getPlayerMine());
+        addTokens(blocks, currency, e.getPlayerMine());
         addBlocksToBackpack(e.getPlayer(), blocks);
         if(enchantMessage) {
             sendEnchantMessage(e.getPlayer(), EnchantType.APOCALYPSE);
@@ -203,10 +206,10 @@ public class MineBlockEvent extends Engine {
         player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, level));
     }
 
-    private void jackhammer(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency, boolean enchantMessage, int prestige) {
+    private void jackhammer(BlockInPmineBrokeEvent e, ProfilePlayer currency, boolean enchantMessage, int prestige) {
         for(int y = 0; y < prestige + 1; y++) {
             int blocks = e.getPlayerMine().getBlocksOnYLayer(e.getBlock().getY() - y);
-            addTokens(blocks, pet, currency, e.getPlayerMine());
+            addTokens(blocks, currency, e.getPlayerMine());
             addBlocksToBackpack(e.getPlayer(), blocks);
         }
         if(enchantMessage) {
@@ -288,7 +291,7 @@ public class MineBlockEvent extends Engine {
         int baseAmount = conf.getTokenPouchBaseAmount();
         final Player player = profilePlayer.getPlayer();
         int prestigeMulti = 1 + PPickaxe.get(player).getEnchants().get(EnchantType.TOKEN_POUCH);
-        double petMultiplier = PetPlayer.get(player).getPet(PetType.TOKEN).getPetBooster();
+        double petMultiplier = PetPlayer.get(player).getPetBooster(PetType.TOKEN);
         BigInteger tokensToGive = BigInteger.valueOf((long) (baseAmount +
                 ((long) conf.getTokenPouchIncreasePerLevel() * level) * petMultiplier * prestigeMulti));
 

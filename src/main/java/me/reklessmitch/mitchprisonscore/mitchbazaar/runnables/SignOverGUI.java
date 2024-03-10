@@ -9,6 +9,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.events.PacketListener;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedBlockData;
+import com.massivecraft.massivecore.util.SignUtil;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.guis.FinaliseBazaarPayment;
@@ -26,6 +27,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.math.BigInteger;
 
+// @TODO: Redo SignOverGUI to use the new GUI system as Sign doesn't exist anymore
 public class SignOverGUI extends BukkitRunnable {
 
     private final Player player;

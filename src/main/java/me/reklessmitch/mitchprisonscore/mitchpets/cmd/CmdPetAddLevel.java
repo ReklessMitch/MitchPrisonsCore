@@ -5,10 +5,10 @@ import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetPlayer;
-import me.reklessmitch.mitchprisonscore.mitchpets.entity.Pet;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import org.bukkit.entity.Player;
 
+// @TODO change param to take PetType enum
 public class CmdPetAddLevel extends PetCommand{
 
     public CmdPetAddLevel() {
@@ -22,10 +22,13 @@ public class CmdPetAddLevel extends PetCommand{
     public void perform() throws MassiveException {
         Player player = this.readArg();
         String petType = this.readArg();
+        PetType petTypeEnum = PetType.valueOf(petType.toUpperCase());
+        if(petTypeEnum == null){
+            msg("<red>Invalid pet type");
+            return;
+        }
         int level = this.readArg();
-        PetPlayer petPlayer = PetPlayer.get(player.getUniqueId());
-        Pet pet = petPlayer.getPet(PetType.valueOf(petType.toUpperCase()));
-        pet.addLevel(level);
-        petPlayer.changed();
+        final PetPlayer petPlayer = PetPlayer.get(player.getUniqueId());
+        petPlayer.addPetLevel(petTypeEnum, level);
     }
 }

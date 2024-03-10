@@ -1,7 +1,7 @@
 package me.reklessmitch.mitchprisonscore.mitchprofiles.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import me.reklessmitch.mitchprisonscore.mitchpets.util.DisplayItem;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

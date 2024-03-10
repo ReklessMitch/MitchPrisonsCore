@@ -57,6 +57,7 @@ public class ItemCreator {
         meta.displayName(MessageUtils.colorize(name).decoration(TextDecoration.ITALIC, false));
         meta.lore(MessageUtils.colorize(lore));
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
+        meta.setUnbreakable(true);
         item.setItemMeta(meta);
         return item;
     }
@@ -67,6 +68,7 @@ public class ItemCreator {
         meta.setCustomModelData(customModelData);
         meta.displayName(MessageUtils.colorize(name, tagResolvers).decoration(TextDecoration.ITALIC, false));
         meta.lore(MessageUtils.colorize(lore, tagResolvers));
+        meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
         item.setItemMeta(meta);
         return item;

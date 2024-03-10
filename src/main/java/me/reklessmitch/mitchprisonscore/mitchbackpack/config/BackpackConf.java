@@ -4,10 +4,9 @@ import com.google.common.collect.Lists;
 import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.Getter;
-import me.reklessmitch.mitchprisonscore.mitchpets.util.DisplayItem;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import org.bukkit.Material;
 
-import java.util.List;
 import java.util.Map;
 
 @Getter

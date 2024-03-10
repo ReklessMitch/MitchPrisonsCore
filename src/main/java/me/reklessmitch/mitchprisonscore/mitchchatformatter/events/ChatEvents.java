@@ -3,7 +3,6 @@ package me.reklessmitch.mitchprisonscore.mitchchatformatter.events;
 import com.massivecraft.massivecore.Engine;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.reklessmitch.mitchprisonscore.mitchpets.tasks.PetEvents;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
 import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
@@ -20,8 +19,8 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatEvents  extends Engine {
 
-    private static PetEvents i = new PetEvents();
-    public static PetEvents get() { return i; }
+    private static ChatEvents i = new ChatEvents();
+    public static ChatEvents get() { return i; }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void playerChatEvent(PlayerChatEvent event){
@@ -44,13 +43,15 @@ public class ChatEvents  extends Engine {
         if(lpu == null){
             return;
         }
-        String primaryGroup = lpu.getPrimaryGroup();
-        final TagResolver prefixResolver = Placeholder.parsed("prefix", ProfilesConf.get().getRankToPrefix().get(primaryGroup));
-        String currentChatPerm = ProfilePlayer.get(event.getPlayer().getUniqueId()).getCurrentChatColour();
-        String currentNamePerm = ProfilePlayer.get(event.getPlayer().getUniqueId()).getCurrentNameColour();
-        final TagResolver chatColourResolver = Placeholder.parsed("chatcolour", ProfilesConf.get().getChatColoursPermToColour().get(currentChatPerm));
-        final TagResolver nameColourResolver = Placeholder.parsed("namecolour", ProfilesConf.get().getNameColoursPermToColour().get(currentNamePerm));
-        String format = PlaceholderAPI.setPlaceholders(event.getPlayer(), ProfilesConf.get().getChatFormat()) + " " + event.getMessage();
+        final String primaryGroup = lpu.getPrimaryGroup();
+        final ProfilesConf profilesConf = ProfilesConf.get();
+        final ProfilePlayer profilePlayer = ProfilePlayer.get(event.getPlayer().getUniqueId());
+        final TagResolver prefixResolver = Placeholder.parsed("prefix", profilesConf.getRankToPrefix().get(primaryGroup));
+        final String currentChatPerm = profilePlayer.getCurrentChatColour();
+        final String currentNamePerm = profilePlayer.getCurrentNameColour();
+        final TagResolver chatColourResolver = Placeholder.parsed("chatcolour", profilesConf.getChatColoursPermToColour().get(currentChatPerm));
+        final TagResolver nameColourResolver = Placeholder.parsed("namecolour", profilesConf.getNameColoursPermToColour().get(currentNamePerm));
+        final String format = PlaceholderAPI.setPlaceholders(event.getPlayer(), profilesConf.getChatFormat()) + " " + event.getMessage();
         Bukkit.broadcast(MessageUtils.colorize(format, nameResolver, prefixResolver, chatColourResolver, nameColourResolver));
         event.setCancelled(true);
     }

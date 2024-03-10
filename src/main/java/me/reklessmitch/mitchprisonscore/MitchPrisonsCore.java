@@ -11,6 +11,8 @@ import me.reklessmitch.mitchprisonscore.mitchbackpack.placeholders.BackpackPlace
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.cmds.CmdPass;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.engines.UpgradeEvent;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.cmd.CmdBazaar;
+import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
+import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 import me.reklessmitch.mitchprisonscore.mitchchatformatter.events.ChatEvents;
 import me.reklessmitch.mitchprisonscore.mitchgenerator.CleanroomChunkGenerator;
 import me.reklessmitch.mitchprisonscore.mitchboosters.cmds.booster.CmdBooster;
@@ -33,16 +35,19 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.joinmessage.CmdChange
 import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.colls.ProfilesConfColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.wardrobe.CmdWardrobe;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.engines.PlayerEvents;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.CurrencyPlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.ProfilePlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.*;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
+import me.reklessmitch.mitchprisonscore.utils.Leaderboard;
 import me.reklessmitch.mitchprisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
@@ -56,6 +61,8 @@ public final class MitchPrisonsCore extends MassivePlugin {
 
     private static MitchPrisonsCore i;
     public static MitchPrisonsCore get() { return i; }
+
+    private Leaderboard leaderboard;
 
     public MitchPrisonsCore() {
         i = this;
@@ -164,9 +171,13 @@ public final class MitchPrisonsCore extends MassivePlugin {
             new BackpackPlaceholders().register();
         }
 
+        leaderboard = new Leaderboard();
+
         worldBorderApi = Bukkit.getServicesManager().getRegistration(WorldBorderApi.class).getProvider();
         doAnnouncements();
     }
+
+
 
     private void doAnnouncements(){
         final List<List<String>> announcements = LangConf.get().getAnnouncements();

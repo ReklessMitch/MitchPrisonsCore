@@ -5,7 +5,6 @@ import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.config.BazaarConf;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.object.ShopValue;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.runnables.SignOverGUI;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.Currency;
 import me.reklessmitch.mitchprisonscore.utils.ItemCreator;
 import me.reklessmitch.mitchprisonscore.utils.LangConf;
@@ -16,10 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PurchaseGUI extends ChestGui {
 
@@ -43,7 +39,7 @@ public class PurchaseGUI extends ChestGui {
     private void setup() {
         getInventory().setItem(4, ItemCreator.createItem(item.getType(), 1, 0, "<yellow>"
                 + item.getType().name().toLowerCase(), "<grey>Click the currency", "<grey>you want to exchange!"));
-        final List<Currency> currencies = Arrays.stream(Currency.values()).toList();
+        final List<Currency> currencies = List.of(Currency.BEACON, Currency.TOKEN, Currency.MONEY, Currency.CREDIT);
         for(int i = 0; i < currencies.size(); i++){
             final Currency currency = currencies.get(i);
             final List<ShopValue> sorted = sellPrices.get(currency);
@@ -57,7 +53,7 @@ public class PurchaseGUI extends ChestGui {
                     .map(BigInteger::valueOf) // Convert long to BigInteger
                     .reduce(BigInteger.ZERO, BigInteger::add); // Sum all values
             final ItemStack currencyItem = ItemCreator.createItem(currency.getMaterial(), 1, 0, "<yellow>"
-                            + currencies.get(i).getName(), "<grey>Total Stock: <red>" + totalStock,
+                            + currency.getName(), "<grey>Total Stock: <red>" + totalStock,
                             "<grey>Lowest Price" + (sorted.isEmpty() ? ": <red>N/A" :
                             "<green>: " + sorted.get(0).getAmount() + " @ " +
                             MitchPrisonsCore.get().getDecimalFormat().format(sorted.get(0).getPricePerItem()) + "per"));
@@ -66,12 +62,14 @@ public class PurchaseGUI extends ChestGui {
 
             setAction(10 + i * 2, event -> {
                 event.getWhoClicked().closeInventory();
+                // @TODO change to chat response
                 new SignOverGUI((Player) event.getWhoClicked(), currencyToBeBrought, currency, totalStock).runTask(MitchPrisonsCore.get());
                 return true;
             });
         }
     }
 
+    @Override
     public void open(Player player) {
         player.openInventory(getInventory());
     }

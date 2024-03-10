@@ -84,8 +84,8 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
     }
 
     public double getPetBooster(){
-        PetPlayer pet = PetPlayer.get(getId());
-        return pet.getActivePet() == PetType.MONEY ? pet.getPet(PetType.MONEY).getPetBooster() : 0;
+        PetPlayer petPlayer = PetPlayer.get(getId());
+        return petPlayer.getActivePet() == PetType.MONEY ? petPlayer.getPetBooster(PetType.MONEY) : 0;
     }
 
     public void sell() {
