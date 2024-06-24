@@ -88,6 +88,10 @@
             <url>https://eldonexus.de/repository/maven-releases/</url>
         </repository>
         <repository>
+            <id>gson-extras</id>
+            <url>https://artifactory.cronapp.io/public-release/</url>
+        </repository>
+        <repository>
             <id>codemc</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
@@ -101,8 +105,8 @@
         <dependencies>
             <dependency>
                 <groupId>com.intellectualsites.bom</groupId>
-                <artifactId>bom-newest</artifactId>
-                <version>1.34</version>
+                <artifactId>bom-newest</artifactId> <!--  Ref: https://github.com/IntellectualSites/bom -->
+                <version>1.43</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -111,9 +115,21 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.ticxo.modelengine</groupId>
+            <artifactId>ModelEngine</artifactId>
+            <version>R4.0.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.fastasyncworldedit</groupId>
             <artifactId>FastAsyncWorldEdit-Bukkit</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.11</version>
         </dependency>
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
@@ -144,7 +160,7 @@
             <artifactId>massivecore</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/MassiveCore-1.0.0-SNAPSHOT-1.19x-Addon.jar</systemPath>
+            <systemPath>${basedir}/libs/MassiveCore-MC-1.20-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
@@ -175,12 +191,6 @@
             <artifactId>adventure-api</artifactId>
             <version>4.16.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.lumine</groupId>
-            <artifactId>Mythic-Dist</artifactId>
-            <version>5.3.5</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.decentsoftware-eu</groupId>
