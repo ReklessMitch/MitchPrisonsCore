@@ -4,6 +4,8 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import mitch.prisonscore.modules.crates.CratesModule;
 import mitch.prisonscore.modules.crates.configs.CratePlayer;
 import mitch.prisonscore.modules.crates.objects.Crate;
+import mitch.prisonscore.utils.LangConf;
+import mitch.prisonscore.utils.MessageUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
@@ -22,13 +24,15 @@ public class CrateOpen extends ChestGui {
     }
 
     private void checkAmount(int amountOfKeysPlayerHas, Crate crate, String crateName, int amountOfKeysNeeded){
+        LangConf lang = LangConf.get();
         if(amountOfKeysPlayerHas == 0){
-            player.sendMessage("You do not have any keys for this crate!");
+            MessageUtils.sendMessage(player, lang.getNoCrateKeyForCrate());
             return;
         }
         if(amountOfKeysPlayerHas < amountOfKeysNeeded){
-            final String message = "You do not have %d %s keys to open, try a different option!".formatted(amountOfKeysNeeded, crateName);
-            player.sendMessage(message);
+            TagResolver crateNameResolver = Placeholder.parsed("crate", crateName);
+            TagResolver amountResolver = Placeholder.parsed("amount", String.valueOf(amountOfKeysNeeded));
+            MessageUtils.sendMessage(player, lang.getCrateKeyNotEnoughAmount(), crateNameResolver, amountResolver);
             return;
         }
         crate.getMultipleRewards(amountOfKeysNeeded).forEach(reward -> reward.executeReward(player, crateName));

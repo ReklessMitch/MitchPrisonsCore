@@ -1,6 +1,5 @@
 package mitch.prisonscore;
 
-import com.fastasyncworldedit.core.FaweAPI;
 import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;

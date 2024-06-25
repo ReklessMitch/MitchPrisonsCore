@@ -3,8 +3,6 @@ package mitch.prisonscore.modules.pickaxe.enchants;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import mitch.prisonscore.modules.pet.entity.PetPlayer;
-import mitch.prisonscore.modules.pet.util.PetType;
 import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
 
 import java.util.UUID;

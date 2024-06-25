@@ -1,8 +1,6 @@
 package mitch.prisonscore.modules.pet.newpets;
 
-import mitch.prisonscore.colls.EnchantmentConfigColl;
 import mitch.prisonscore.colls.PetConfigColl;
-import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
 
 import java.util.Arrays;
 

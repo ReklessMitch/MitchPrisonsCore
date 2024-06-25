@@ -3,6 +3,7 @@ package mitch.prisonscore.modules.cell.guis;
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import mitch.prisonscore.modules.cell.CellModule;
 import mitch.prisonscore.modules.cell.object.Cell;
+import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,16 +22,17 @@ public class CellKick extends ChestGui {
 
     public CellKick(Player player) {
         setInventory(Bukkit.createInventory(null, 36, "Kick a member"));
+        LangConf lang = LangConf.get();
         this.player = player;
         Cell c = CellModule.get().getCellByMember(player.getUniqueId());
         if(c == null) {
-            MessageUtils.sendMessage(player, "<red>You are not in a cell");
+            MessageUtils.sendMessage(player, lang.getNotInACell());
             return;
         }
         this.cell = c;
         this.members = cell.getAllMembersBelowUser(player.getUniqueId());
         if(members.isEmpty()){
-            MessageUtils.sendMessage(player, "<red>You do not have anyone in ur cell you can kick");
+            MessageUtils.sendMessage(player, lang.getNotAnyoneKickableFromCell());
             return;
         }
         init();

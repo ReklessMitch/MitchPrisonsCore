@@ -1,5 +1,6 @@
 package mitch.prisonscore.modules.pet.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public enum PetType {
@@ -19,5 +20,13 @@ public enum PetType {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public static List<String> getPetTypes() {
+        List<String> petTypes = new ArrayList<>();
+        for (PetType petType : PetType.values()) {
+            petTypes.add(petType.name());
+        }
+        return petTypes;
     }
 }

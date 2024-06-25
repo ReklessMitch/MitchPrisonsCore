@@ -4,7 +4,6 @@ import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
-import mitch.prisonscore.modules.pickaxe.enchants.ProccableEnchantConfig;
 import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;

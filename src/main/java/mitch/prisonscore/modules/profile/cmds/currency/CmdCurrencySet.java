@@ -10,6 +10,7 @@ import mitch.prisonscore.modules.profile.cmds.CurrencyCommands;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.profile.utils.Currency;
 import mitch.prisonscore.modules.profile.utils.CurrencyUtils;
+import mitch.prisonscore.modules.profile.utils.TypeCurrency;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ public class CmdCurrencySet extends CurrencyCommands {
         this.addAliases("set");
         this.setDesc("Set currency of a player");
         this.addParameter(TypePlayer.get(), "player");
-        this.addParameter(TypeString.get(), "currency");
+        this.addParameter(TypeCurrency.get(), "currency");
         this.addParameter(TypeString.get(), "amount");
         this.addRequirements(RequirementHasPerm.get(Perm.ADMIN));
     }
@@ -29,7 +30,7 @@ public class CmdCurrencySet extends CurrencyCommands {
     @Override
     public void perform() throws MassiveException {
         Player player = this.readArg();
-        String currency = this.readArg();
+        Currency currency = this.readArg();
         String amount = this.readArg();
         BigInteger amountInt = CurrencyUtils.parse(amount);
         if(amountInt.equals(BigInteger.valueOf(-1))){
@@ -37,7 +38,8 @@ public class CmdCurrencySet extends CurrencyCommands {
             return;
         }
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
-        pp.set(Currency.valueOf(currency.toUpperCase()), amountInt);
+        pp.set(currency, amountInt);
+        // @TODO: 25/06/2024
         MessageUtils.sendMessage(player, "<green>You have set <red>" + amountInt + "%s <green>to <red>" + player.getName() + "'s <green>balance");
     }
 }

@@ -9,7 +9,11 @@ import mitch.prisonscore.modules.profile.cmds.CurrencyCommands;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.profile.utils.Currency;
 import mitch.prisonscore.modules.profile.utils.CurrencyUtils;
+import mitch.prisonscore.modules.profile.utils.TypeCurrency;
+import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
 
 import java.math.BigInteger;
@@ -23,7 +27,7 @@ public class CmdCurrencyAddAmount extends CurrencyCommands {
         this.addAliases("addc", "addcurrency", "addamount");
         this.setDesc("Add currency to a player");
         this.addParameter(TypePlayer.get(), "player");
-        this.addParameter(TypeString.get(), "currency");
+        this.addParameter(TypeCurrency.get(), "currency");
         this.addParameter(TypeString.get(), "amount");
         this.addRequirements(RequirementHasPerm.get(Perm.ADMIN));
     }
@@ -31,11 +35,18 @@ public class CmdCurrencyAddAmount extends CurrencyCommands {
     @Override
     public void perform() throws MassiveException {
         Player player = this.readArg();
-        String currency = this.readArg();
+        Currency currency = this.readArg();
         String amount = this.readArg();
         BigInteger amountLong = CurrencyUtils.parse(amount);
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
-        pp.addCurrency(Currency.valueOf(currency.toUpperCase()), amountLong);
-        MessageUtils.sendMessage(player, "<green>You have added <red>" + amount + "%s <green>to <red>" + player.getName() + "'s <green>balance");
+        pp.addCurrency(currency, amountLong);
+        if(senderIsConsole) return;
+
+        TagResolver playerResolver = Placeholder.parsed("player", player.getName());
+        TagResolver currencyResolver = Placeholder.parsed("currency", currency.getName());
+        TagResolver amountResolver = Placeholder.parsed("amount", amount);
+
+        MessageUtils.sendMessage(me, LangConf.get().getAddedCurrencyToPlayer(), playerResolver, currencyResolver, amountResolver);
+
     }
 }

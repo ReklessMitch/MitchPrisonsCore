@@ -1,12 +1,11 @@
 package mitch.prisonscore.modules.backpack.engine;
 
 import com.massivecraft.massivecore.Engine;
+import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.backpack.config.BackpackPlayer;
 import mitch.prisonscore.modules.backpack.gui.UpgradeBackpackGUI;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
@@ -27,15 +26,24 @@ public class PlayerInteract extends Engine {
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event){
-        if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-            if(event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.BEACON)){
-                event.setCancelled(true);
-            }
-            if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.PAPER)){
-                new UpgradeBackpackGUI(event.getPlayer()).open();
-                event.setCancelled(true);
-            }
+    public void onPlayerInteractDuringGUI(InventoryMoveItemEvent event){
+        if(event.getItem().getItemMeta().getPersistentDataContainer().has(
+                MitchPrisonsCore.get().getNoMove())){
+            event.setCancelled(true);
         }
     }
+
+    // Re-enable this if i ever get around to adding a cmd to set your backpack slot
+//    @EventHandler
+//    public void onPlayerInteract(PlayerInteractEvent event){
+//        if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+//            if(event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.BEACON)){
+//                event.setCancelled(true);
+//            }
+//            if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.PAPER)){
+//                new UpgradeBackpackGUI(event.getPlayer()).open();
+//                event.setCancelled(true);
+//            }
+//        }
+//    }
 }

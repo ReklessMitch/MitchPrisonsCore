@@ -16,34 +16,4 @@ public class CmdCellKick extends CellCommands {
         new CellKick(me);
     }
 
-//        Player player = this.readArg();
-//        Cell cell = CellModule.get().getCellByMember(me.getUniqueId());
-//        if(cell == null){
-//            msg("<b>You are not in a cell");
-//            return;
-//        }
-//        if(!cell.getAllHigherUps().contains(me.getUniqueId())){
-//            msg("<b>You are not a higher up in this cell");
-//            return;
-//        }
-//        if(me.getUniqueId() == player.getUniqueId()){
-//            msg("<b>You cannot kick yourself");
-//            return;
-//        }
-//        if(!cell.getAllMembers().contains(player.getUniqueId())){
-//            msg("<b>Player is not in your cell");
-//            return;
-//        }
-//        if(cell.getOwner().equals(me.getUniqueId())){
-//            kickPlayer(player, cell);
-//        } else if (cell.getMembers().contains(player.getUniqueId()) && cell.getOfficers().contains(me.getUniqueId())) {
-//            kickPlayer(player, cell);
-//        } else {
-//            msg("<b>You cannot kick this player as they're equal or higher rank than you");
-//        }
-//    }
-//
-//    private void kickPlayer(Player player, Cell cell) {
-//        cell.removePlayer(player.getUniqueId(), me);
-//    }
 }

@@ -10,6 +10,7 @@ import mitch.prisonscore.modules.profile.cmds.CurrencyCommands;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.profile.utils.Currency;
 import mitch.prisonscore.modules.profile.utils.CurrencyUtils;
+import mitch.prisonscore.modules.profile.utils.TypeCurrency;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ public class CmdCurrencyRemove extends CurrencyCommands {
         this.addAliases("remove");
         this.setDesc("Remove currency to a player");
         this.addParameter(TypePlayer.get(), "player");
-        this.addParameter(TypeString.get(), "currency");
+        this.addParameter(TypeCurrency.get(), "currency");
         this.addParameter(TypeString.get(), "amount");
         this.addRequirements(RequirementHasPerm.get(Perm.ADMIN));
     }
@@ -29,11 +30,13 @@ public class CmdCurrencyRemove extends CurrencyCommands {
     @Override
     public void perform() throws MassiveException {
         Player player = this.readArg();
-        String currency = this.readArg();
+        Currency currency = this.readArg();
         String amount = this.readArg();
         BigInteger amountInt = CurrencyUtils.parse(amount);
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
-        pp.take(Currency.valueOf(currency.toUpperCase()), amountInt);
+        pp.take(currency, amountInt);
+        if(senderIsConsole) return;
+        // TODO: 25/06/2024
         MessageUtils.sendMessage(player, "<green>You have removed <red>" + amount + "%s <green>from <red>" + player.getName() + "'s <green>balance");
     }
 }

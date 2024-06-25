@@ -1,7 +1,6 @@
 package mitch.prisonscore.modules.mine.cmds.def;
 
 import mitch.prisonscore.modules.mine.cmds.MineCommands;
-import mitch.prisonscore.modules.mine.cmds.admin.CmdMineIncrease;
 import mitch.prisonscore.modules.mine.configs.MinePlayer;
 
 public class CmdMineGO extends MineCommands {

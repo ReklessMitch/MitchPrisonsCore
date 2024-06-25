@@ -1,9 +1,9 @@
 package mitch.prisonscore.modules.cell.cmds.cellcmds;
 
-
 import mitch.prisonscore.modules.cell.cmds.CellCommands;
 import mitch.prisonscore.modules.cell.CellModule;
 import mitch.prisonscore.modules.cell.object.Cell;
+import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
 
 public class CmdCellLeave extends CellCommands {
@@ -16,15 +16,16 @@ public class CmdCellLeave extends CellCommands {
     public void perform() {
         CellModule conf = CellModule.get();
         Cell cell = conf.getCellByMember(me.getUniqueId());
+        LangConf lang = LangConf.get();
         if(cell == null){
-            MessageUtils.sendMessage(me, "<red>You are not in a cell");
+            MessageUtils.sendMessage(me, lang.getNotInACell());
             return;
         }
         if(cell.getOwner().equals(me.getUniqueId())){
-            MessageUtils.sendMessage(me, "<red>You are the owner of this cell, you must disband it to leave");
+            MessageUtils.sendMessage(me, lang.getMustDisbandCellAsOwner());
             return;
         }
-        MessageUtils.sendMessage(me, "<green>You have left your cell");
+        MessageUtils.sendMessage(me, lang.getCellLeftSuccess());
         cell.removePlayer(me.getUniqueId(), me);
         conf.changed();
 

@@ -4,6 +4,7 @@ import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import lombok.Setter;
+import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.backpack.BackpackModule;
 import mitch.prisonscore.modules.booster.configs.BoosterPlayer;
 import mitch.prisonscore.modules.booster.objects.Booster;
@@ -20,6 +21,8 @@ import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
@@ -49,8 +52,12 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
     }
 
     public ItemStack getBackpackItem() {
-        return ItemCreator.createItem(Material.PAPER, 1, skinID, "<red>Backpack",
+        ItemStack item = ItemCreator.createItem(Material.PAPER, 1, skinID, "<red>Backpack",
                 "<grey>Size: <yellow>" + capacity, "<grey>Autosell: " + (autoSell ? "<green>Enabled" : "<red>Disabled"));
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(MitchPrisonsCore.get().getNoMove(), PersistentDataType.BOOLEAN, true);
+        item.setItemMeta(meta);
+        return item;
     }
 
     public void setMessages(boolean messages) {

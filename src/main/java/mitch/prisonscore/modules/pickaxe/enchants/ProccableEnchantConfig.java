@@ -1,7 +1,6 @@
 package mitch.prisonscore.modules.pickaxe.enchants;
 
 import lombok.Getter;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
 
 @Getter
 public class ProccableEnchantConfig {//extends EnchantmentConfig {

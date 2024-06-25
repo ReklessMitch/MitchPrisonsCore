@@ -1,6 +1,5 @@
 package mitch.prisonscore.modules.pet.newpets.custompets;
 
-import mitch.prisonscore.modules.mine.configs.MinePlayer;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pet.newpets.Pet;
 import mitch.prisonscore.modules.pet.newpets.PetConfig;

@@ -7,6 +7,7 @@ import mitch.prisonscore.modules.profile.cmds.CurrencyCommands;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.profile.utils.Currency;
 import mitch.prisonscore.modules.profile.utils.CurrencyUtils;
+import mitch.prisonscore.modules.profile.utils.TypeCurrency;
 import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -23,7 +24,7 @@ public class CmdCurrencyPay extends CurrencyCommands {
     public CmdCurrencyPay(){
         this.addAliases("pay");
         this.addParameter(TypePlayer.get(), "player");
-        this.addParameter(TypeString.get(), "currency");
+        this.addParameter(TypeCurrency.get(), "currency");
         this.addParameter(TypeString.get(), "amount");
     }
 
@@ -41,8 +42,7 @@ public class CmdCurrencyPay extends CurrencyCommands {
             MessageUtils.sendMessages(me, conf.getTransferCannotPayYourself());
             return;
         }
-        String c = this.readArg();
-        Currency currencyEnum = Currency.valueOf(c.toUpperCase());
+        Currency currencyEnum = this.readArg();
         if(currencyEnum == null){
             MessageUtils.sendMessage(me, "<red>Currency not found");
             return;

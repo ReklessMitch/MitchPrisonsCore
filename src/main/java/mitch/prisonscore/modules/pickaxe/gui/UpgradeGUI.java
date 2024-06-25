@@ -75,7 +75,7 @@ public class UpgradeGUI extends ChestGui {
         for(int slot : pickaxeSkinSlots){
             getInventory().setItem(slot, skinGuiItem);
             this.setAction(slot, event -> {
-                new PickaxeSkins(player).open();
+                new PickaxeSkinsGUI(player).open();
                 return true;
             });
         }

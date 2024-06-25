@@ -15,11 +15,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class PickaxeSkins extends ChestGui {
+public class PickaxeSkinsGUI extends ChestGui {
 
     private final Player player;
 
-    public PickaxeSkins(Player player){
+    public PickaxeSkinsGUI(Player player){
         setInventory(Bukkit.createInventory(null, 27, MessageUtils.colorize(LangConf.get().getPickaxeSkinsGuiTitle())));
         this.player = player;
         MitchPickaxeModule.get().getPickaxeSkins().forEach((pickaxeName, displayItem) -> getPickaxeSkinItem(displayItem.getItemName(), displayItem.getItemLore(), displayItem.getCustomModelData(), displayItem.getSlot()));

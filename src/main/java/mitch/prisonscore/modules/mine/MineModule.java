@@ -5,7 +5,6 @@ import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.mine.cmds.admin.CmdMineIncrease;
 import mitch.prisonscore.modules.mine.cmds.admin.CmdMineResetTest;
 import mitch.prisonscore.modules.mine.cmds.def.CmdMineGO;
-import mitch.prisonscore.modules.mine.cmds.def.CmdSetBlock;
 import mitch.prisonscore.modules.mine.configs.PlayerMineColl;
 import mitch.prisonscore.modules.mine.cmds.def.CmdMine;
 import mitch.prisonscore.modules.mine.engine.MineEvents;

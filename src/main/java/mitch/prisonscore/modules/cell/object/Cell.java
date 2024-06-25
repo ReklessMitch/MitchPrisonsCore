@@ -6,6 +6,7 @@ import mitch.prisonscore.modules.cell.CellModule;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -20,7 +21,7 @@ public class Cell {
     private BigInteger beacons;
     private Set<UUID> invites;
 
-    public Cell(String name, UUID owner){
+    public Cell(@NotNull String name, @NotNull UUID owner){
         this.name = name;
         this.owner = owner;
         this.beacons = BigInteger.ZERO;

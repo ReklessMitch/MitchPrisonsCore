@@ -7,7 +7,10 @@ import mitch.prisonscore.modules.cell.CellModule;
 import mitch.prisonscore.modules.cell.object.Cell;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.profile.utils.Currency;
+import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
 import java.math.BigInteger;
 
@@ -21,8 +24,9 @@ public class CmdAddBeacons extends CellCommands {
     @Override
     public void perform() throws MassiveException {
         Cell cell = CellModule.get().getCellByMember(me.getUniqueId());
+        LangConf lang = LangConf.get();
         if(cell == null){
-            MessageUtils.sendMessage(me, "<red>You are not in a cell");
+            MessageUtils.sendMessage(me, lang.getNotInACell());
             return;
         }
         BigInteger amount = BigInteger.valueOf(this.readArg());
@@ -33,9 +37,10 @@ public class CmdAddBeacons extends CellCommands {
         if (amount.compareTo(BigInteger.ZERO) > 0 && beaconAmount.compareTo(amount) > 0) {
             profile.take(Currency.BEACON, amount);
             cell.addBeacons(amount);
-            MessageUtils.sendMessage(me, "Added " + amount + " beacons to your cell");
+            TagResolver amountResolver = Placeholder.parsed("amount", String.valueOf(amount));
+            MessageUtils.sendMessage(me, lang.getAddedBeaconsToCell(), amountResolver);
         } else {
-            MessageUtils.sendMessage(me, "<red>You do not have enough beacons");
+            MessageUtils.sendMessage(me, lang.getNotEnoughBeacons());
         }
     }
 }

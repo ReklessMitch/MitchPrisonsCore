@@ -34,11 +34,12 @@ public class PickaxeMovement extends Engine {
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e){
-        if(e.getItemDrop().getItemStack().getType().equals(Material.DIAMOND_PICKAXE)){
+        Material item = e.getItemDrop().getItemStack().getType();
+        if(item.equals(Material.DIAMOND_PICKAXE)){
             e.setCancelled(true);
             e.getPlayer().sendMessage("<red>You cannot drop your pickaxe!");
         }
-        if(e.getItemDrop().getItemStack().getType().equals(Material.DRAGON_EGG)){
+        if(item.equals(Material.DRAGON_EGG)){
             e.setCancelled(true);
             e.getPlayer().sendMessage("<red>You cannot drop your backpack!");
         }

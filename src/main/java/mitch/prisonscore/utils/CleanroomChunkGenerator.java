@@ -1,6 +1,5 @@
 package mitch.prisonscore.utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -9,7 +8,6 @@ import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
-import java.util.logging.Logger;
 
 
 public class CleanroomChunkGenerator extends ChunkGenerator {

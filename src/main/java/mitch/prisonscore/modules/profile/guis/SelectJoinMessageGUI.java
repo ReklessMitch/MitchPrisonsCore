@@ -24,7 +24,7 @@ public class SelectJoinMessageGUI extends ChestGui{
 
     private void refresh(){
         getInventory().setItem(4, ItemCreator.createItem(Material.DIAMOND, 1, 0,
-                "<green>Current Join Message", profilePlayer.getJoinMessage()));;
+                "<green>Current Join Message", profilePlayer.getJoinMessage()));
         int i = 9;
         for(String message : ProfileModule.get().getJoinMessages()){
             getInventory().setItem(i, ItemCreator.createItem(Material.PAPER, 1, 0, "<green>" + message));

@@ -33,11 +33,10 @@ import java.util.*;
 public class MitchPickaxeModule extends Module {
 
     private transient Map<EnchantType, Enchant> enchants = new HashMap<>();
-
-    private transient DecimalFormat df = setUpDF();
+    private transient DecimalFormat df;
 
     private DecimalFormat setUpDF() {
-        DecimalFormat df = new DecimalFormat("#.####");
+        df = new DecimalFormat("#.####");
         df.setRoundingMode(RoundingMode.CEILING);
         return df;
     }
@@ -109,6 +108,7 @@ public class MitchPickaxeModule extends Module {
 
     @Override
     public void enable() {
+        df = setUpDF();
         if (!isEnabled()) return;
         MitchPrisonsCore.get().activate(
                 // colls

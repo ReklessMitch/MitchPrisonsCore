@@ -2,12 +2,15 @@ package mitch.prisonscore.modules.pickaxe.utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.utils.ItemCreator;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,10 @@ public class DisplayItem {
 
     public ItemStack getGuiItem(int efficiencyLevel){
         ItemStack item = ItemCreator.createItem(material, 1, customModelData, itemName, itemLore);
+        ItemMeta meta = item.getItemMeta();
         item.addUnsafeEnchantment(Enchantment.DIG_SPEED, efficiencyLevel);
+        meta.getPersistentDataContainer().set(MitchPrisonsCore.get().getNoMove(), PersistentDataType.BOOLEAN, true);
+        item.setItemMeta(meta);
         return item;
     }
 

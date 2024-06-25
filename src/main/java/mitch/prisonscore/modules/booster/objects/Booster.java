@@ -2,8 +2,6 @@ package mitch.prisonscore.modules.booster.objects;
 
 import lombok.Getter;
 import lombok.Setter;
-import mitch.prisonscore.MitchPrisonsCore;
-import mitch.prisonscore.modules.backpack.BackpackModule;
 import mitch.prisonscore.modules.booster.BoosterModule;
 import mitch.prisonscore.modules.booster.utils.BoosterType;
 import mitch.prisonscore.modules.booster.utils.TimeFormat;

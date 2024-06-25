@@ -12,7 +12,7 @@ public class CmdCurrency extends CurrencyCommands {
     protected CmdCurrencyRemove cmdCurrencyRemove = new CmdCurrencyRemove();
     protected CmdCurrencySet cmdCurrencySet = new CmdCurrencySet();
     protected CmdCurrencyShop cmdCurrencyShop = new CmdCurrencyShop();
-    protected CmdCurencyTop cmdCurencyTop = new CmdCurencyTop();
+    protected CmdCurrencyTop cmdCurencyTop = new CmdCurrencyTop();
 
     public CmdCurrency() {
         this.addAliases("currency");

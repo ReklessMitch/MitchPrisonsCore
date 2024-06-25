@@ -73,11 +73,11 @@ public class LangConf extends Entity<LangConf> {
 
     private List<String> rankUpNotEnoughMoney = Lists.newArrayList(
             "<red>You do not have enough money to rank up!",
-            "<red>You need %amount% more to rank up!"
+            "<red>You need <amount> more to rank up!"
     );
 
     private List<String> rankUpSuccess = Lists.newArrayList(
-            "<green>You have ranked up to %rank%!"
+            "<green>You have ranked up to <rank>!"
     );
     // Pickaxe
     private List<String> pickaxeUpgradeNotHighEnoughRank = Lists.newArrayList(
@@ -89,7 +89,7 @@ public class LangConf extends Entity<LangConf> {
     );
 
     private List<String> pickaxeSkinSelected = Lists.newArrayList(
-            "<green>You have selected the %skin% pickaxe skin!"
+            "<green>You have selected the <skin> pickaxe skin!"
     );
 
     private List<String> pickaxeSkinAlreadySelected = Lists.newArrayList(
@@ -115,7 +115,7 @@ public class LangConf extends Entity<LangConf> {
     );
 
     private List<String> autoSellPurchased = Lists.newArrayList(
-            "<green>You have purchased autosell for %cost% tokens!"
+            "<green>You have purchased autosell for <cost> tokens!"
     );
 
     // Backpack Skin
@@ -128,7 +128,7 @@ public class LangConf extends Entity<LangConf> {
     );
 
     private List<String> backpackSkinEquipped = Lists.newArrayList(
-            "<green>You have equipped the %skin% backpack skin!"
+            "<green>You have equipped the <skin> backpack skin!"
     );
 
     // Battlepass
@@ -146,7 +146,7 @@ public class LangConf extends Entity<LangConf> {
     );
 
     private List<String> storePurchaseSuccess = Lists.newArrayList(
-            "<green>You have purchased %item% for %cost% credits!"
+            "<green>You have purchased <item> for <cost> credits!"
     );
 
     // Transfers
@@ -163,15 +163,15 @@ public class LangConf extends Entity<LangConf> {
     );
 
     private List<String> transferNotEnoughCurrency = Lists.newArrayList(
-            "<red>You do not have enough %currency%(s) to transfer!"
+            "<red>You do not have enough <currency>(s) to transfer!"
     );
 
     private List<String> transferSuccessSend = Lists.newArrayList(
-            "<green>You have transferred %amount% %currency% to %receiever%!"
+            "<green>You have transferred <amount> <currency> to <receiever>!"
     );
 
     private List<String> transferSuccessReceive = Lists.newArrayList(
-            "<green>%sender% has transferred %amount% %currency% to you!"
+            "<green><sender> has transferred <amount> <currency> to you!"
     );
 
     private String wardrobeNoPermission = "<red> You do not have permission to use this item!";
@@ -190,13 +190,59 @@ public class LangConf extends Entity<LangConf> {
     private String bazaarSellSuccess = "<green>You have added <amount> <cts> to the sell shop for <price> <ctb>";
 
     private List<String> addPercentOfRankup = Lists.newArrayList(
-            "<grey>You have been given <green><percent% <grey>of <green><cost> <grey>of your next rankup <green><amount><grey>.!"
+            "<grey>You have been given <green><percent> <grey>of <green><cost> <grey>of your next rankup <green><amount><grey>.!"
     );
 
     private String addSlotToBackpack = "<green>You have added <amount> slots to your backpack!";
 
-    
 
+    // cell / team / gang
+    private String notInACell = "<red>You are not in a cell!";
+    private String cellDoesNotExist = "<red>That cell does not exist!";
+    private String cellCreatedSuccess = "<green>You have created a cell!";
+    private String cellNameTaken = "<red>That cell name is already taken!";
+    private String alreadyInCell = "<red>You are already in a cell!";
+    private String cellCreated = "<green>You have created the cell <cellname>";
+    private String cellDisbanded = "<red>You have disbanded your cell!";
+    private String addedBeaconsToCell = "<green>You have added <amount> beacons to your cell!";
+    private String notEnoughBeacons = "<red>You do not have enough beacons!";
+    private String notOwnerOfCell = "<red>You are not the owner of this cell!";
+    private List<String> cellInfo = Lists.newArrayList("<grey>------------<reset> <gold><bold>Cell Info <grey>------------",
+                "<grey>Cell Name: <gold><cellname>",
+                "<grey>Cell Owner: <gold><cellowner>",
+                "<grey>Cell Members: <gold><cellmembers>",
+                "<grey>Beacons: <gold><cellbeacons>",
+                "<grey>----------------------------------");
+    private String notHighEnoughCellRank = "<red>You are not a high enough rank in your cell!";
+    private String cellInviteSent = "<green>You have sent an invite to <player>!";
+    private String cellInviteReceived = "<green>You have received an invite to <cellname> from <inviter>!";
+    private String playerAlreadyInvitedToCell = "<red>You have already invited this player!";
+    private String cellIsFull = "<red>This cell is full!";
+    private String cellJoinedSuccess = "<green>You have joined the cell <cellname>!";
+    private String notInvitedToCell = "<red>You have not been invited to this cell!";
+    private String mustDisbandCellAsOwner = "<red>You are the owner of this cell, you must disband it to leave!";
+    private String cellLeftSuccess = "<red>You have left the cell!";
+    private String notAnyoneKickableFromCell = "<red>You do not have anyone in ur cell you can kick";
+
+    // Crate
+
+    private String noCrateKeyForCrate = "<red>You do not have any crate keys for this crate!";
+    private String crateKeyNotEnoughAmount = "<red>You do not have enough crate keys for this amount of crates!";
+
+
+    // Profile / Currency
+    private List<String> getPlayerBalances = Lists.newArrayList(
+            "<grey>------------<reset> <gold><bold>Balance <grey>------------",
+            "<grey>Money: <gold><money>",
+            "<grey>Tokens: <gold><tokens>",
+            "<grey>Credits: <gold><credits>",
+            "<grey>Beacons: <gold><beacons>",
+            "<grey>----------------------------------"
+    );
+
+    private String addedCurrencyToPlayer = "<green>You have added <red><amount> <currency> <green>to <red> <player>";
+    private String removedCurrencyFromPlayer = "<green>You have removed <red><amount> <currency> <green>from <red> <player>";
+    private String setCurrencyToPlayer = "<green>You have set <red><player> <green> <currency> to <red><amount>";
 
 
 

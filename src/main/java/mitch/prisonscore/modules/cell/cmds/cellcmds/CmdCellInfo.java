@@ -6,6 +6,10 @@ import com.massivecraft.massivecore.util.IdUtil;
 import mitch.prisonscore.modules.cell.cmds.CellCommands;
 import mitch.prisonscore.modules.cell.CellModule;
 import mitch.prisonscore.modules.cell.object.Cell;
+import mitch.prisonscore.utils.LangConf;
+import mitch.prisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -23,16 +27,18 @@ public class CmdCellInfo extends CellCommands {
         Player player = this.readArg();
         CellModule conf = CellModule.get();
         Cell cell = conf.getCellByMember(player.getUniqueId());
+        LangConf lang = LangConf.get();
         if(cell == null){
-            msg("<b>You are not in a cell");
+            MessageUtils.sendMessage(me, lang.getNotInACell());
             return;
         }
-        msg("<grey>------------<reset> <gold><bold>Cell Info <grey>------------" +
-                "\n<grey>Cell Name: <gold>" + cell.getName() +
-                "\n<grey>Cell Owner: <gold>" + IdUtil.getOfflinePlayer(cell.getOwner()).getName() +
-                "\n<grey>Cell Members: <gold>" + getAllMembers(cell) +
-                "\n<grey>Beacons: <gold>" + cell.getBeacons() +
-                "\n<grey>----------------------------------");
+        final String cellOwnerName = IdUtil.getOfflinePlayer(cell.getOwner()).getName();
+        final TagResolver cellName = Placeholder.parsed("cellname", cell.getName());
+        final TagResolver cellOwner = Placeholder.parsed("cellowner", cellOwnerName + "");
+        final TagResolver cellMembers = Placeholder.parsed("cellmembers", getAllMembers(cell));
+        final TagResolver cellBeacons = Placeholder.parsed("cellbeacons", cell.getBeacons().toString());
+
+        MessageUtils.sendMessages(me, lang.getCellInfo(), cellName, cellOwner, cellMembers, cellBeacons);
     }
 
     // turn Set<List> of cell.getAllMembers() into a string with commas

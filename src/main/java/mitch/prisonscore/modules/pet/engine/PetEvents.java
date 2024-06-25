@@ -1,7 +1,6 @@
 package mitch.prisonscore.modules.pet.engine;
 
 import com.massivecraft.massivecore.Engine;
-import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.pet.entity.PetPlayer;
 import mitch.prisonscore.modules.pet.util.PetUtils;
 import org.bukkit.Location;
@@ -10,8 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PetEvents extends Engine {
 

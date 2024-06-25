@@ -1,7 +1,6 @@
 package mitch.prisonscore.modules.booster.engines;
 
 import com.massivecraft.massivecore.Engine;
-import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.booster.BoosterModule;
 import mitch.prisonscore.modules.booster.configs.BoosterPlayer;
 import mitch.prisonscore.modules.booster.objects.Booster;
@@ -13,7 +12,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
