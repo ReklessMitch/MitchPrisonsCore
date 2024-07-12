@@ -34,9 +34,9 @@ public class ProfilePlayer extends SenderEntity<ProfilePlayer> {
     @Setter private String joinMessage = "";
     private List<Integer> claimedRewards = new ArrayList<>();
     @Setter private int rank = 0;
-    @Setter private String currentChatColour = "mpc.chatcolour.red";
-    @Setter private String currentNameColour = "mpc.namecolour.red";
-    @Setter private String currentRankColour = "mpc.rankcolour.red";
+    @Setter private String currentChatColour = "gray";
+    @Setter private String currentNameColour = "gray";
+    @Setter private String currentRankColour = "gray";
     private String activeWings = "none";
 
     @Override

@@ -1,6 +1,6 @@
 package mitch.prisonscore.modules.cell.object;
 
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 

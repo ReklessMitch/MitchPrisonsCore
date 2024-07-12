@@ -1,5 +1,6 @@
 package mitch.prisonscore.modules.mine;
 
+import com.google.common.collect.Lists;
 import lombok.Getter;
 import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.mine.cmds.admin.CmdMineIncrease;
@@ -12,6 +13,7 @@ import mitch.prisonscore.modules.mine.placeholders.MinePlaceholders;
 import mitch.prisonscore.modules.mine.utils.SerLoc;
 import mitch.prisonscore.modules.Module;
 import mitch.prisonscore.modules.type.ModuleType;
+import mitch.prisonscore.utils.configurable.FormatItem;
 import org.bukkit.Material;
 
 import java.util.Set;
@@ -24,7 +26,7 @@ public class MineModule extends Module {
     private SerLoc mineOffset = new SerLoc(-135, 19, -48);
     private int mineBoosterCost = 1000;
     private int mineBoosterMax = 10;
-    private int maxMineSize = 100;
+    private int maxMineSize = 50;
     private int startValue = 5000;
     private int increaseAmount = 1000;
     private double increment = 3.2;

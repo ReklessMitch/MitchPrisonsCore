@@ -4,7 +4,8 @@ import lombok.Getter;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.MitchPickaxeModule;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.modules.profile.utils.CurrencyUtils;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.utils.ItemCreator;
@@ -54,10 +55,25 @@ public class Enchant<T extends EnchantmentConfig> implements Configurable<T> {
     }
 
     public long getCost(int currentLevel, int amountToBuy, int prestige) {
-        long firstTerm = this.getConfig().getBaseCost() + (currentLevel * this.getConfig().getCostIncreasePerLevel());
-        long lastTerm = this.getConfig().getBaseCost() + ((currentLevel + amountToBuy - 1) * this.getConfig().getCostIncreasePerLevel());
-        long cost = (amountToBuy * (firstTerm + lastTerm)) / 2;
-        return (long) (cost * Math.pow(1 + this.getConfig().getPriceIncreasePerPrestige(), prestige));
+        EnchantmentConfig config = this.getConfig();
+
+        long baseCost = config.getBaseCost();
+        long costIncreasePerLevel = config.getCostIncreasePerLevel();
+        double priceIncreasePerPrestige = config.getPriceIncreasePerPrestige();
+
+        // Calculate first and last terms in the arithmetic series
+        long firstTerm = baseCost + (currentLevel * costIncreasePerLevel);
+        long lastTerm = baseCost + ((currentLevel + amountToBuy - 1) * costIncreasePerLevel);
+
+        // Calculate the sum of the arithmetic series
+        long totalCostWithoutPrestige = (amountToBuy * (firstTerm + lastTerm)) / 2;
+
+        // Apply prestige modifications
+        double prestigeMultiplier = 1 + (priceIncreasePerPrestige * prestige);
+        double totalCostWithPrestigeIncrease = totalCostWithoutPrestige * prestigeMultiplier;
+
+        // Return the final cost
+        return (long) totalCostWithPrestigeIncrease;
     }
 
     private int recursiveCost(int currentLevel, long maxBudget, int amount, long cost, int maxLevel, int prestige) {
@@ -79,16 +95,20 @@ public class Enchant<T extends EnchantmentConfig> implements Configurable<T> {
     }
 
     public ItemStack getEnchantGuiItem(PickaxePlayer pickaxe) {
-        final TagResolver levelResolver = Placeholder.parsed("level", String.valueOf(pickaxe.getEnchants().get(type)));
-        final TagResolver maxLevelResolver = Placeholder.parsed("maxlevel", String.valueOf(this.getConfig().getMaxLevel()));
-        final TagResolver costResolver = Placeholder.parsed("cost", String.valueOf(getCost(pickaxe.getEnchants().get(type),
+        final int maxLevel = this.getConfig().getMaxLevel();
+        final int currentLevel = pickaxe.getEnchants().get(type);
+        final TagResolver levelResolver = Placeholder.parsed("level", String.valueOf(currentLevel));
+        final TagResolver maxLevelResolver = Placeholder.parsed("maxlevel", String.valueOf(maxLevel));
+        final TagResolver costResolver = Placeholder.parsed("cost", CurrencyUtils.format(getCost(pickaxe.getEnchants().get(type),
                 1, pickaxe.getEnchantPrestiges().get(type))));
         final double procChance = this.getConfig().getProcChance(pickaxe.getEnchants().get(type), pickaxe.getUuid());
         final String procChanceString = MitchPickaxeModule.get().getDf().format(procChance);
         final TagResolver procChanceResolver = Placeholder.parsed("proc_chance", procChanceString + "%");
         final TagResolver levelRequiredResolver = Placeholder.parsed("level_required", ProfilePlayer.get(pickaxe.getPlayer()).getRank() >= this.getConfig().getLevelRequired()
                 ? "" : "<grey>Rank Required: <red>" + this.getConfig().getLevelRequired());
-
+        if(currentLevel == maxLevel){
+            return this.getConfig().getMaxedEnchantItem().getFormatItem(levelResolver, maxLevelResolver, costResolver, procChanceResolver, levelRequiredResolver);
+        }
         DisplayItem displayItem = this.getConfig().getDisplayItem();
         return ItemCreator.createItem(displayItem.getMaterial(), 1, displayItem.getCustomModelData(), displayItem.getItemName(),
                 displayItem.getItemLore(), levelResolver, maxLevelResolver, costResolver, procChanceResolver, levelRequiredResolver);

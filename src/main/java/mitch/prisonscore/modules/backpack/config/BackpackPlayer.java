@@ -42,7 +42,7 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
     }
 
     private boolean messages = true;
-    private int skinID = 0;
+    private int skinID = 9;
     private BigInteger currentLoad = BigInteger.ZERO;
     private BigInteger capacity = BigInteger.valueOf(100);
     private boolean autoSell = false;
@@ -52,9 +52,12 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
     }
 
     public ItemStack getBackpackItem() {
-        ItemStack item = ItemCreator.createItem(Material.PAPER, 1, skinID, "<red>Backpack",
-                "<grey>Size: <yellow>" + capacity, "<grey>Autosell: " + (autoSell ? "<green>Enabled" : "<red>Disabled"));
+        BackpackModule module = BackpackModule.get();
+        final TagResolver sizeResolver = Placeholder.parsed("size", capacity + "");
+        final TagResolver autoSellResolver = Placeholder.parsed("autosell", (autoSell ? "<green>Enabled" : "<red>Disabled"));
+        ItemStack item = module.getBackpackItem().getFormatItem(sizeResolver, autoSellResolver);
         ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(skinID);
         meta.getPersistentDataContainer().set(MitchPrisonsCore.get().getNoMove(), PersistentDataType.BOOLEAN, true);
         item.setItemMeta(meta);
         return item;
@@ -107,26 +110,25 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
 //            boostActivated = true;
 //        }
         double petBooster = getPetBooster();
-        if(petBooster > 0){
-            startAmount = startAmount.multiply(BigInteger.valueOf((long)(1 + petBooster))); // Use multiply for BigInteger
-        }
 
         Booster booster = BoosterPlayer.get(getId()).getActiveMoneyBooster();
-        if(booster != null){
-            startAmount = startAmount.multiply(BigInteger.valueOf((long)(booster.getMultiplier()))); // Use multiply for BigInteger
-        }
+        double boosterMulti = booster != null ? booster.getMultiplier() : 0;
         int rank = ProfilePlayer.get(getId()).getRank() + 1;
-        startAmount = startAmount.multiply(BigInteger.valueOf(rank)); // Use multiply for BigInteger
+
+        long totalMulti = (long) (rank * (1 + petBooster + boosterMulti));
+        startAmount = startAmount.multiply(BigInteger.valueOf(totalMulti)); // Use multiply for BigInteger
         ProfilePlayer profilePlayer = ProfilePlayer.get(getId());
         profilePlayer.addCurrency(Currency.MONEY, startAmount);
+
         if(messages) {
             MessageUtils.sendMessage(getPlayer(), "<green>-------------------------" +
                     "\n<green>You have sold <yellow>" + currentLoad + " <green>items for <yellow>" + CurrencyUtils.format(startAmount) + " <green>money" +
                     "\n<green>Rank Multiplier (+" + rank + ")" +
-                    (booster != null ? "\n<green>Booster Multiplier (+" + booster.getMultiplier() + ")" : "") +
+                    (booster != null ? "\n<green>Booster Multiplier (+" + boosterMulti + ")" : "") +
 //                    (boostActivated ? "\n<green>Boost Multiplier (2x)" : "") +
 //                    (greedMulti > 0 ? "\n<green>Greed Multiplier (+" + greedMulti / 1000.0 + ")" : "") +
                     (petBooster > 0 ? "\n<green>Pet Multiplier (+" + petBooster + ")" : "") +
+                    "\n<green>Formula <yellow>Amount <red>x <yellow>Rank <red>x <white>(<yellow>Pet Boosts <gold>+ <yellow>Boosters<white>)" +
                     "\n<green>-------------------------");
         }
 

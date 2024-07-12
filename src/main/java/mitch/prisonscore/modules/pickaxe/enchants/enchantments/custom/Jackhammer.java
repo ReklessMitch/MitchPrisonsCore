@@ -6,8 +6,9 @@ import mitch.prisonscore.modules.pet.util.PetType;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
+import mitch.prisonscore.utils.configurable.FormatItem;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -38,7 +39,9 @@ public class Jackhammer extends Enchant<Jackhammer.Config> {
 
     public static class Config extends EnchantmentConfig {
         public Config() {
-            super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0), 0, 0, 0, 0, "enchantMessage", 0, 0, 0, 0, 0);
+            super(new DisplayItem(Material.DIAMOND, "base", List.of("test"),
+                    0, 0), 0, 0, 0, 0, "enchantMessage",
+                    0, 0, 0, 0, 0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
         }
 
         @Override

@@ -12,6 +12,20 @@ import java.util.List;
 
 public class ItemCreator {
 
+    private static void applyMeta(ItemMeta meta, Integer customModelData, String name, List<String> lore, TagResolver... tagResolvers) {
+        if (customModelData != null) {
+            meta.setCustomModelData(customModelData);
+        }
+        if (name != null) {
+            meta.displayName(MessageUtils.colorize(name, tagResolvers).decoration(TextDecoration.ITALIC, false));
+        }
+        if (lore != null) {
+            meta.lore(MessageUtils.colorize(lore, tagResolvers));
+        }
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
+    }
+
     public static ItemStack createItem(Material material) {
         return new ItemStack(material);
     }
@@ -21,58 +35,30 @@ public class ItemCreator {
     }
 
     public static ItemStack createItem(Material material, int amount, int customModelData) {
-        ItemStack item = new ItemStack(material, amount);
-        ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(customModelData);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
-        item.setItemMeta(meta);
-        return item;
+        return createItem(material, amount, customModelData, null);
     }
 
     public static ItemStack createItem(Material material, int amount, int customModelData, String name) {
-        ItemStack item = new ItemStack(material, amount);
-        ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(customModelData);
-        meta.displayName(MessageUtils.colorize(name).decoration(TextDecoration.ITALIC, false));
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
-        item.setItemMeta(meta);
-        return item;
+        return createItem(material, amount, customModelData, name, (List<String>) null);
+    }
+
+    public static ItemStack createItem(Material material, int customModelData, String name, List<String> lore, TagResolver... tagResolvers) {
+        return createItem(material, 1, customModelData, name, lore, tagResolvers);
     }
 
     public static ItemStack createItem(Material material, int amount, int customModelData, String name, String... lore) {
-        ItemStack item = new ItemStack(material, amount);
-        ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(customModelData);
-        meta.displayName(MessageUtils.colorize(name).decoration(TextDecoration.ITALIC, false));
-        meta.lore(MessageUtils.colorize(Arrays.stream(lore).toList()));
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
-        item.setItemMeta(meta);
-        return item;
+        return createItem(material, amount, customModelData, name, Arrays.asList(lore));
     }
 
     public static ItemStack createItem(Material material, int amount, int customModelData, String name, List<String> lore) {
-        ItemStack item = new ItemStack(material, amount);
-        ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(customModelData);
-        meta.displayName(MessageUtils.colorize(name).decoration(TextDecoration.ITALIC, false));
-        meta.lore(MessageUtils.colorize(lore));
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
-        meta.setUnbreakable(true);
-        item.setItemMeta(meta);
-        return item;
+        return createItem(material, amount, customModelData, name, lore, new TagResolver[0]);
     }
 
     public static ItemStack createItem(Material material, int amount, int customModelData, String name, List<String> lore, TagResolver... tagResolvers) {
         ItemStack item = new ItemStack(material, amount);
         ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(customModelData);
-        meta.displayName(MessageUtils.colorize(name, tagResolvers).decoration(TextDecoration.ITALIC, false));
-        meta.lore(MessageUtils.colorize(lore, tagResolvers));
-        meta.setUnbreakable(true);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
+        applyMeta(meta, customModelData, name, lore, tagResolvers);
         item.setItemMeta(meta);
         return item;
     }
-
-
 }

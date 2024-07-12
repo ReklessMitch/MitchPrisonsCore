@@ -6,16 +6,13 @@ import lombok.Getter;
 
 import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.colls.EnchantmentConfigColl;
-import mitch.prisonscore.modules.pickaxe.cmds.pickaxe.CmdAutoRankup;
-import mitch.prisonscore.modules.pickaxe.cmds.pickaxe.CmdBlocks;
-import mitch.prisonscore.modules.pickaxe.cmds.pickaxe.CmdToggles;
-import mitch.prisonscore.modules.pickaxe.cmds.pickaxe.CmdUpgradeGUI;
+import mitch.prisonscore.modules.pickaxe.cmds.pickaxe.*;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayerColl;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
 import mitch.prisonscore.modules.pickaxe.engines.MineBlockEvent;
 import mitch.prisonscore.modules.pickaxe.engines.PickaxeMovement;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.modules.Module;
 import mitch.prisonscore.modules.type.ModuleType;
@@ -116,11 +113,11 @@ public class MitchPickaxeModule extends Module {
 
                 // cmds
                 CmdUpgradeGUI.class, CmdToggles.class, CmdBlocks.class, CmdAutoRankup.class,
+                CmdBlockTop.class,
 
                 // listeners
                 MineBlockEvent.class,
-                PickaxeMovement.class,
-                MitchAntiCheat.class
+                PickaxeMovement.class
         );
         setUpEnchants();
         registerEnchantmentConfigs();

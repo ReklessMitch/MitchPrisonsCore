@@ -6,13 +6,18 @@ import java.math.BigInteger;
 
 public class CurrencyUtils {
 
+    private static final String[] suffixes = {"", "k", "m", "b", "t", "q", "a", "c", "d", "e", "f", "g", "h", "i", "j"};
+
+    public static String format(long number) {
+        return format(BigInteger.valueOf(number));
+    }
+
     public static String format(BigInteger number) {
-        final String[] suffixes = {"", "k", "m", "b", "t", "q", "a", "c", "d", "e", "f", "g", "h", "i", "j"};
-        if (number.longValue() < 1000) {
-            return String.valueOf(number);
+        if (number.compareTo(BigInteger.valueOf(1000)) < 0) {
+            return number.toString();
         }
-        int magnitude = (int) (Math.log10(number.longValue()) / 3);
-        double convertedNumber = number.longValue() / Math.pow(1000, magnitude);
+        int magnitude = (int) (Math.log10(number.doubleValue()) / 3);
+        double convertedNumber = number.doubleValue() / Math.pow(1000, magnitude);
         return String.format("%.1f%s", convertedNumber, suffixes[magnitude]);
     }
 

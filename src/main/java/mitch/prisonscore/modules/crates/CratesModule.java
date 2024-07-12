@@ -9,7 +9,7 @@ import mitch.prisonscore.modules.crates.configs.CratePlayerColl;
 import mitch.prisonscore.modules.crates.objects.Crate;
 import mitch.prisonscore.modules.crates.objects.CrateReward;
 import mitch.prisonscore.modules.crates.placeholders.CratePlaceholders;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.type.ModuleType;
 import org.bukkit.Material;
 

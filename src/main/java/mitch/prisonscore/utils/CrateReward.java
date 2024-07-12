@@ -3,6 +3,7 @@ package mitch.prisonscore.utils;
 
 import lombok.Getter;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -20,6 +21,11 @@ public class CrateReward {
         this.message = message;
     }
 
+    public void runCommands(Player player) {
+        commands.forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
+                PlaceholderAPI.setPlaceholders(player, command)));
+    }
+
     public List<String> getCommands(Player player) {
         commands.forEach(command -> PlaceholderAPI.setPlaceholders(player, command));
         return commands;
@@ -32,7 +38,7 @@ public class CrateReward {
     }
 
     public String getMessage(Player player) {
-        message = PlaceholderAPI.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&', message));
+        message = PlaceholderAPI.setPlaceholders(player, message);
         return message;
     }
 

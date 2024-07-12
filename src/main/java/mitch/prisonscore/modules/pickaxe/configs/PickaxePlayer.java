@@ -6,12 +6,16 @@ import mitch.prisonscore.modules.battlepass.events.BlocksMinedEvent;
 import mitch.prisonscore.modules.mine.configs.MinePlayer;
 import mitch.prisonscore.modules.pickaxe.MitchPickaxeModule;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.utils.MessageUtils;
+import mitch.prisonscore.utils.configurable.FormatItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -22,8 +26,8 @@ import java.util.Map;
 @Getter
 public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
 
-    private DisplayItem pickaxe = new DisplayItem(Material.DIAMOND_PICKAXE, "<gold>Pickaxe",
-            List.of("<yellow>Enchants"), 0, 4);
+    private FormatItem pickaxe = new FormatItem(Material.DIAMOND_PICKAXE, "<gold>Pickaxe",
+            List.of("<yellow>Enchants"), 0);
     private long rawBlocksBroken = 0;
     private long blocksBroken = 0;
     private Map<EnchantType, Integer> enchants = setEnchants(false);
@@ -93,10 +97,24 @@ public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
         pickaxe.setItemLore(lore);
         givePickaxe();
         this.changed();
+        givePotionEffectEnchants();
+    }
+
+    public void givePotionEffectEnchants(){
+        getPlayer().clearActivePotionEffects();
+        if(enchants.get(EnchantType.HASTE) >= 1 && enchantToggle.get(EnchantType.HASTE)){
+            getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, enchants.get(EnchantType.HASTE)));
+        }
+        // if speed >= 1 and not toggled, give speed
+        if(enchants.get(EnchantType.SPEED) >= 1 && enchantToggle.get(EnchantType.SPEED)){
+            getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, enchants.get(EnchantType.SPEED)));
+        }
     }
 
     public ItemStack getPickaxeGuiItem(){
-        return pickaxe.getGuiItem(enchants.get(EnchantType.EFFICIENCY));
+        ItemStack item = pickaxe.getFormatItem();
+        item.addUnsafeEnchantment(Enchantment.DIG_SPEED, getEnchants().get(EnchantType.EFFICIENCY));
+        return item;
     }
 
     /**
@@ -136,6 +154,7 @@ public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
         MessageUtils.sendMessage(getPlayer(), "<green>Toggled " + enchantType + ": " + (toggle ? "<red>DISABLED" : "<green>ENABLED"));
         enchantToggle.replace(enchantType, !toggle);
         changed();
+        givePotionEffectEnchants();
     }
 
     public void toggleEnchantMessage(EnchantType type) {

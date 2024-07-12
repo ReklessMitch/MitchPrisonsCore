@@ -1,7 +1,7 @@
 package mitch.prisonscore.modules.profile.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.profile.ProfileModule;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
@@ -29,13 +29,13 @@ public class WardrobeSelectionGUI extends ChestGui {
 
     private void init() {
         final ProfileModule conf = ProfileModule.get();
-        setup(10, conf.getBackpackItem(), "backpackskins");
-        setup(11, conf.getPickaxeItem(), "pickaxeskins");
+        setup(10, conf.getBackpackItem(), "backpack skins");
+        setup(11, conf.getPickaxeItem(), "pickaxe skins");
         setup(12, conf.getWingsItem(), "wings");
         setup(13, conf.getArmourItem(), "armour");
-        setup(14, conf.getNameColourItem(), "namecolour");
-        setup(15, conf.getChatColourItem(), "chatcolour");
-        setup(16, conf.getRankColourItem(), "rankcolour");
+        setup(14, conf.getNameColourItem(), "namecolourgui");
+        setup(15, conf.getChatColourItem(), "chatcolourgui");
+        setup(16, conf.getRankColourItem(), "rankcolourgui");
     }
 
     public void open(){

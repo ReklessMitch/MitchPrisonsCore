@@ -30,6 +30,7 @@ public class MineEvents extends Engine {
         System.out.println("Player has not played before");
         MinePlayer playerMine = MinePlayer.get(e.getPlayer().getUniqueId());
         playerMine.generateSchematic();
+        playerMine.changed();
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -61,14 +62,18 @@ public class MineEvents extends Engine {
 //        MitchPrisonsCore.get().getWorldBorderApi().setBorder(player, size, center);
 //    }
 
-    @EventHandler(ignoreCancelled = true)
-    public void mineUpgradeCheck(BlocksMinedEvent e){
-        MinePlayer playerMine = MinePlayer.get(e.getPlayer().getUniqueId());
-        long blocksMined = PickaxePlayer.get(e.getPlayer().getUniqueId()).getBlocksBroken();
-        if(playerMine.getSize() >= MineModule.get().getMaxMineSize()) return;
-        if(MineModule.get().getNextMineLevelBlockRequirement(playerMine.getSize()) <= blocksMined){
-            playerMine.upgradeSize(1, false);
-        }
 
-    }
+    /**
+     * Mine Upgrade based on blocks mined - Deprecated
+     */
+//    @EventHandler(ignoreCancelled = true)
+//    public void mineUpgradeCheck(BlocksMinedEvent e){
+//        MinePlayer playerMine = MinePlayer.get(e.getPlayer().getUniqueId());
+//        long blocksMined = PickaxePlayer.get(e.getPlayer().getUniqueId()).getBlocksBroken();
+//        if(playerMine.getSize() >= MineModule.get().getMaxMineSize()) return;
+//        if(MineModule.get().getNextMineLevelBlockRequirement(playerMine.getSize()) <= blocksMined){
+//            playerMine.upgradeSize(1, false);
+//        }
+//
+//    }
 }

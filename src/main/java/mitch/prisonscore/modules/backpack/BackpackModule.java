@@ -3,14 +3,16 @@ package mitch.prisonscore.modules.backpack;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import mitch.prisonscore.MitchPrisonsCore;
+import mitch.prisonscore.modules.backpack.cmds.base.CmdBackpack;
 import mitch.prisonscore.modules.backpack.cmds.base.CmdSell;
 import mitch.prisonscore.modules.backpack.config.BackPackPlayerColl;
 import mitch.prisonscore.modules.backpack.engine.BlocksToBackpack;
 import mitch.prisonscore.modules.backpack.engine.PlayerInteract;
 import mitch.prisonscore.modules.backpack.placeholders.BackpackPlaceholders;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.Module;
 import mitch.prisonscore.modules.type.ModuleType;
+import mitch.prisonscore.utils.configurable.FormatItem;
 import org.bukkit.Material;
 
 import java.util.Map;
@@ -25,6 +27,14 @@ public class BackpackModule extends Module {
     private Map<String, DisplayItem> backpackSkins = Map.of(
             "default", new DisplayItem(Material.DIAMOND_PICKAXE, "Default", Lists.newArrayList("default pickaxe"), 0, 0),
             "emerald", new DisplayItem(Material.EMERALD, "Emerald", Lists.newArrayList("emerald pickaxe"), 1, 1));
+
+    private FormatItem backpackUpgradeItem =
+            new FormatItem(Material.PAPER, "<redgrad>Upgrade Backpack <amount>", Lists.newArrayList("Cost <cost>"),
+                    100);
+
+    private FormatItem backpackItem =
+            new FormatItem(Material.PAPER, "<redgrad>Backpack", Lists.newArrayList("Size <size>", "AutoSell: <autosell>"),
+                    1);
 
 
     public static BackpackModule get() {
@@ -48,7 +58,7 @@ public class BackpackModule extends Module {
                 BackPackPlayerColl.class,
 
                 // cmds
-                CmdSell.class,
+                CmdSell.class, CmdBackpack.class,
 
                 // events
                 BlocksToBackpack.class,

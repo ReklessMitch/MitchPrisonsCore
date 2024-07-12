@@ -4,6 +4,7 @@ import com.massivecraft.massivecore.Engine;
 import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.backpack.config.BackpackPlayer;
 import mitch.prisonscore.modules.backpack.gui.UpgradeBackpackGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,11 +28,14 @@ public class PlayerInteract extends Engine {
 
     @EventHandler
     public void onPlayerInteractDuringGUI(InventoryMoveItemEvent event){
+        Bukkit.broadcastMessage("Event: " + event.getEventName());
         if(event.getItem().getItemMeta().getPersistentDataContainer().has(
                 MitchPrisonsCore.get().getNoMove())){
             event.setCancelled(true);
         }
     }
+
+
 
     // Re-enable this if i ever get around to adding a cmd to set your backpack slot
 //    @EventHandler

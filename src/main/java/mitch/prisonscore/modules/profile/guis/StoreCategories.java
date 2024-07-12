@@ -1,7 +1,7 @@
 package mitch.prisonscore.modules.profile.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.profile.ProfileModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

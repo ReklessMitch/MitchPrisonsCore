@@ -52,6 +52,7 @@ public class LangConf extends Entity<LangConf> {
     private String backpackGuiTitle = ":offset_-28::backpack:";
     private String chatColourTitle = ":offset_-28::chatcolour:";
     private String nameColourTitle = ":offset_-28::namecolour:";
+    private String rankColourTitle = ":offset_-28::rankcolour:";
 
     // Mine
     private List<String> mineGoGUIItem = Lists.newArrayList("<red>Mine Size: <white>%mitchmines_size%",
@@ -98,6 +99,12 @@ public class LangConf extends Entity<LangConf> {
 
     private List<String> pickaxeSkinNotUnlocked = Lists.newArrayList(
             "<red>You have not unlocked this pickaxe skin!"
+    );
+
+    private List<String> blocksFormat = Lists.newArrayList(
+                     "<red>Block Stats",
+            "<green>Blocks: <white><blocks>",
+            "<green>Raw Blocks: <white><rawblocks>"
     );
 
     // Backpack
@@ -237,12 +244,14 @@ public class LangConf extends Entity<LangConf> {
             "<grey>Tokens: <gold><tokens>",
             "<grey>Credits: <gold><credits>",
             "<grey>Beacons: <gold><beacons>",
+            "<grey>Crystal Dust: <gold><dust>",
             "<grey>----------------------------------"
     );
 
     private String addedCurrencyToPlayer = "<green>You have added <red><amount> <currency> <green>to <red> <player>";
     private String removedCurrencyFromPlayer = "<green>You have removed <red><amount> <currency> <green>from <red> <player>";
     private String setCurrencyToPlayer = "<green>You have set <red><player> <green> <currency> to <red><amount>";
+
 
 
 

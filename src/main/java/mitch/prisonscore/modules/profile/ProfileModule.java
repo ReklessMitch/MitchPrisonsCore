@@ -4,7 +4,9 @@ import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import lombok.Getter;
 import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.Module;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.modules.profile.cmds.misc.CmdHelp;
+import mitch.prisonscore.utils.configurable.CommandItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.profile.cmds.currency.*;
 import mitch.prisonscore.modules.profile.cmds.decoration.CmdChatColourGUI;
 import mitch.prisonscore.modules.profile.cmds.decoration.CmdNameColourGUI;
@@ -19,6 +21,7 @@ import mitch.prisonscore.modules.profile.object.ShopItem;
 import mitch.prisonscore.modules.profile.placeholders.CurrencyPlaceholders;
 import mitch.prisonscore.modules.profile.placeholders.ProfilePlaceholders;
 import mitch.prisonscore.modules.type.ModuleType;
+import mitch.prisonscore.utils.configurable.FormatItem;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -32,34 +35,41 @@ public class ProfileModule extends Module {
     private List<String> joinMessages = List.of("%player% joined", "%player% is here");
 
     private Map<String, String> nameColoursPermToColour = Map.of(
-            "mpc.namecolour.red", "<red>",
-            "mpc.namecolour.green", "<green>",
-            "mpc.namecolour.blue", "<blue>",
-            "mpc.namecolour.yellow", "<yellow>",
-            "mpc.namecolour.purple", "<purple>",
-            "mpc.namecolour.white", "<white>",
-            "mpc.namecolour.black", "<black>",
-            "mpc.namecolour.gray", "<gray>");
+            "red", "<red>",
+            "green", "<green>",
+            "blue", "<blue>",
+            "yellow", "<yellow>",
+            "purple", "<purple>",
+            "white", "<white>",
+            "black", "<black>",
+            "gray", "<gray>");
 
     private Map<String, String> chatColoursPermToColour = Map.of(
-            "mpc.chatcolour.red", "<red>",
-            "mpc.chatcolour.green", "<green>",
-            "mpc.chatcolour.blue", "<blue>",
-            "mpc.chatcolour.yellow", "<yellow>",
-            "mpc.chatcolour.purple", "<purple>",
-            "mpc.chatcolour.white", "<white>",
-            "mpc.chatcolour.black", "<black>",
-            "mpc.chatcolour.gray", "<gray>");
+            "red", "<red>",
+            "green", "<green>",
+            "blue", "<blue>",
+            "yellow", "<yellow>",
+            "purple", "<purple>",
+            "white", "<white>",
+            "black", "<black>",
+            "gray", "<gray>");
 
     private Map<String, String> rankColoursPermToColour = Map.of(
-            "mpc.rankcolour.red", "<red>",
-            "mpc.rankcolour.green", "<green>",
-            "mpc.rankcolour.blue", "<blue>",
-            "mpc.rankcolour.yellow", "<yellow>",
-            "mpc.rankcolour.purple", "<purple>",
-            "mpc.rankcolour.white", "<white>",
-            "mpc.rankcolour.black", "<black>",
-            "mpc.rankcolour.gray", "<gray>");
+            "red", "<red>",
+            "green", "<green>",
+            "blue", "<blue>",
+            "yellow", "<yellow>",
+            "purple", "<purple>",
+            "white", "<white>",
+            "black", "<black>",
+            "gray", "<gray>");
+
+    private FormatItem permToColourItem = new FormatItem(Material.PAPER,
+                                        "<green>Colour <gradient><colour>",
+                                        List.of("Click to change your colour to <colour>", "<active><hasperm>"), 0);
+    private String requiresPermissionExtraText = "<red>You do not have permission to use this colour";
+    private String activeColourExtraText = "<green>This is your active colour";
+
 
     private final transient List<ShopItem> defaultShopItem = List.of(new ShopItem(1, 10, Material.DIAMOND, "<green>Rank1",
             "<green>Rank1", List.of("aa %player% 1"), List.of("<green>Cost: %cost%")));
@@ -94,6 +104,9 @@ public class ProfileModule extends Module {
 
     private String chatFormat = "<prefix> <red><name>: <white>";
 
+    private List<CommandItem> helpMenuItems = List.of(
+            new CommandItem(Material.PAPER, "Help", List.of("Shows this menu"), 0, 0, "help"));
+
     public static ProfileModule get() {
         return MitchPrisonsCore.get().getModuleByType(ModuleType.PROFILE);
     }
@@ -118,6 +131,7 @@ public class ProfileModule extends Module {
                 CmdChangeJoinMessage.class, CmdCurrency.class, CmdBal.class,
                 CmdChatColourGUI.class, CmdNameColourGUI.class, CmdRankColourGUI.class,
                 CmdCurrencyAddAmount.class, CmdWardrobe.class, CmdToggleSC.class, CmdResetCurrencies.class,
+                CmdHelp.class,
 
                 // engines
                 ChatEvents.class,

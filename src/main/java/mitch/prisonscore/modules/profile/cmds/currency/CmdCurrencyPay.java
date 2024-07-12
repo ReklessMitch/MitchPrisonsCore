@@ -22,6 +22,7 @@ public class CmdCurrencyPay extends CurrencyCommands {
     public static CmdCurrencyPay get() { return i; }
 
     public CmdCurrencyPay(){
+        this.priority = -1; // Essentials Override Test
         this.addAliases("pay");
         this.addParameter(TypePlayer.get(), "player");
         this.addParameter(TypeCurrency.get(), "currency");

@@ -1,7 +1,7 @@
 package mitch.prisonscore.modules.profile.cmds.decoration;
 
 import mitch.prisonscore.modules.profile.cmds.DecorationCommands;
-import mitch.prisonscore.modules.profile.guis.ChatColourGUI;
+import mitch.prisonscore.modules.profile.guis.ColourGUI;
 import org.bukkit.entity.Player;
 
 public class CmdChatColourGUI extends DecorationCommands {
@@ -15,7 +15,7 @@ public class CmdChatColourGUI extends DecorationCommands {
 
     @Override
     public void perform() {
-        new ChatColourGUI().open((Player) sender);
+        new ColourGUI((Player) sender, 0).open();
     }
 
 }

@@ -44,16 +44,23 @@ public class CrateOpen extends ChestGui {
             final int slot = displayItem.getSlot();
             final Crate crate = CratesModule.get().getCrate(crateName);
             final CratePlayer cratePlayer = CratePlayer.get(player);
-            final int amount = cratePlayer.getCrateKeys().get(crateName);
+            int amount = 0;
+            try{
+                amount = cratePlayer.getCrateKeys().get(crateName);
+            } catch (NullPointerException e){
+                cratePlayer.getCrateKeys().put(crateName, 0);
+            }
             final TagResolver crateAmountResolver = Placeholder.parsed("amount", String.valueOf(amount));
             getInventory().setItem(slot, displayItem.getGuiItem(crateAmountResolver));
+
+            int finalAmount = amount;
             setAction(slot, event -> {
                 switch (event.getClick()) {
-                    case LEFT -> checkAmount(amount, crate, crateName, 1);
+                    case LEFT -> checkAmount(finalAmount, crate, crateName, 1);
                     case RIGHT -> new CratePreview(player, crate).open();
-                    case DROP -> checkAmount(amount, crate, crateName, 10);
-                    case MIDDLE -> checkAmount(amount, crate, crateName, amount);
-                    case NUMBER_KEY -> checkAmount(amount, crate, crateName, event.getHotbarButton() + 1);
+                    case DROP -> checkAmount(finalAmount, crate, crateName, 10);
+                    case MIDDLE -> checkAmount(finalAmount, crate, crateName, finalAmount);
+                    case NUMBER_KEY -> checkAmount(finalAmount, crate, crateName, event.getHotbarButton() + 1);
                     default -> {}
                 }
                 return true;

@@ -6,7 +6,8 @@ public enum Currency {
     TOKEN("Token", "tokens", Material.EMERALD),
     MONEY("Money", "money", Material.GOLD_INGOT),
     CREDIT("Credit", "credits", Material.DIAMOND),
-    BEACON("Beacon", "beacons", Material.BEACON);
+    BEACON("Beacon", "beacons", Material.BEACON),
+    DUST("Dust", "dust", Material.GLOWSTONE_DUST);
 
     private final String name;
     private final String plural;

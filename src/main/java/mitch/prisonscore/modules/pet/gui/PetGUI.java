@@ -5,7 +5,7 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import mitch.prisonscore.modules.pet.entity.PetPlayer;
 import mitch.prisonscore.modules.pet.PetModule;
 import mitch.prisonscore.modules.pet.util.PetType;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
@@ -19,7 +19,7 @@ public class PetGUI extends ChestGui {
 
     public PetGUI(UUID pID){
         this.petPlayer = PetPlayer.get(pID);
-        setInventory(Bukkit.createInventory(null, 18, MessageUtils.colorize(LangConf.get().getPetGuiTitle())));
+        setInventory(Bukkit.createInventory(null, 9, MessageUtils.colorize(LangConf.get().getPetGuiTitle())));
         setUpInventory();
         setAutoclosing(false);
         setSoundOpen(null);

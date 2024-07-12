@@ -3,7 +3,7 @@ package mitch.prisonscore.modules.pet.newpets;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 
 @AllArgsConstructor
 @Getter

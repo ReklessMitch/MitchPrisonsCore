@@ -9,12 +9,17 @@ import mitch.prisonscore.modules.battlepass.engines.UpgradeEvent;
 import mitch.prisonscore.modules.battlepass.object.Reward;
 import mitch.prisonscore.modules.Module;
 import mitch.prisonscore.modules.type.ModuleType;
+import mitch.prisonscore.utils.configurable.CommandItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
+import org.bukkit.Material;
+import org.bukkit.command.Command;
 
 import java.util.List;
 import java.util.Map;
 
 @Getter
 @EditorName("config")
+@SuppressWarnings("FieldMayBeFinal")
 public class BattlePassModule extends Module {
     private int maxLevel = 100;
     private int creditsToBuyPremium = 5000;
@@ -23,6 +28,12 @@ public class BattlePassModule extends Module {
     Map<Integer, Long> blocksPerLevel =
             Map.of(1, 500L, 2, 2500L, 3, 10000L, 4, 50000L);
 
+    private List<CommandItem> rewardGUIItems = List.of(
+            new CommandItem(Material.DIAMOND_BLOCK, "Reward",
+                    List.of("bc %player% reward"), 0, 0, "reward"));
+    private DisplayItem premiumPassItem = new CommandItem(Material.DIAMOND_BLOCK, "Premium Pass",
+            List.of("bc %player% reward"), 0, 0, "reward"
+    );
     public static BattlePassModule get() {
         return MitchPrisonsCore.get().getModuleByType(ModuleType.BATTLEPASS);
     }

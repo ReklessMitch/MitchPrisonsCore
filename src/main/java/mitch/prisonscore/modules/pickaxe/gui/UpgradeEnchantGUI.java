@@ -46,7 +46,8 @@ public class UpgradeEnchantGUI extends ChestGui {
         long cost = enchant.getCost(level, amount, prestige);
 
         for (int slot : slots) {
-            final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, LangConf.get().getInvisibleCustomData(), "<red>Upgrade: <white>" + amount, "<red>Cost: <white>" + CurrencyUtils.format(BigInteger.valueOf(cost)));
+            final ItemStack item =
+                    ItemCreator.createItem(Material.PAPER, 1, LangConf.get().getInvisibleCustomData(), "<red>Upgrade: <white>" + amount, "<red>Cost: <white>" + CurrencyUtils.format(BigInteger.valueOf(cost)));
             getInventory().setItem(slot, item);
             setAction(slot, event -> {
                 event.setCancelled(true);
@@ -76,7 +77,7 @@ public class UpgradeEnchantGUI extends ChestGui {
     public void refresh(){
         getInventory().setItem(4, enchant.getEnchantGuiItem(p));
         getPane(new int[]{9, 10, 11, 18, 19, 20}, 1);
-        getPane(new int[]{12, 13, 14, 21, 22, 23},5);
+        getPane(new int[]{12, 13, 14, 21, 22, 23},10);
         getPane(new int[]{15, 16, 17, 24, 25, 26}, 50);
         getPane(new int[]{27, 28, 29, 36, 37, 38}, 500);
         getPane(new int[]{30, 31, 32, 39, 40, 41}, 5000);

@@ -3,6 +3,7 @@ package mitch.prisonscore.modules.profile.engines;
 import com.massivecraft.massivecore.Engine;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
+import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.profile.ProfileModule;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.utils.MessageUtils;
@@ -16,6 +17,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+
+import java.util.logging.Level;
 
 public class ChatEvents extends Engine {
 
@@ -41,19 +44,21 @@ public class ChatEvents extends Engine {
         final TagResolver nameResolver = Placeholder.parsed("name", event.getPlayer().getName());
         User lpu = LuckPermsProvider.get().getUserManager().getUser(event.getPlayer().getUniqueId());
         if(lpu == null){
+            MitchPrisonsCore.get().getLogger().log(Level.SEVERE, "User " + event.getPlayer().getName() + " does not have a LuckPerms user object.");
             return;
         }
         final String primaryGroup = lpu.getPrimaryGroup();
         final ProfileModule profilesConf = ProfileModule.get();
         final ProfilePlayer profilePlayer = ProfilePlayer.get(event.getPlayer().getUniqueId());
-        final TagResolver prefixResolver = Placeholder.parsed("prefix", profilesConf.getRankToPrefix().get(primaryGroup));
-        final String currentChatPerm = profilePlayer.getCurrentChatColour();
-        final String currentNamePerm = profilePlayer.getCurrentNameColour();
+        final TagResolver prefixResolver = Placeholder.parsed("prefix", profilesConf.getRankToPrefix().getOrDefault(primaryGroup, "NO GROUP PREFIX SET"));
+        final String currentChatPerm = profilePlayer.getCurrentChatColour() == null ? "<gray>" : profilePlayer.getCurrentChatColour();
+        final String currentNamePerm = profilePlayer.getCurrentNameColour() == null ? "<gray>" : profilePlayer.getCurrentNameColour();
+        final String currentRankPerm = profilePlayer.getCurrentRankColour() == null ? "<gray>" : profilePlayer.getCurrentRankColour();
         final TagResolver staffChatResolver = Placeholder.parsed("sc", profilePlayer.isStaffChat() ? "<red>[<gold><bold>SC<red>] " : "");
         final TagResolver chatColourResolver = Placeholder.parsed("chatcolour", profilesConf.getChatColoursPermToColour().get(currentChatPerm));
         final TagResolver nameColourResolver = Placeholder.parsed("namecolour", profilesConf.getNameColoursPermToColour().get(currentNamePerm));
         final TagResolver levelResolver = Placeholder.parsed("rank", String.valueOf(profilePlayer.getRank()));
-        final TagResolver rankColour = Placeholder.parsed("rankcolour", profilePlayer.getCurrentRankColour());
+        final TagResolver rankColour = Placeholder.parsed("rankcolour", profilesConf.getRankColoursPermToColour().get(currentRankPerm));
         final String format = PlaceholderAPI.setPlaceholders(event.getPlayer(), profilesConf.getChatFormat()) + " " + event.getMessage();
         event.setCancelled(true);
         if(profilePlayer.isStaffChat()){

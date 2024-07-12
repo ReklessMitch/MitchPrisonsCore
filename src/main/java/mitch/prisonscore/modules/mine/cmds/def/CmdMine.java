@@ -19,7 +19,6 @@ public class CmdMine extends MineCommands {
 
     public CmdMine(){
         this.addAliases("mine");
-        this.addRequirements(RequirementIsPlayer.get());
         this.addChild(go);
         this.addChild(reset);
         this.addChild(setBlock);

@@ -29,25 +29,31 @@ public class PassPlayer extends SenderEntity<PassPlayer> {
     }
 
     private int level = 0;
-    private int lastClaimedLevel = 0;
+    private int lastClaimedPaidLevel = 0;
+    private int lastClaimedFreeLevel = 0;
     @Setter private boolean premium = false;
 
 
-    private void claimRewards(Map<Integer, List<Reward>> rewards) {
+    private void claimRewards(Map<Integer, List<Reward>> rewards, boolean isFree) {
         TreeMap<Integer, List<Reward>> sortedMap = new TreeMap<>(rewards);
-        SortedMap<Integer, List<Reward>> subMap = sortedMap.subMap(lastClaimedLevel + 1, level + 1);
+        SortedMap<Integer, List<Reward>> subMap = sortedMap.subMap(
+                isFree ? lastClaimedFreeLevel + 1 : lastClaimedPaidLevel + 1,
+                level + 1
+        );
         if(subMap.isEmpty()) {
             MessageUtils.sendMessage(getPlayer(), LangConf.get().getBattlePassNoRewards());
         }else{
             MessageUtils.sendMessage(getPlayer(), LangConf.get().getBattlePassClaimed());
             subMap.forEach((l, r) -> r.forEach(reward -> reward.getCommands().forEach(
                     command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", getPlayer().getName())))));
-            lastClaimedLevel = level;
+
+            if(isFree){lastClaimedFreeLevel = level;}
+            else{lastClaimedPaidLevel = level;}
             changed();
         }
     }
     public void claimFreeRewards() {
-        claimRewards(BattlePassModule.get().getFreeRewards());
+        claimRewards(BattlePassModule.get().getFreeRewards(), true);
     }
 
     public void claimAllRewards() {
@@ -56,7 +62,7 @@ public class PassPlayer extends SenderEntity<PassPlayer> {
     }
 
     public void claimPaidRewards() {
-        claimRewards(BattlePassModule.get().getPaidRewards());
+        claimRewards(BattlePassModule.get().getPaidRewards(), false);
     }
 
     public void addLevel() {

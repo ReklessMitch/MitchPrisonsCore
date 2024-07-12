@@ -163,6 +163,13 @@
             <systemPath>${basedir}/libs/MassiveCore-MC-1.20-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>com.mvg</groupId>
+            <artifactId>mvg</artifactId>
+            <version>LATEST</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/MitchVoidGen.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>1.20.4-R0.1-SNAPSHOT</version>

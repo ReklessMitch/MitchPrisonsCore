@@ -4,8 +4,9 @@ import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
+import mitch.prisonscore.utils.configurable.FormatItem;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
@@ -21,17 +22,20 @@ public class LootFinder extends Enchant<LootFinder.Config> {
 
     @Override
     public void activate(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {
-        PickaxePlayer pickaxe = PickaxePlayer.get(e.getPlayer());
-        String key = pickaxe.isVirtualKey() ? "virtualkey" : "key";
+        //final PickaxePlayer pickaxe = PickaxePlayer.get(e.getPlayer());
+        //final String key = pickaxe.isVirtualKey() ? "virtualkey" : "key";
         int amount = 1 + prestigeLevel;
         final TagResolver lootResolver = Placeholder.parsed("lootamount", String.valueOf(amount));
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("crate %s give %s Loot %s", key, pickaxe.getName(), amount));
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), String.format("crate give %s Loot %d", e.getPlayer().getName(), amount));
         sendEnchantMessage(e.getPlayer(), lootResolver);
     }
 
+
     public static class Config extends EnchantmentConfig {
         public Config() {
-            super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0), 0, 0, 0, 0, "enchantMessage", 0, 0, 0, 0, 0);
+            super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0),
+                    0, 0, 0, 0, "enchantMessage", 0,
+                    0, 0, 0, 0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
         }
     }
 }

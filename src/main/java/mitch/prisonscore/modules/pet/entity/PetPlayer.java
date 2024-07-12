@@ -10,7 +10,11 @@ import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.pet.PetModule;
 import mitch.prisonscore.modules.pet.util.PetType;
 import mitch.prisonscore.modules.pet.util.PetUtils;
+import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -55,19 +59,23 @@ public class PetPlayer extends SenderEntity<PetPlayer> {
 
     private PetType activePet = PetType.TOKEN;
 
+    private Component getPetHologram(){
+        final TagResolver petType = Placeholder.parsed("type", activePet.name());
+        final TagResolver petLevel = Placeholder.parsed("level", "" + getPetLevel(activePet));
+        return MessageUtils.colorize(PetModule.get().getPetHologramFormat(), petType, petLevel);
+    }
     public void spawnPet(PetType type) {
         if(!showPet) return;
-        Location petSpawnLoc = PetUtils.getRelativePetLocation(getPlayer().getLocation(), 0, 1);
-        ArmorStand armorStand = petSpawnLoc.getWorld().spawn(petSpawnLoc, ArmorStand.class);
-        ModeledEntity modeledEntity = ModelEngineAPI.createModeledEntity(armorStand);
-        ActiveModel activeModel = ModelEngineAPI.createActiveModel(PetModule.get().getPetMythicMobs().get(type));
+        final Location petSpawnLoc = PetUtils.getRelativePetLocation(getPlayer().getLocation(), 0, 1);
+        final ArmorStand armorStand = petSpawnLoc.getWorld().spawn(petSpawnLoc, ArmorStand.class);
+        final ModeledEntity modeledEntity = ModelEngineAPI.createModeledEntity(armorStand);
+        final ActiveModel activeModel = ModelEngineAPI.createActiveModel(PetModule.get().getPetMythicMobs().get(type));
         modeledEntity.addModel(activeModel, false);
-        armorStand.customName(MessageUtils.colorize("<red>" + getPlayer().getName() + "'s " + type.name() + " Pet"));
+        armorStand.customName(getPetHologram());
         armorStand.setCustomNameVisible(true);
         armorStand.setGravity(false);
         armorStand.setInvisible(true);
         petEntity = armorStand;
-        MessageUtils.sendMessage(getPlayer(), "<green>Your " + type.name() + " pet has been spawned!");
     }
     public void setActivePet(PetType type) {
         activePet = type;
@@ -99,18 +107,27 @@ public class PetPlayer extends SenderEntity<PetPlayer> {
         return playerPets.get(type);
     }
 
+    private void updatePetHologram(){
+        if(petEntity != null && showPet){
+            petEntity.customName(getPetHologram());
+        }
+    }
+
     public void addPetLevel(PetType type, int level) {
         playerPets.replace(type, playerPets.get(type) + level);
+        updatePetHologram();
         changed();
     }
 
     public void removePetLevel(PetType type, int level) {
         playerPets.replace(type, playerPets.get(type) - level);
+        updatePetHologram();
         changed();
     }
 
     public void setPetLevel(PetType type, int level) {
         playerPets.replace(type, level);
+        updatePetHologram();
         changed();
     }
 

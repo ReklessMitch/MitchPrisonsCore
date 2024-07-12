@@ -5,7 +5,7 @@ import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pet.newpets.Pet;
 import mitch.prisonscore.modules.pet.newpets.PetConfig;
 import mitch.prisonscore.modules.pet.util.PetType;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import org.bukkit.Material;
 
 import java.util.List;

@@ -11,6 +11,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+
 public class PickaxeMovement extends Engine {
 
     private static PickaxeMovement i = new PickaxeMovement();
@@ -29,6 +31,21 @@ public class PickaxeMovement extends Engine {
         if(!MUtil.isPickaxe(e.getPlayer().getInventory().getItemInMainHand().getType())) return;
         if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             new UpgradeGUI(e.getPlayer()).open();
+        }
+    }
+
+    @EventHandler
+    public void onTeleportToMineEvent(PlayerTeleportEvent event){
+        Player player = event.getPlayer();
+        if(event.getTo().getWorld().getName().equalsIgnoreCase("privatemines")){
+            PickaxePlayer ppickaxe = PickaxePlayer.get(player.getUniqueId());
+            ppickaxe.givePotionEffectEnchants();
+            if(player.getAllowFlight()){
+                player.setFlying(true);
+            }
+        }else{
+            player.clearActivePotionEffects();
+            player.setFlying(false);
         }
     }
 

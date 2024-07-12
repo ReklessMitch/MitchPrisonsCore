@@ -29,8 +29,10 @@ public class TogglesMainGUI extends ChestGui {
         //- Enchant Toggles :red_circle: - 1
         //- Enchant Sounds :red_circle: - 2
 
+        final ItemStack petShowToggle =
+                ItemCreator.createItem(Material.PAPER, 1, 68, "<red>Pet Toggle",
+                        "<gray>Toggle for showing pets");
 
-        final ItemStack petShowToggle = ItemCreator.createItem(Material.PAPER, 1, 68, "<red>Pet Toggle", "<gray>Toggle for showing pets");
         getInventory().setItem(15, petShowToggle);
         setAction(15, event -> {
             final PetPlayer petPlayer = PetPlayer.get(player.getUniqueId());

@@ -2,11 +2,13 @@ package mitch.prisonscore.modules.cell.cmds.cellcmds;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeLong;
+import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import mitch.prisonscore.modules.cell.cmds.CellCommands;
 import mitch.prisonscore.modules.cell.CellModule;
 import mitch.prisonscore.modules.cell.object.Cell;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.profile.utils.Currency;
+import mitch.prisonscore.modules.profile.utils.CurrencyUtils;
 import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -18,7 +20,7 @@ public class CmdAddBeacons extends CellCommands {
 
     public CmdAddBeacons(){
         this.addAliases("addbeacons");
-        this.addParameter(TypeLong.get(), "amount");
+        this.addParameter(TypeString.get(), "amount");
     }
 
     @Override
@@ -29,12 +31,13 @@ public class CmdAddBeacons extends CellCommands {
             MessageUtils.sendMessage(me, lang.getNotInACell());
             return;
         }
-        BigInteger amount = BigInteger.valueOf(this.readArg());
+        String stringAmount = this.readArg();
+        BigInteger amount = CurrencyUtils.parse(stringAmount);
         ProfilePlayer profile = ProfilePlayer.get(me.getUniqueId());
 
         BigInteger beaconAmount = profile.getCurrencyAmount(Currency.BEACON);
 
-        if (amount.compareTo(BigInteger.ZERO) > 0 && beaconAmount.compareTo(amount) > 0) {
+        if (amount.compareTo(BigInteger.ZERO) >= 0 && beaconAmount.compareTo(amount) >= 0) {
             profile.take(Currency.BEACON, amount);
             cell.addBeacons(amount);
             TagResolver amountResolver = Placeholder.parsed("amount", String.valueOf(amount));

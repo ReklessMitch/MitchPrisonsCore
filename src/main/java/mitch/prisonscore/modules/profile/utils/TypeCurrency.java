@@ -25,6 +25,6 @@ public class TypeCurrency extends TypeAbstract<Currency> {
 
     @Override
     public Collection<String> getTabList(CommandSender commandSender, String s) {
-        return Lists.newArrayList("TOKEN", "MONEY", "CREDIT", "BEACON");
+        return Lists.newArrayList("TOKEN", "MONEY", "CREDIT", "BEACON", "DUST");
     }
 }

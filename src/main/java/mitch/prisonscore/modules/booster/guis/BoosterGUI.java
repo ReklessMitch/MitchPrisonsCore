@@ -74,7 +74,7 @@ public class BoosterGUI extends ChestGui {
             }
             return true;
         });
-        return ItemCreator.createItem(Material.MAGMA_BLOCK, 1, 0, "&aCombine Boosters", "&7Click to combine your boosters");
+        return ItemCreator.createItem(Material.MAGMA_BLOCK, 1, 0, "<green>Combine Boosters", "<grey>Click to combine your boosters");
     }
 
     public void open(Player player) {

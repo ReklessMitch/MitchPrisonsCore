@@ -68,6 +68,7 @@ public class MineBlockEvent extends Engine {
             Enchant playerEnchant = MitchPickaxeModule.get().getEnchantByType(type);
             if(level == 0) return;
             final int prestige = pickaxe.getEnchantPrestiges().get(type);
+            if(!pickaxe.getEnchantToggle().get(type)) return;
             if(playerEnchant.getConfig().canProc(level, prestige, e.getPlayer().getUniqueId())){
                 playerEnchant.activate(e, level, prestige);
             }

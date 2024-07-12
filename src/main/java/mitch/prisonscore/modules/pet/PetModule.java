@@ -13,7 +13,7 @@ import mitch.prisonscore.modules.pet.newpets.PetConfig;
 import mitch.prisonscore.modules.pet.placeholders.PetPlaceholders;
 import mitch.prisonscore.modules.pet.util.PetType;
 import mitch.prisonscore.modules.pet.util.PetBoost;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.Module;
 import mitch.prisonscore.modules.type.ModuleType;
 import org.bukkit.Material;
@@ -73,6 +73,8 @@ public class PetModule extends Module {
                    List.of("<gray>Increases proc chance of Supply Drop Pet",
                            "<gray> ",
                            "<gray>Level: <green>{level}"), 0, 4));
+
+    private String petHologramFormat = "<green><type> <gray>pet [<level>]";
 
     public static PetModule get() {
         return MitchPrisonsCore.get().getModuleByType(ModuleType.PETS);
@@ -156,7 +158,6 @@ public class PetModule extends Module {
     public Pet getPetByType(PetType type) {
         return pets.get(type);
     }
-
 
 
 }

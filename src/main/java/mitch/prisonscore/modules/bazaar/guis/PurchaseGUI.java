@@ -42,7 +42,6 @@ public class PurchaseGUI extends ChestGui {
         final List<Currency> currencies = List.of(Currency.BEACON, Currency.TOKEN, Currency.MONEY, Currency.CREDIT);
         int start = 10;
         for(Currency currency: currencies){
-            Bukkit.broadcastMessage("Currency: " + currency +  " - slot: " + start);
             final List<ShopValue> sorted = sellPrices.get(currency);
             if(sorted == null) {
                 getInventory().setItem(start, new ItemStack(Material.BARRIER));

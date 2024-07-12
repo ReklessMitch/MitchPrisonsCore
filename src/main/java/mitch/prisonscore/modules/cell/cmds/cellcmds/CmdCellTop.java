@@ -7,7 +7,7 @@ import mitch.prisonscore.utils.MessageUtils;
 public class CmdCellTop extends CellCommands {
 
     public CmdCellTop(){
-        this.addAliases("celltop");
+        this.addAliases("top");
     }
 
     @Override

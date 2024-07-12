@@ -3,7 +3,7 @@ package mitch.prisonscore.modules.crates.objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import mitch.prisonscore.modules.crates.configs.CratePlayer;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

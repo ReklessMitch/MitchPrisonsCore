@@ -8,6 +8,7 @@ import com.massivecraft.massivecore.util.MUtil;
 import com.massivecraft.massivecore.xlib.gson.GsonBuilder;
 import com.massivecraft.massivecore.xlib.gson.typeadapters.RuntimeTypeAdapterFactory;
 import lombok.Getter;
+import me.reklessmitch.mitchvoidgen.chunkgen.VoidChunkGenerator;
 import mitch.prisonscore.colls.LangColl;
 import mitch.prisonscore.colls.MessageConfColl;
 import mitch.prisonscore.modules.Module;
@@ -52,7 +53,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
     }
 
     private void createPrivateMineWorld() {
-        Bukkit.createWorld(new WorldCreator("privatemines").generator(new CleanroomChunkGenerator()));
+        Bukkit.createWorld(new WorldCreator("privatemines").generator(new VoidChunkGenerator()));
     }
 
     private Map<UUID, ArmorStand> playerWardrobes = new HashMap<>();

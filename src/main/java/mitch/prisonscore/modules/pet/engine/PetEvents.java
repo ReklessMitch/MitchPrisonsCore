@@ -15,7 +15,7 @@ public class PetEvents extends Engine {
     private static PetEvents i = new PetEvents();
     public static PetEvents get() { return i; }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event){
         final PetPlayer petPlayer = PetPlayer.get(event.getPlayer().getUniqueId());
         if(petPlayer.getActivePet() != null && petPlayer.isShowPet()){
@@ -23,7 +23,7 @@ public class PetEvents extends Engine {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event){
         final PetPlayer petPlayer = PetPlayer.get(event.getPlayer().getUniqueId());
         if(petPlayer.getActivePet() == null || petPlayer.getPetEntity() == null || !petPlayer.isShowPet()){

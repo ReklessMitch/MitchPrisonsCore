@@ -12,6 +12,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -24,8 +25,9 @@ public class BoosterInteract extends Engine {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
-        PlayerInventory inv = event.getPlayer().getInventory();
-        ItemMeta meta = inv.getItemInMainHand().getItemMeta();
+        ItemStack item = event.getItem();
+        if(item == null) return;
+        ItemMeta meta = item.getItemMeta();
         if(meta == null){
             return;
         }
@@ -54,7 +56,7 @@ public class BoosterInteract extends Engine {
 
             MessageUtils.sendMessage(event.getPlayer(), LangConf.get().getBoosterAdded(), multiResolver, typeResolver, timeResolver);
             boosterPlayer.getBoosters().add(new Booster(type, multiplier, time));
-            inv.getItemInMainHand().setAmount(inv.getItemInMainHand().getAmount() - 1);
+            event.getItem().setAmount(event.getItem().getAmount() - 1);
         }
     }
 }

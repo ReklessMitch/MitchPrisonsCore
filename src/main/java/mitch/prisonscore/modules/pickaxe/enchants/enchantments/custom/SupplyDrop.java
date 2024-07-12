@@ -5,10 +5,10 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
-import mitch.prisonscore.modules.pickaxe.enchants.ProccableEnchantConfig;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.utils.CrateReward;
+import mitch.prisonscore.utils.configurable.FormatItem;
 import mitch.prisonscore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -28,12 +28,10 @@ public class SupplyDrop extends Enchant<SupplyDrop.Config> {
         Player player = e.getPlayer();
         int prestigeBonus = 1 + prestigeLevel;
         for(int pb = 0; pb < prestigeBonus; pb++){
-            final CrateReward reward = getReward();
+            CrateReward reward = getReward();
             if(reward == null) return;
-            reward.getCommands(player).forEach(command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(),
-                    PlaceholderAPI.setPlaceholders(player, command)));
-
-            MessageUtils.sendMessage(player, PlaceholderAPI.setPlaceholders(player, reward.getMessage(player)));
+            reward.runCommands(player);
+            MessageUtils.sendMessage(player, reward.getMessage(player));
         }
         player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 1, 1);
         //sendEnchantMessage(e.getPlayer());
@@ -59,7 +57,9 @@ public class SupplyDrop extends Enchant<SupplyDrop.Config> {
         @Getter private List<CrateReward> rewards = List.of(new CrateReward(0.2, List.of("addc %player% token 1000"), "Tokens 1"));
 
         public Config() {
-            super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0), 0, 0, 0, 0, "enchantMessage", 0, 0, 0, 0, 0);
+            super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0),
+                    0, 0, 0, 0, "enchantMessage", 0,
+                    0, 0, 0, 0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
         }
 
 

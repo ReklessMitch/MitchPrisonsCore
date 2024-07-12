@@ -2,7 +2,7 @@ package mitch.prisonscore.modules.crates.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import mitch.prisonscore.modules.crates.objects.Crate;
-import mitch.prisonscore.modules.pickaxe.utils.DisplayItem;
+import mitch.prisonscore.utils.configurable.DisplayItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

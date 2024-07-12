@@ -13,6 +13,7 @@ public class PlayerEvents extends Engine {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e){
         ProfilePlayer profile = ProfilePlayer.get(e.getPlayer());
+        if(profile == null) return;
         if(!profile.getJoinMessage().equals("")){
             Bukkit.broadcastMessage(profile.getJoinMessage().replace("%player%", e.getPlayer().getName()));
         }

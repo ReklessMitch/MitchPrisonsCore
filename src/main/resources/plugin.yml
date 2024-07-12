@@ -10,5 +10,6 @@ depend:
   - ProtocolLib
   - LuckPerms
   - ModelEngine
+  - MitchVoidGen
 
 

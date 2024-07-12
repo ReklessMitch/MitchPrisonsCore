@@ -1,7 +1,7 @@
 package mitch.prisonscore.modules.profile.cmds.decoration;
 
 import mitch.prisonscore.modules.profile.cmds.DecorationCommands;
-import mitch.prisonscore.modules.profile.guis.RankColourGUI;
+import mitch.prisonscore.modules.profile.guis.ColourGUI;
 import org.bukkit.entity.Player;
 
 public class CmdRankColourGUI extends DecorationCommands {
@@ -15,7 +15,7 @@ public class CmdRankColourGUI extends DecorationCommands {
 
     @Override
     public void perform() {
-        new RankColourGUI().open((Player) sender);
+        new ColourGUI((Player) sender, 2).open();
     }
 
 }
