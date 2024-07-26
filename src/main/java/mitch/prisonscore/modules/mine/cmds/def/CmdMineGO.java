@@ -16,6 +16,6 @@ public class CmdMineGO extends MineCommands {
 
     @Override
     public void perform() {
-        MinePlayer.get(me.getUniqueId()).teleport();
+        MinePlayer.get(me.getUniqueId()).getMine().teleportToMine(me);
     }
 }

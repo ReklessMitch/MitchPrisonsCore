@@ -16,6 +16,7 @@ import mitch.prisonscore.modules.profile.utils.Currency;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockDamageEvent;
@@ -43,10 +44,10 @@ public class MineBlockEvent extends Engine {
     }
 
 
-    private void addRawBlock(MinePlayer mine, PickaxePlayer pickaxe) {
+    private void addRawBlock(Player player, PickaxePlayer pickaxe) {
         pickaxe.addRawBlockBroken();
-        addTokens(1, mine);
-        PickaxePlayer.get(mine.getUuid()).addBlockBroken(1);
+        addTokens(1, player);
+        pickaxe.addBlockBroken(1);
     }
 
     private void activatePet(BlockInPmineBrokeEvent e){
@@ -62,7 +63,7 @@ public class MineBlockEvent extends Engine {
     @EventHandler(ignoreCancelled = true)
     public void mineBlock(BlockInPmineBrokeEvent e) {
         PickaxePlayer pickaxe = PickaxePlayer.get(e.getPlayer().getUniqueId());
-        addRawBlock(e.getPlayerMine(), pickaxe);
+        addRawBlock(e.getPlayer(), pickaxe);
         activatePet(e);
         pickaxe.getEnchants().forEach((type, level) -> {
             Enchant playerEnchant = MitchPickaxeModule.get().getEnchantByType(type);

@@ -7,7 +7,10 @@ import mitch.prisonscore.modules.mine.MineModule;
 import mitch.prisonscore.modules.mine.configs.MinePlayer;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
+import mitch.prisonscore.modules.publicmines.PublicMinesModule;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import mitch.prisonscore.utils.MessageUtils;
+import net.royawesome.jlibnoise.module.combiner.Min;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -22,30 +25,25 @@ public class MineEvents extends Engine {
 
 
     @EventHandler(ignoreCancelled = true)
-    public void onJoin(PlayerJoinEvent e){
-        System.out.println("Player joined");
-        if(e.getPlayer().hasPlayedBefore()) {
-            return;
-        }
-        System.out.println("Player has not played before");
-        MinePlayer playerMine = MinePlayer.get(e.getPlayer().getUniqueId());
-        playerMine.generateSchematic();
-        playerMine.changed();
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e){
-        if(!e.getPlayer().getWorld().getName().equals("privatemines")) return;
+        String worldName = e.getPlayer().getWorld().getName();
+        Mine mine;
+        if(worldName.equals("privatemines")){
+            mine = MinePlayer.get(e.getPlayer().getUniqueId()).getMine();
+        }
+        else if(worldName.equals("publicmines")){
+            mine = PublicMinesModule.get().getMineAtLocation(e.getBlock().getLocation());
+            if(mine == null){
+                MessageUtils.sendMessage(e.getPlayer(), "<red>You can only break blocks in your mine");
+            }
+        }
+        else return;
+
+
         e.setCancelled(true);
         Block block = e.getBlock();
-        BlockVector3 blockVector3 = BlockVector3.at(block.getX(), block.getY(), block.getZ());
-        MinePlayer playerMine = MinePlayer.get(e.getPlayer().getUniqueId());
-        if(!playerMine.isInMine(blockVector3)){
-            MessageUtils.sendMessage(e.getPlayer(), "<red>You can only break blocks in your mine");
-            return;
-        }
         block.setType(Material.AIR);
-        BlockInPmineBrokeEvent event = new BlockInPmineBrokeEvent(e.getPlayer(), playerMine, e.getBlock());
+        BlockInPmineBrokeEvent event = new BlockInPmineBrokeEvent(e.getPlayer(), mine, e.getBlock());
         Bukkit.getServer().getPluginManager().callEvent(event);
     }
 
@@ -54,15 +52,18 @@ public class MineEvents extends Engine {
     public void onTeleportToMine(PlayerChangedWorldEvent e){
         if(!e.getPlayer().getWorld().getName().equals("privatemines")) return;
         MinePlayer playerMine = MinePlayer.get(e.getPlayer().getUniqueId());
-//        Bukkit.getScheduler().runTaskLater(MitchPrisonsCore.get(), () ->
-//                spoofWorldBorder(e.getPlayer(), playerMine.getMiddleLocation().toLocation(), 124), 40);
+        WorldBorder playerWorldBorder = Bukkit.createWorldBorder();
+
+        // @TODO: Fix this
+//
+//        playerWorldBorder.setCenter(playerMine.getMiddleLocation().toLocation());
+//        playerWorldBorder.setSize(250);
+//        playerWorldBorder.setDamageAmount(1.0);
+//        playerWorldBorder.setWarningDistance(1);
+//        e.getPlayer().setWorldBorder(playerWorldBorder);
     }
 
-//    public void spoofWorldBorder(Player player, Location center, double size) {
-//        MitchPrisonsCore.get().getWorldBorderApi().setBorder(player, size, center);
-//    }
-
-
+    
     /**
      * Mine Upgrade based on blocks mined - Deprecated
      */

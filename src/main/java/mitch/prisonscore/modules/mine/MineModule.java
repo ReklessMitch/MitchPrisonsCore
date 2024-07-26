@@ -3,8 +3,6 @@ package mitch.prisonscore.modules.mine;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import mitch.prisonscore.MitchPrisonsCore;
-import mitch.prisonscore.modules.mine.cmds.admin.CmdMineIncrease;
-import mitch.prisonscore.modules.mine.cmds.admin.CmdMineResetTest;
 import mitch.prisonscore.modules.mine.cmds.def.CmdMineGO;
 import mitch.prisonscore.modules.mine.configs.PlayerMineColl;
 import mitch.prisonscore.modules.mine.cmds.def.CmdMine;
@@ -12,8 +10,10 @@ import mitch.prisonscore.modules.mine.engine.MineEvents;
 import mitch.prisonscore.modules.mine.placeholders.MinePlaceholders;
 import mitch.prisonscore.modules.mine.utils.SerLoc;
 import mitch.prisonscore.modules.Module;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import mitch.prisonscore.modules.type.ModuleType;
 import mitch.prisonscore.utils.configurable.FormatItem;
+import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.Set;
@@ -60,7 +60,7 @@ public class MineModule extends Module {
                 PlayerMineColl.class,
 
                 // cmds
-                CmdMine.class, CmdMineResetTest.class, CmdMineIncrease.class, CmdMineGO.class,
+                CmdMine.class, CmdMineGO.class,
 
                 // events
                 MineEvents.class
@@ -73,5 +73,4 @@ public class MineModule extends Module {
     public void disable() {
 
     }
-
 }

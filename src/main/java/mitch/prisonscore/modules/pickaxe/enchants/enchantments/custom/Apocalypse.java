@@ -4,6 +4,7 @@ import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.utils.configurable.FormatItem;
@@ -22,9 +23,10 @@ public class Apocalypse extends Enchant<Apocalypse.Config> {
 
     @Override
     public void activate(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {
-        int blocks = e.getPlayerMine().apocalypse();
-        addTokens(blocks, e.getPlayerMine());
-        PickaxePlayer.get(e.getPlayerMine().getUuid()).addBlockBroken(blocks);
+        Mine mine = e.getMine();
+        int blocks = mine.apocalypse(e.getPlayer());
+        addTokens(blocks, e.getPlayer());
+        PickaxePlayer.get(e.getPlayer().getUniqueId()).addBlockBroken(blocks);
         sendEnchantMessage(e.getPlayer());
     }
 

@@ -37,7 +37,8 @@ public class PickaxeMovement extends Engine {
     @EventHandler
     public void onTeleportToMineEvent(PlayerTeleportEvent event){
         Player player = event.getPlayer();
-        if(event.getTo().getWorld().getName().equalsIgnoreCase("privatemines")){
+        String worldName = event.getTo().getWorld().getName();
+        if(worldName.equalsIgnoreCase("privatemines") || worldName.equalsIgnoreCase("publicmines")){
             PickaxePlayer ppickaxe = PickaxePlayer.get(player.getUniqueId());
             ppickaxe.givePotionEffectEnchants();
             if(player.getAllowFlight()){

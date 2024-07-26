@@ -20,7 +20,7 @@ public class Reaper extends Pet<Reaper.Config> {
     public void activate(BlockInPmineBrokeEvent event, int level) {
         int levelsToGoDown = getConfig().baseLevelsToGoDown + (level / getConfig().levelsToGoDownPerXLevels);
         Block block = event.getBlock();
-        event.getPlayerMine().getBlocksOnXAxis(block.getX(), block.getY(), levelsToGoDown);
+        event.getMine().getBlocksOnXAxis(event.getPlayer(), block.getX(), block.getY(), levelsToGoDown);
         sendPetMessage(event.getPlayer());
     }
 

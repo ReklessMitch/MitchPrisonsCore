@@ -27,45 +27,45 @@ public class BlockGUI extends ChestGui {
         this.player = player;
         this.minePlayer = MinePlayer.get(player.getUniqueId());
         setInventory(Bukkit.createInventory(null, 45, "Set Block"));
-        init();
+//        init();
         add();
     }
 
-    private ItemStack getBlockItem(Material material){
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(MessageUtils.colorize("<green>" + material.name().toUpperCase() + " BLOCK"));
-        List<String> loreToAdd = Lists.newArrayList("" +
-                        "<gray>Left Click to add block",
-                        "<gray>Right click to remove block");
-        if(!player.hasPermission("mpc.mineblock." + material.name().toLowerCase())){
-            loreToAdd.add("<red>Locked");
-        }
-        meta.lore(MessageUtils.colorize(loreToAdd));
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.setItemMeta(meta);
-        if(minePlayer.getBlocks().contains(material)){
-            item.addUnsafeEnchantment(Enchantment.THORNS, 1);
-        }
-        return item;
-    }
-
-    public void init() {
-        List<Material> blocks = Lists.newArrayList(MineModule.get().getBlockMap());
-        for(int i = 0; i < blocks.size(); i++){
-            Material block = blocks.get(i);
-            getInventory().setItem(i, getBlockItem(blocks.get(i)));
-            setAction(i, event -> {
-                if(event.getClick().isLeftClick()) {
-                    minePlayer.addBlock(block);
-                }
-                else if(event.getClick().isRightClick()) {
-                    minePlayer.removeBlock(block);
-                }
-                return true;
-            });
-        }
-    }
+//    private ItemStack getBlockItem(Material material){
+//        ItemStack item = new ItemStack(material);
+//        ItemMeta meta = item.getItemMeta();
+//        meta.displayName(MessageUtils.colorize("<green>" + material.name().toUpperCase() + " BLOCK"));
+//        List<String> loreToAdd = Lists.newArrayList("" +
+//                        "<gray>Left Click to add block",
+//                        "<gray>Right click to remove block");
+//        if(!player.hasPermission("mpc.mineblock." + material.name().toLowerCase())){
+//            loreToAdd.add("<red>Locked");
+//        }
+//        meta.lore(MessageUtils.colorize(loreToAdd));
+//        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+//        item.setItemMeta(meta);
+//        if(minePlayer.getBlocks().contains(material)){
+//            item.addUnsafeEnchantment(Enchantment.THORNS, 1);
+//        }
+//        return item;
+//    }
+//
+//    public void init() {
+//        List<Material> blocks = Lists.newArrayList(MineModule.get().getBlockMap());
+//        for(int i = 0; i < blocks.size(); i++){
+//            Material block = blocks.get(i);
+//            getInventory().setItem(i, getBlockItem(blocks.get(i)));
+//            setAction(i, event -> {
+//                if(event.getClick().isLeftClick()) {
+//                    minePlayer.addBlock(block);
+//                }
+//                else if(event.getClick().isRightClick()) {
+//                    minePlayer.removeBlock(block);
+//                }
+//                return true;
+//            });
+//        }
+//    }
 
     public void open() {
         player.openInventory(getInventory());

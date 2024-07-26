@@ -15,6 +15,6 @@ public class CmdResetMine extends MineCommands {
     @Override
     public void perform() {
         Player player = (Player) sender;
-        MinePlayer.get(player.getUniqueId()).reset();
+        MinePlayer.get(player.getUniqueId()).getMine().reset();
     }
 }

@@ -2,6 +2,7 @@ package mitch.prisonscore.modules.mine.utils;
 
 import com.sk89q.worldedit.math.BlockVector3;
 import lombok.Getter;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -34,6 +35,11 @@ public class SerLoc {
         return this.toBlockVector3().add(vector.toBlockVector3());
     }
 
+    public void add(int amount){
+        this.x += amount;
+        this.z += amount;
+    }
+
     public BlockVector3 add(BlockVector3 vector) {
         return this.toBlockVector3().add(vector);
     }
@@ -42,7 +48,12 @@ public class SerLoc {
         return this.toBlockVector3().add(x, y, z);
     }
 
-    public Location toLocation() {
-        return new Location(Bukkit.getWorld("privatemines"), x, y, z);
+    public Location toLocation(Mine mine) {
+        return new Location(Bukkit.getWorld(mine.getWorldName()), x, y, z);
+    }
+
+    public void subtract(int amount) {
+        this.x -= amount;
+        this.z -= amount;
     }
 }

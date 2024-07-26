@@ -14,6 +14,7 @@ public enum ModuleType {
    PROFILE("Profile"),
    PICKAXE("Pickaxe"),
    CRATES("Crates"),
+   PUBLICMINES("PublicMines"),
    CRYSTALS("Crystals");
 
    @Getter private String name;

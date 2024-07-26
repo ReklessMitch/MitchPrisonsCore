@@ -25,17 +25,17 @@ public class Beacon extends Enchant<Beacon.Config> {
     /**
      * Use this to spawn Beacons in Mine
      */
-    public void activateOldVersion(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {
-        Location centerLocation = e.getBlock().getLocation();
-        PickaxePlayer pickaxe = PickaxePlayer.get(e.getPlayer().getUniqueId());
-        int prestigeMulti = 1 + pickaxe.getEnchantPrestiges().get(EnchantType.BEACON);
-        int radius = getConfig().defaultRadius + (level / getConfig().radiusIncreasePerXLevels);
-        e.getPlayerMine().getBlocksInSquareRaduis(centerLocation, radius + prestigeMulti);
-        final Region region =  e.getPlayerMine().getBlocksInSquareRaduis(centerLocation, radius);
-        int amountChanged = e.getPlayerMine().replaceBlocksInRegion(region, BlockTypes.BEACON, getConfig().baseChanceToReplace + (level * getConfig().replaceIncreasePerLevel));
-        final TagResolver beaconResolver = Placeholder.parsed("blocks", String.valueOf(amountChanged));
-        sendEnchantMessage(e.getPlayer(), beaconResolver);
-    }
+//    public void activateOldVersion(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {
+//        Location centerLocation = e.getBlock().getLocation();
+//        PickaxePlayer pickaxe = PickaxePlayer.get(e.getPlayer().getUniqueId());
+//        int prestigeMulti = 1 + pickaxe.getEnchantPrestiges().get(EnchantType.BEACON);
+//        int radius = getConfig().defaultRadius + (level / getConfig().radiusIncreasePerXLevels);
+//        e.getPlayerMine().getBlocksInSquareRaduis(centerLocation, radius + prestigeMulti);
+//        final Region region =  e.getPlayerMine().getBlocksInSquareRaduis(centerLocation, radius);
+//        int amountChanged = e.getPlayerMine().replaceBlocksInRegion(region, BlockTypes.BEACON, getConfig().baseChanceToReplace + (level * getConfig().replaceIncreasePerLevel));
+//        final TagResolver beaconResolver = Placeholder.parsed("blocks", String.valueOf(amountChanged));
+//        sendEnchantMessage(e.getPlayer(), beaconResolver);
+//    }
 
     @Override
     public void activate(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {

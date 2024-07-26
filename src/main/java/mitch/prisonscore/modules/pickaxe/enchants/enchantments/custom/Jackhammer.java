@@ -29,10 +29,11 @@ public class Jackhammer extends Enchant<Jackhammer.Config> {
 
     @Override
     public void activate(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {
+
         for(int y = 0; y < prestigeLevel + 1; y++) {
-            int blocks = e.getPlayerMine().getBlocksOnYLayer(e.getBlock().getY() - y);
-            addTokens(blocks, e.getPlayerMine());
-            PickaxePlayer.get(e.getPlayerMine().getUuid()).addBlockBroken(blocks);
+            int blocks = e.getMine().getBlocksOnYLayer(e.getPlayer(), e.getBlock().getY() - y);
+            addTokens(blocks, e.getPlayer());
+            PickaxePlayer.get(e.getPlayer().getUniqueId()).addBlockBroken(blocks);
         }
         sendEnchantMessage(e.getPlayer());
     }

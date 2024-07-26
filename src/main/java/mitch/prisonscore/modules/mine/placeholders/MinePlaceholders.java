@@ -34,13 +34,10 @@ public class MinePlaceholders extends PlaceholderExpansion {
         MinePlayer minePlayer = MinePlayer.get(player.getUniqueId());
         PickaxePlayer pickaxePlayer = PickaxePlayer.get(player.getUniqueId());
         return switch (params.toLowerCase()){
-            case "size" -> "" + minePlayer.getSize();
-            case "booster" -> "" + minePlayer.getBooster();
-            case "blockstonextrankup" -> "" + MineModule.get().getNextMineLevelBlockRequirement(minePlayer.getSize());
             case "blocksmined" -> "" + pickaxePlayer.getBlocksBroken();
             case "rawblocksmined" -> "" + pickaxePlayer.getRawBlocksBroken();
-            case "blocksleftinmine" -> "" + (minePlayer.getVolume() - minePlayer.getVolumeMined());
-            case "block" -> "" + minePlayer.getBlocks().toString();
+            case "blocksleftinmine" -> "" + (minePlayer.getMine().getVolume() - minePlayer.getMine().getVolumeMined());
+            case "block" -> "" + minePlayer.getMine().getBlocks().toString();
             default -> "N/A";
         };
     }

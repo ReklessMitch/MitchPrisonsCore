@@ -58,15 +58,9 @@ public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
     }
 
     public void addBlockBroken(long amount){
-        MinePlayer mine = MinePlayer.get(getPlayer());
-        int booster = mine.getBooster();
-        if(booster > 0){
-            amount = amount * booster;
-        }
         blocksBroken += amount;
         BlocksMinedEvent e = new BlocksMinedEvent(getPlayer(), amount);
         Bukkit.getPluginManager().callEvent(e);
-
     }
 
     public static PickaxePlayer get(Object oid) {

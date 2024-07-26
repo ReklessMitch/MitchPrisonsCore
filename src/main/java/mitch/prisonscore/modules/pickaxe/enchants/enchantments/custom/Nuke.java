@@ -9,12 +9,14 @@ import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.profile.utils.Currency;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.utils.configurable.FormatItem;
 import org.bukkit.Material;
 
 import java.util.List;
+import java.util.UUID;
 
 import static mitch.prisonscore.modules.pickaxe.utils.EnchantUtils.addTokens;
 
@@ -26,14 +28,15 @@ public class Nuke extends Enchant<Nuke.Config> {
 
     @Override
     public void activate(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {
-        MinePlayer mine = e.getPlayerMine();
+        Mine mine = e.getMine();
+        UUID uuid = e.getPlayer().getUniqueId();
         int blocks = (int) (mine.getVolume() - mine.getVolumeMined());
-        addTokens(blocks, mine);
+        addTokens(blocks, e.getPlayer());
         int beacons = (int) (blocks * 0.02);
         Booster booster = BoosterPlayer.get(e.getPlayer().getUniqueId()).getActiveBeaconBooster();
         if(booster != null) beacons *= booster.getMultiplier();
-        ProfilePlayer.get(e.getPlayer().getUniqueId()).addCurrency(Currency.BEACON, beacons);
-        PickaxePlayer.get(e.getPlayerMine().getUuid()).addBlockBroken(blocks);
+        ProfilePlayer.get(uuid).addCurrency(Currency.BEACON, beacons);
+        PickaxePlayer.get(uuid).addBlockBroken(blocks);
         mine.reset();
         sendEnchantMessage(e.getPlayer());
     }

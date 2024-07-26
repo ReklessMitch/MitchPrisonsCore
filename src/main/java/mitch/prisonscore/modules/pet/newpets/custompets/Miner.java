@@ -5,8 +5,10 @@ import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pet.newpets.Pet;
 import mitch.prisonscore.modules.pet.newpets.PetConfig;
 import mitch.prisonscore.modules.pet.util.PetType;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -21,12 +23,13 @@ public class Miner extends Pet<Miner.Config> {
 
     @Override
     public void activate(BlockInPmineBrokeEvent event, int level) {
-        MinePlayer minePlayer = event.getPlayerMine();
+        Mine mine = event.getMine();
+        Player player = event.getPlayer();
         int radiusIncrease = level / getConfig().radiusIncreasePerXLevels;
-        addTokens(minePlayer.getBeaconsAndBlocksInRegion(
-                minePlayer.getBlocksInSquareRaduis(
+        addTokens(mine.getBeaconsAndBlocksInRegion(player,
+                mine.getBlocksInSquareRaduis(
                         event.getBlock().getLocation().subtract(0, 1, 0),
-                        getConfig().defaultRadius + radiusIncrease)), minePlayer);
+                        getConfig().defaultRadius + radiusIncrease)), player);
         sendPetMessage(event.getPlayer());
     }
 

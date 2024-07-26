@@ -37,44 +37,44 @@ public class MineGUI extends ChestGui {
             final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Mine GO", PlaceholderAPI.setPlaceholders(player, langConf.getMineGoGUIItem()));
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
-                playerMine.teleport();
+                playerMine.getMine().teleportToMine(player);
                 return true;
             });
         }
 
     }
 
-    private void addUpgradeBoosterItem(){
-        int[] slots = {6, 7, 8, 15, 16, 17, 24, 25, 26, 33, 34, 35, 42, 43, 44, 51, 52, 53};
-        MineModule conf = MineModule.get();
-        int cost = conf.getMineBoosterCost();
-        int maxLevel = conf.getMineBoosterMax();
-
-        boolean maxed = playerMine.getBooster() >= maxLevel;
-        final ItemStack item = maxed ?
-                ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Upgrade Booster",
-                        PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterMaxed())) :
-                ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Upgrade Booster",
-                        PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterNotMaxed()));
-        for(int slot: slots) {
-            getInventory().setItem(slot, item);
-            this.setAction(slot, event -> {
-                if(maxed) {
-                    event.getWhoClicked().sendMessage(PlaceholderAPI.setPlaceholders(player, langConf.getMineMaxMineBooster()));
-                    return true;
-                }
-                final ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
-                if (profile.getCurrencyAmount(Currency.CREDIT).intValue() >= cost) {
-                    profile.take(Currency.CREDIT, BigInteger.valueOf(cost));
-                    playerMine.addBooster(1);
-                    addUpgradeBoosterItem();
-                } else {
-                    MessageUtils.sendMessage(player, langConf.getMineNotEnoughCredits());
-                }
-                return true;
-            });
-        }
-    }
+//    private void addUpgradeBoosterItem(){
+//        int[] slots = {6, 7, 8, 15, 16, 17, 24, 25, 26, 33, 34, 35, 42, 43, 44, 51, 52, 53};
+//        MineModule conf = MineModule.get();
+//        int cost = conf.getMineBoosterCost();
+//        int maxLevel = conf.getMineBoosterMax();
+//
+//        boolean maxed = playerMine.getBooster() >= maxLevel;
+//        final ItemStack item = maxed ?
+//                ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Upgrade Booster",
+//                        PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterMaxed())) :
+//                ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Upgrade Booster",
+//                        PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterNotMaxed()));
+//        for(int slot: slots) {
+//            getInventory().setItem(slot, item);
+//            this.setAction(slot, event -> {
+//                if(maxed) {
+//                    event.getWhoClicked().sendMessage(PlaceholderAPI.setPlaceholders(player, langConf.getMineMaxMineBooster()));
+//                    return true;
+//                }
+//                final ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
+//                if (profile.getCurrencyAmount(Currency.CREDIT).intValue() >= cost) {
+//                    profile.take(Currency.CREDIT, BigInteger.valueOf(cost));
+//                    playerMine.addBooster(1);
+//                    addUpgradeBoosterItem();
+//                } else {
+//                    MessageUtils.sendMessage(player, langConf.getMineNotEnoughCredits());
+//                }
+//                return true;
+//            });
+//        }
+//    }
 
     private void addResetItem(){
         int[] slots = {3, 4 ,5, 12, 13, 14, 21, 22, 23, 30, 31, 32, 39, 40, 41, 48, 49, 50};
@@ -82,7 +82,7 @@ public class MineGUI extends ChestGui {
             final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, LangConf.get().getInvisibleCustomData(), "<gold>Reset Mine", "<red>Reset your mine");
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
-                playerMine.reset();
+                playerMine.getMine().reset();
                 return true;
             });
         }
@@ -90,7 +90,7 @@ public class MineGUI extends ChestGui {
 
     private void init() {
         addMineInformationItem();
-        addUpgradeBoosterItem();
+//        addUpgradeBoosterItem();
         addResetItem();
     }
 

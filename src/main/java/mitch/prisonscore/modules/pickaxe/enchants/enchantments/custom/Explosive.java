@@ -5,6 +5,7 @@ import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.utils.configurable.FormatItem;
@@ -23,12 +24,12 @@ public class Explosive extends Enchant<Explosive.Config> {
 
     @Override
     public void activate(BlockInPmineBrokeEvent e, int level, int prestigeLevel) {
-        MinePlayer mine = e.getPlayerMine();
+        Mine mine = e.getMine();
         int radiusIncrease = level / this.getConfig().explosiveLevelsPerIncrease;
         int radius = this.getConfig().explosiveStartRadius + radiusIncrease;
-        int blocks = mine.getExplosiveBlocks(e.getBlock().getLocation(), radius);
-        addTokens(blocks, mine);
-        PickaxePlayer.get(mine.getUuid()).addBlockBroken(blocks);
+        int blocks = mine.getExplosiveBlocks(e.getPlayer(), e.getBlock().getLocation(), radius);
+        addTokens(blocks, e.getPlayer());
+        PickaxePlayer.get(e.getPlayer().getUniqueId()).addBlockBroken(blocks);
         sendEnchantMessage(e.getPlayer());
     }
 

@@ -2,6 +2,7 @@ package mitch.prisonscore.modules.mine.utils;
 
 import lombok.Getter;
 import mitch.prisonscore.modules.mine.configs.MinePlayer;
+import mitch.prisonscore.modules.publicmines.object.Mine;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -13,12 +14,12 @@ public class BlockInPmineBrokeEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
-    private final MinePlayer playerMine;
+    private final Mine mine;
     private final Block block;
 
-    public BlockInPmineBrokeEvent(Player player, MinePlayer playerMine, Block block){
+    public BlockInPmineBrokeEvent(Player player, Mine mine, Block block){
         this.player = player;
-        this.playerMine = playerMine;
+        this.mine = mine;
         this.block = block;
     }
 
