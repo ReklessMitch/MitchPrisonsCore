@@ -2,6 +2,7 @@ package mitch.prisonscore.modules.pickaxe.enchants.enchantments.custom;
 
 import lombok.Getter;
 import me.clip.placeholderapi.PlaceholderAPI;
+import mitch.prisonscore.modules.crystals.utils.CrystalType;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
@@ -59,7 +60,7 @@ public class SupplyDrop extends Enchant<SupplyDrop.Config> {
         public Config() {
             super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0),
                     0, 0, 0, 0, "enchantMessage", 0,
-                    0, 0, 0, 0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
+                    0, 0, 0, 0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0), CrystalType.SUPPLY_DROP);
         }
 
 

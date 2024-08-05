@@ -5,6 +5,7 @@ import lombok.Getter;
 import mitch.prisonscore.modules.publicmines.object.Mine;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 @Getter
 public class SerLoc {
@@ -52,8 +53,17 @@ public class SerLoc {
         return new Location(Bukkit.getWorld(mine.getWorldName()), x, y, z);
     }
 
+    public Location toLocation(Player player) {
+        return new Location(player.getWorld(), x, y, z);
+    }
+
+    public Location toLocation(String world) {
+        return new Location(Bukkit.getWorld(world), x, y, z);
+    }
+
     public void subtract(int amount) {
         this.x -= amount;
         this.z -= amount;
     }
+
 }

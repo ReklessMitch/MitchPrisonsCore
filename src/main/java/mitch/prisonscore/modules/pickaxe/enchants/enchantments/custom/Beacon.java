@@ -2,10 +2,13 @@ package mitch.prisonscore.modules.pickaxe.enchants.enchantments.custom;
 
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.block.BlockTypes;
+import mitch.prisonscore.modules.crystals.utils.CrystalType;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
+import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
+import mitch.prisonscore.modules.profile.utils.Currency;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import mitch.prisonscore.utils.configurable.FormatItem;
@@ -45,6 +48,8 @@ public class Beacon extends Enchant<Beacon.Config> {
         double chance = getConfig().baseChanceToReplace + (level * getConfig().replaceIncreasePerLevel);
         int amountChanged = (int) (radius * radius * prestigeMulti * chance);
         final TagResolver beaconResolver = Placeholder.parsed("blocks", String.valueOf(amountChanged));
+        final ProfilePlayer profile = ProfilePlayer.get(e.getPlayer().getUniqueId());
+        profile.addCurrency(Currency.BEACON, amountChanged);
         sendEnchantMessage(e.getPlayer(), beaconResolver);
     }
 
@@ -55,7 +60,7 @@ public class Beacon extends Enchant<Beacon.Config> {
         double replaceIncreasePerLevel = 0.01;
         public Config() {
             super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0), 0, 0, 0, 0, "enchantMessage", 0, 0, 0, 0, 0,
-                    new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
+                    new FormatItem(Material.DIAMOND, "base", List.of("test"), 0), CrystalType.BEACON);
         }
     }
 }

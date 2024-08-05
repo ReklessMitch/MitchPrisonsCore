@@ -4,6 +4,7 @@ import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.util.MUtil;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
 import mitch.prisonscore.modules.pickaxe.gui.UpgradeGUI;
+import mitch.prisonscore.modules.pickaxe.utils.EnchantType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +23,7 @@ public class PickaxeMovement extends Engine {
     public void onFirstLogin(PlayerLoginEvent e) {
         Player player = e.getPlayer();
         PickaxePlayer ppickaxe = PickaxePlayer.get(player.getUniqueId());
-        player.getInventory().setItem(0, ppickaxe.getPickaxeGuiItem());
+        ppickaxe.addLevelToEnchant(EnchantType.EFFICIENCY, 10);
     }
 
     @EventHandler

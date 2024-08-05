@@ -1,5 +1,6 @@
 package mitch.prisonscore.modules.pickaxe.enchants.enchantments.custom;
 
+import mitch.prisonscore.modules.crystals.utils.CrystalType;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pet.entity.PetPlayer;
 import mitch.prisonscore.modules.pet.util.PetType;
@@ -43,7 +44,7 @@ public class KeyFinder extends Enchant<KeyFinder.Config> {
             super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0),
                     0, 0, 0, 0, "enchantMessage", 0,
                     0, 0, 0, 0,
-                    new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
+                    new FormatItem(Material.DIAMOND, "base", List.of("test"), 0), CrystalType.KEYFINDER);
         }
 
         @Override

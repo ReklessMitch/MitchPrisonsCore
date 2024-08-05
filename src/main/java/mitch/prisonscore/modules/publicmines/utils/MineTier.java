@@ -7,7 +7,8 @@ public enum MineTier {
     TIER1(50),
     TIER2(65),
     TIER3(80),
-    TIER4(100);
+    TIER4(100),
+    TIER5(125);
 
     private final int mineSize;
 

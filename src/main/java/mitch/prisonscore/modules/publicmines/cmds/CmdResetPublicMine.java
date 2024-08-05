@@ -17,12 +17,13 @@ public class CmdResetPublicMine extends PublicMineCommands{
     @Override
     public void perform() throws MassiveException {
         String mineName = this.readArg();
-        PublicMinesModule.get().getPublicMines().values().stream().filter(mine ->
-                mine.getName().equalsIgnoreCase(mineName)).findFirst()
-                .ifPresentOrElse(mine -> {
-                    mine.reset();
-                    msg("<g>Reset mine <h>%s<g>.", mine.getName());
-                }, () -> msg("<red>Could not find mine <h>%s<red>.", mineName));
+        // @TODO: Implement
+//        PublicMinesModule.get().getPublicMines().values().stream().filter(mine ->
+//                mine.getName().equalsIgnoreCase(mineName)).findFirst()
+//                .ifPresentOrElse(mine -> {
+//                    mine.reset();
+//                    msg("<g>Reset mine <h>%s<g>.", mine.getName());
+//                }, () -> msg("<red>Could not find mine <h>%s<red>.", mineName));
     }
 
 

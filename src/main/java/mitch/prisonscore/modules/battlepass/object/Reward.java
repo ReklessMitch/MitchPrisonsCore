@@ -8,10 +8,12 @@ import java.util.List;
 public class Reward {
     String name;
     List<String> commands;
+    List<String> messages;
 
-    public Reward(String name, List<String> commands) {
+    public Reward(String name, List<String> commands, List<String> messages) {
         this.name = name;
         this.commands = commands;
+        this.messages = messages;
     }
 
 

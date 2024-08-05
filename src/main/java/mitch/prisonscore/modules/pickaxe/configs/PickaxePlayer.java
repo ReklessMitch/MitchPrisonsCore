@@ -3,6 +3,8 @@ package mitch.prisonscore.modules.pickaxe.configs;
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import mitch.prisonscore.modules.battlepass.events.BlocksMinedEvent;
+import mitch.prisonscore.modules.crystals.configs.CrystalPlayer;
+import mitch.prisonscore.modules.crystals.objects.Crystal;
 import mitch.prisonscore.modules.mine.configs.MinePlayer;
 import mitch.prisonscore.modules.pickaxe.MitchPickaxeModule;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
@@ -18,15 +20,13 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
 
-    private FormatItem pickaxe = new FormatItem(Material.DIAMOND_PICKAXE, "<gold>Pickaxe",
+    private FormatItem pickaxe = new FormatItem(Material.DIAMOND_PICKAXE,
+            "temp",
             List.of("<yellow>Enchants"), 0);
     private long rawBlocksBroken = 0;
     private long blocksBroken = 0;
@@ -43,7 +43,7 @@ public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
     }
 
     public void addLevelToEnchant(EnchantType enchant, int amount){
-        enchants.put(enchant, enchants.get(enchant) + amount);
+        enchants.replace(enchant, enchants.get(enchant) + amount);
         updatePickaxe();
     }
 
@@ -75,8 +75,9 @@ public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
     }
 
     public void updatePickaxe(){
-        List<String> lore = new ArrayList<>(List.of("<yellow><bold>Enchants"));
-        lore.add("<grey> ");
+        pickaxe.setItemName("<lightbluegrad><bold>" + getPlayer().getName() + "'s Pickaxe");
+        List<String> lore = new ArrayList<>(List.of(""));
+        lore.add("<yellowgrad><bold>Enchants");
         enchants.forEach((enchantType, level) -> {
             if(level == 0) return;
             Enchant<?> e = MitchPickaxeModule.get().getEnchantByType(enchantType);
@@ -88,6 +89,15 @@ public class PickaxePlayer extends SenderEntity<PickaxePlayer> {
             }
             lore.add(enchantmentLore);
         });
+        List<Crystal> appliedCrystals = CrystalPlayer.get(getUuid()).getAppliedCrystals();
+        if(!appliedCrystals.isEmpty()){
+            lore.add("<grey> ");
+            lore.add("<aqua><bold>Crystals");
+
+            for(Crystal crystal : appliedCrystals){
+                lore.add("<aqua>| " + crystal.getString());
+            }
+        }
         pickaxe.setItemLore(lore);
         givePickaxe();
         this.changed();

@@ -3,6 +3,7 @@ package mitch.prisonscore.modules.pickaxe.enchants.enchantments.custom;
 import lombok.Getter;
 import mitch.prisonscore.modules.booster.configs.BoosterPlayer;
 import mitch.prisonscore.modules.booster.objects.Booster;
+import mitch.prisonscore.modules.crystals.utils.CrystalType;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pet.entity.PetPlayer;
 import mitch.prisonscore.modules.pet.util.PetType;
@@ -51,7 +52,7 @@ public class TokenPouch extends Enchant<TokenPouch.Config> {
             super(new DisplayItem(Material.DIAMOND, "base", List.of("test"),
                     0, 0), 0, 0, 0, 0,
                     "enchantMessage", 0, 0, 0, 0,
-                    0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
+                    0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0), CrystalType.TOKEN_POUCH);
         }
     }
 }

@@ -31,8 +31,8 @@ public class PublicMineGUI extends ChestGui {
 
         int i = 0;
         for(Map.Entry<Integer, Mine> entry : mines.entrySet()) {
-            getInventory().addItem(ItemCreator.createItem(Material.STONE, 1, entry.getValue().getName(), Lists.newArrayList("" +
-                    "<grey>Teleport to the " + entry.getValue().getName() + " mine.")));
+            getInventory().addItem(ItemCreator.createItem(Material.STONE, 1, "mine", Lists.newArrayList("" +
+                    "<grey>Teleport to the mine.")));
             setAction(i, event -> {
                 if(entry.getKey() > playerRank) {
                     MessageUtils.sendMessage(event.getWhoClicked(), "<red>You do not have access to this mine.");

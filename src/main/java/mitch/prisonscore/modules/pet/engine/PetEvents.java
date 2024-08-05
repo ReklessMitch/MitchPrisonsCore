@@ -32,6 +32,7 @@ public class PetEvents extends Engine {
         petPlayer.despawnPet();
     }
 
+    // @TODO Move this to a task when player activates a pet
     @EventHandler
     public void onPlayerMovement(PlayerMoveEvent event){
         final PetPlayer petPlayer = PetPlayer.get(event.getPlayer().getUniqueId());

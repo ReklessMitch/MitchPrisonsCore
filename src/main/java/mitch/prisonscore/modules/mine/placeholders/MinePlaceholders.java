@@ -36,8 +36,6 @@ public class MinePlaceholders extends PlaceholderExpansion {
         return switch (params.toLowerCase()){
             case "blocksmined" -> "" + pickaxePlayer.getBlocksBroken();
             case "rawblocksmined" -> "" + pickaxePlayer.getRawBlocksBroken();
-            case "blocksleftinmine" -> "" + (minePlayer.getMine().getVolume() - minePlayer.getMine().getVolumeMined());
-            case "block" -> "" + minePlayer.getMine().getBlocks().toString();
             default -> "N/A";
         };
     }

@@ -29,16 +29,18 @@ public class MineEvents extends Engine {
         String worldName = e.getPlayer().getWorld().getName();
         Mine mine;
         if(worldName.equals("privatemines")){
-            mine = MinePlayer.get(e.getPlayer().getUniqueId()).getMine();
+            mine = MinePlayer.get(e.getPlayer().getUniqueId()).getMine(e.getBlock().getLocation());
         }
         else if(worldName.equals("publicmines")){
             mine = PublicMinesModule.get().getMineAtLocation(e.getBlock().getLocation());
-            if(mine == null){
-                MessageUtils.sendMessage(e.getPlayer(), "<red>You can only break blocks in your mine");
-            }
         }
         else return;
 
+        if(mine == null){
+            MessageUtils.sendMessage(e.getPlayer(), "<red>You can only break blocks in your mine");
+            e.setCancelled(true);
+            return;
+        }
 
         e.setCancelled(true);
         Block block = e.getBlock();

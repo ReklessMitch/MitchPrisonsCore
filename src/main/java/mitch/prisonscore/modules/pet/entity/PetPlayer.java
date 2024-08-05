@@ -18,6 +18,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
@@ -64,12 +65,15 @@ public class PetPlayer extends SenderEntity<PetPlayer> {
         final TagResolver petLevel = Placeholder.parsed("level", "" + getPetLevel(activePet));
         return MessageUtils.colorize(PetModule.get().getPetHologramFormat(), petType, petLevel);
     }
+
     public void spawnPet(PetType type) {
         if(!showPet) return;
+
         final Location petSpawnLoc = PetUtils.getRelativePetLocation(getPlayer().getLocation(), 0, 1);
         final ArmorStand armorStand = petSpawnLoc.getWorld().spawn(petSpawnLoc, ArmorStand.class);
         final ModeledEntity modeledEntity = ModelEngineAPI.createModeledEntity(armorStand);
         final ActiveModel activeModel = ModelEngineAPI.createActiveModel(PetModule.get().getPetMythicMobs().get(type));
+
         modeledEntity.addModel(activeModel, false);
         armorStand.customName(getPetHologram());
         armorStand.setCustomNameVisible(true);
@@ -77,6 +81,7 @@ public class PetPlayer extends SenderEntity<PetPlayer> {
         armorStand.setInvisible(true);
         petEntity = armorStand;
     }
+
     public void setActivePet(PetType type) {
         activePet = type;
         if(petEntity != null){

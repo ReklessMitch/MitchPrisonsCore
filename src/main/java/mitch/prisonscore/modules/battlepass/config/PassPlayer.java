@@ -44,8 +44,12 @@ public class PassPlayer extends SenderEntity<PassPlayer> {
             MessageUtils.sendMessage(getPlayer(), LangConf.get().getBattlePassNoRewards());
         }else{
             MessageUtils.sendMessage(getPlayer(), LangConf.get().getBattlePassClaimed());
-            subMap.forEach((l, r) -> r.forEach(reward -> reward.getCommands().forEach(
-                    command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", getPlayer().getName())))));
+            subMap.forEach((l, r) -> r.forEach(reward -> {
+                reward.getCommands().forEach(
+                    command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", getPlayer().getName())));
+                reward.getMessages().forEach(
+                    message -> MessageUtils.sendMessage(getPlayer(), message.replace("%player%", getPlayer().getName())));
+            }));
 
             if(isFree){lastClaimedFreeLevel = level;}
             else{lastClaimedPaidLevel = level;}

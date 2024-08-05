@@ -37,6 +37,8 @@ public class BoosterInteract extends Engine {
 
         if(pdc.isEmpty()) return;
         BoosterModule module = BoosterModule.get();
+
+        // @TODO - Fix this to be Dumbos PDC type
         if(pdc.has(module.getTypeKey(), PersistentDataType.STRING)
             && pdc.has(module.getMultiKey(), PersistentDataType.DOUBLE)
             && pdc.has(module.getDurationKey(), PersistentDataType.LONG)) {

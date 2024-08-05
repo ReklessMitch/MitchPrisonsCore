@@ -2,12 +2,15 @@ package mitch.prisonscore.modules.pet.gui;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 
+import com.massivecraft.massivecore.xlib.guava.reflect.TypeResolver;
 import mitch.prisonscore.modules.pet.entity.PetPlayer;
 import mitch.prisonscore.modules.pet.PetModule;
 import mitch.prisonscore.modules.pet.util.PetType;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.utils.LangConf;
 import mitch.prisonscore.utils.MessageUtils;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Bukkit;
 
 import java.util.Map;
@@ -31,11 +34,13 @@ public class PetGUI extends ChestGui {
         PetModule petModule = PetModule.get();
 
         Map<PetType, DisplayItem> displayItems = petModule.getPetDisplayItems();
+
         if(petModule.isAdvancedPetSystem()){
             petModule.getPets().forEach((petType, pet) -> displayItems.put(petType, pet.getConfig().getDisplayItem()));
         }
         displayItems.forEach((petType, displayItem) -> {
             int petLevel = petPlayer.getPetLevel(petType);
+            TagResolver petResolver = Placeholder.parsed("pet", petType.name());
             getInventory().setItem(displayItem.getSlot(), displayItem.getPetGuiItem(petLevel));
             setAction(displayItem.getSlot(), event -> {
                 if(petPlayer.getActivePet() == petType) {

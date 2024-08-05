@@ -8,7 +8,6 @@ import mitch.prisonscore.modules.mine.utils.SerLoc;
 import mitch.prisonscore.modules.profile.configs.ProfilePlayer;
 import mitch.prisonscore.modules.publicmines.cmds.CmdMines;
 import mitch.prisonscore.modules.publicmines.cmds.CmdResetPublicMine;
-import mitch.prisonscore.modules.publicmines.cmds.CmdSetMineSize;
 import mitch.prisonscore.modules.publicmines.object.Mine;
 import mitch.prisonscore.modules.publicmines.utils.MineTier;
 import mitch.prisonscore.modules.type.ModuleType;
@@ -21,7 +20,7 @@ import java.util.Map;
 @Getter
 public class PublicMinesModule extends Module {
 
-    Map<Integer, Mine> publicMines = Map.of(0, new Mine("default",
+    Map<Integer, Mine> publicMines = Map.of(0, new Mine(
                                                     new SerLoc(0,0,0),
                                                     new SerLoc(0,0,0),
                                                     new SerLoc(0,0,0),
@@ -47,7 +46,6 @@ public class PublicMinesModule extends Module {
         if (!isEnabled()) return;
         MitchPrisonsCore.get().activate(
                 CmdMines.class,
-                CmdSetMineSize.class,
                 CmdResetPublicMine.class
         );
     }

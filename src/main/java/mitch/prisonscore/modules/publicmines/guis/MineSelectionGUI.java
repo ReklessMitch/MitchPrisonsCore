@@ -37,11 +37,11 @@ public class MineSelectionGUI extends ChestGui {
         getInventory().setItem(14, privateMineItem);
         setAction(14, event -> {
             MinePlayer minePlayer = MinePlayer.get(player.getUniqueId());
-            if(minePlayer.getMine().getTier() == MineTier.NOT_A_TIER){
+            if(!minePlayer.isHasPrivateMine()){
                 MessageUtils.sendMessage(player, "<red>You do not have a private mine.");
                 return false;
             }
-            minePlayer.getMine().teleportToMine(player);
+            minePlayer.getHighestMine().teleportToMine(player);
             return true;
         });
 

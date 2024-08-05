@@ -3,6 +3,8 @@ package mitch.prisonscore.modules.pickaxe.enchants;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import mitch.prisonscore.modules.crystals.configs.CrystalPlayer;
+import mitch.prisonscore.modules.crystals.utils.CrystalType;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.utils.configurable.FormatItem;
 
@@ -24,6 +26,7 @@ public class EnchantmentConfig extends Entity<EnchantmentConfig> {
     private double procRateIncreasePerLevel;
     private double procChanceIncreasePerPrestige;
     private FormatItem maxedEnchantItem;
+    private CrystalType crystalType;
 
     public double getProcChance(int currentLevel, UUID playerUUID) {
         return baseProcRate + (currentLevel * procRateIncreasePerLevel);
@@ -31,7 +34,10 @@ public class EnchantmentConfig extends Entity<EnchantmentConfig> {
 
 
     public boolean canProc(int currentLevel, int prestige, UUID playerUUID) {
-        return Math.random() <= getProcChance(currentLevel, playerUUID) + (prestige * procChanceIncreasePerPrestige);
+        CrystalPlayer crystalPlayer = CrystalPlayer.get(playerUUID);
+        double crystalBoost = 1 + crystalPlayer.getBoostAmount(crystalType);
+        double procChance = getProcChance(currentLevel, playerUUID) + (prestige * procChanceIncreasePerPrestige);
+        return Math.random() <= procChance * crystalBoost;
     }
 
     public void activate() {}

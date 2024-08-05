@@ -2,6 +2,7 @@ package mitch.prisonscore.modules.pickaxe.enchants.enchantments.custom;
 
 import mitch.prisonscore.modules.booster.configs.BoosterPlayer;
 import mitch.prisonscore.modules.booster.objects.Booster;
+import mitch.prisonscore.modules.crystals.utils.CrystalType;
 import mitch.prisonscore.modules.mine.configs.MinePlayer;
 import mitch.prisonscore.modules.mine.utils.BlockInPmineBrokeEvent;
 import mitch.prisonscore.modules.pickaxe.configs.PickaxePlayer;
@@ -45,7 +46,7 @@ public class Nuke extends Enchant<Nuke.Config> {
         public Config() {
             super(new DisplayItem(Material.DIAMOND, "base", List.of("test"), 0, 0), 0,
                     0, 0, 0, "enchantMessage", 0, 0,
-                    0, 0, 0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
+                    0, 0, 0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0), CrystalType.NUKE);
         }
     }
 }

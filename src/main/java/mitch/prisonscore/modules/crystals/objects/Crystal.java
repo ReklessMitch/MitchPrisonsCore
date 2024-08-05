@@ -40,6 +40,10 @@ public class Crystal {
         applyPercent = getRandomInt();
     }
 
+    public double getBoost(){
+        return boostAmount * 0.01;
+    }
+
     public void addBoostAmount(int amount){
         boostAmount += amount;
     }
@@ -66,5 +70,9 @@ public class Crystal {
         container.set(module.getBoostKey(), PersistentDataType.INTEGER, boostAmount);
         item.setItemMeta(meta);
         return item;
+    }
+
+    public String getString() {
+        return type.getName() + ":  " + boostAmount  + "%";
     }
 }

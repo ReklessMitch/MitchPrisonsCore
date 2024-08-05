@@ -31,17 +31,21 @@ public class MineGUI extends ChestGui {
         add();
     }
 
-    private void addMineInformationItem(){
+    private void addMineInformationItem() {
         int[] slots = {0, 1, 2, 9, 10, 11, 18, 19, 20, 27, 28, 29, 36, 37, 38, 45, 46, 47};
-        for(int slot: slots) {
+        for (int slot : slots) {
             final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, langConf.getInvisibleCustomData(), "<gold>Mine GO", PlaceholderAPI.setPlaceholders(player, langConf.getMineGoGUIItem()));
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
-                playerMine.getMine().teleportToMine(player);
-                return true;
+                if (playerMine.isHasPrivateMine()) {
+                    playerMine.teleportToSpawnPoint();
+                    return true;
+                } else {
+                    MessageUtils.sendMessage(player, "<red>You have not unlocked a private mine yet!");
+                    return false;
+                }
             });
         }
-
     }
 
 //    private void addUpgradeBoosterItem(){
@@ -82,7 +86,7 @@ public class MineGUI extends ChestGui {
             final ItemStack item = ItemCreator.createItem(Material.PAPER, 1, LangConf.get().getInvisibleCustomData(), "<gold>Reset Mine", "<red>Reset your mine");
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
-                playerMine.getMine().reset();
+                playerMine.getHighestMine().reset();
                 return true;
             });
         }

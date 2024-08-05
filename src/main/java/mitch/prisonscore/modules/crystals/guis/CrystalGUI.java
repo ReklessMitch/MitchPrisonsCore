@@ -38,7 +38,7 @@ public class CrystalGUI extends ChestGui {
             getInventory().setItem(i, crystal.getCrystalItem());
             setAction(i, event -> {
                 switch(event.getClick()) {
-                    case LEFT -> player.sendMessage("Selected crystal");
+                    case LEFT -> crystalPlayer.applyCrystal(crystal);
                     case DROP -> {
                         crystalPlayer.tinker(crystal);
                         getInventory().close();

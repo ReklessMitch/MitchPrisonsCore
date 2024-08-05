@@ -53,6 +53,10 @@ public class CrystalApply extends Engine {
                 profilePlayer.addCurrency(Currency.DUST, boost / 10);
             }
         }else{
+            if(Math.random() * 100 > percent){
+                MessageUtils.sendMessage(player, "<red>Crystal failed!");
+                return;
+            }
             MessageUtils.sendMessage(player, "<red>Crystal applied! Type: " + type + " Apply Percentage:" + percent + " Boost:" + boost);
             crystalPlayer.getCrystals().add(new Crystal(type, percent, boost));
         }

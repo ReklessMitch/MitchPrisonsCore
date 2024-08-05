@@ -29,23 +29,23 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Getter
 @Setter
 public class Mine {
 
     private MineTier tier;
-    private String name;
     private SerLoc spawnPoint;
     private SerLoc min;
     private SerLoc max;
     private List<Material> blocks;
-    private transient long volume;
+    private long volume;
     private transient int volumeMined;
     private String worldName;
 
-    public Mine(String name, SerLoc spawnPoint, SerLoc min, SerLoc max, List<Material> blocks, MineTier tier, String worldName) {
-        this.name = name;
+    public Mine(SerLoc spawnPoint, SerLoc min, SerLoc max, List<Material> blocks, MineTier tier, String worldName) {
         this.spawnPoint = spawnPoint;
         this.min = min;
         this.max = max;
@@ -55,7 +55,6 @@ public class Mine {
         this.tier = tier;
         this.worldName = worldName;
     }
-
 
     public void teleportToMine(Player player){
         player.teleport(spawnPoint.toLocation(this));
@@ -88,10 +87,13 @@ public class Mine {
         getPlayersInRadius().forEach(player -> player.teleport(spawnPoint.toLocation(this)));
     }
 
-    public int getBlocksOnYLayer(Player player, int y){
 
+    public int getBlocksOnYLayer(Player player, int y){
+        Logger logger = MitchPrisonsCore.get().getLogger();
+        logger.log(Level.INFO, "Getting blocks on Y layer " + y + " in mine " + tier.name() + " for player " + player.getName());
         final BlockVector3 minV = min.toBlockVector3().withY(y);
         final BlockVector3 maxV = max.toBlockVector3().withY(y);
+        logger.log(Level.INFO, "Min: " + minV.toString() + " Max: " + maxV.toString());
 
         return getBeaconsAndBlocksInRegion(player, new CuboidRegion(minV, maxV));
     }
@@ -109,6 +111,7 @@ public class Mine {
     }
 
     private void volumeMinedCheck(){
+        MitchPrisonsCore.get().getLogger().log(Level.INFO, "Volume mined: " + volumeMined + " Volume: " + volume);
         if(volumeMined >= volume * 0.7){
             reset();
         }
@@ -118,7 +121,8 @@ public class Mine {
         int beacons = 0;
         int blocksAmt = 0;
 
-        try(EditSession editSession = WorldEdit.getInstance().newEditSession(region.getWorld())) {
+        try(EditSession editSession = WorldEdit.getInstance().newEditSession(FaweAPI.getWorld(worldName))) {
+            MitchPrisonsCore.get().getLogger().log(Level.INFO, "Getting blocks in region");
             for (BlockVector3 vector : region) {
                 if (!isInMine(vector)) continue;
                 BlockType type = editSession.getBlock(vector).getBlockType();
@@ -170,6 +174,5 @@ public class Mine {
         getBeaconsAndBlocksInRegion(player, new CuboidRegion(minV, maxV));
 
     }
-
 
 }

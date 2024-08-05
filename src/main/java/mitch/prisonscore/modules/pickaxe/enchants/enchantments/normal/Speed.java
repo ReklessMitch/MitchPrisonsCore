@@ -1,5 +1,6 @@
 package mitch.prisonscore.modules.pickaxe.enchants.enchantments.normal;
 
+import mitch.prisonscore.modules.crystals.utils.CrystalType;
 import mitch.prisonscore.modules.pickaxe.enchants.Enchant;
 import mitch.prisonscore.modules.pickaxe.enchants.EnchantmentConfig;
 import mitch.prisonscore.utils.configurable.DisplayItem;
@@ -29,7 +30,7 @@ public class Speed extends Enchant<Speed.Config> {
             super(new DisplayItem(Material.DIAMOND, "base", List.of("test"),
                     0, 0), 0, 0, 0, 0,
                     "enchantMessage", 0, 0, 0, 0,
-                    0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0));
+                    0, new FormatItem(Material.DIAMOND, "base", List.of("test"), 0), CrystalType.NONE);
         }
     }
 }
