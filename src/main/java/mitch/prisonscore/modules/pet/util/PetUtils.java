@@ -65,4 +65,5 @@ public class PetUtils {
 
         return new Location(eyeLocation.getWorld(), xLocation, yLocation - 0.3, zLocation, eyeLocation.getYaw(), 0.0F);
     }
+
 }

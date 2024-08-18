@@ -27,7 +27,7 @@ public enum CrystalType {
 
     // get a random crystal type
     public static CrystalType getRandomCrystalType(){
-        return values()[(int) (Math.random() * values().length)];
+        return values()[(int) (Math.random() * (values().length - 1))];
     }
 
 

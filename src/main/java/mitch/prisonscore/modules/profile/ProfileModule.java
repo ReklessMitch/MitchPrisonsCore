@@ -5,6 +5,7 @@ import lombok.Getter;
 import mitch.prisonscore.MitchPrisonsCore;
 import mitch.prisonscore.modules.Module;
 import mitch.prisonscore.modules.profile.cmds.misc.CmdHelp;
+import mitch.prisonscore.modules.profile.cmds.wardrobe.CmdWings;
 import mitch.prisonscore.utils.configurable.CommandItem;
 import mitch.prisonscore.utils.configurable.DisplayItem;
 import mitch.prisonscore.modules.profile.cmds.currency.*;
@@ -131,7 +132,7 @@ public class ProfileModule extends Module {
                 CmdChangeJoinMessage.class, CmdCurrency.class, CmdBal.class,
                 CmdChatColourGUI.class, CmdNameColourGUI.class, CmdRankColourGUI.class,
                 CmdCurrencyAddAmount.class, CmdWardrobe.class, CmdToggleSC.class, CmdResetCurrencies.class,
-                CmdHelp.class,
+                CmdHelp.class, CmdWings.class,
 
                 // engines
                 ChatEvents.class,

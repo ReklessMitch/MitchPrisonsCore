@@ -101,7 +101,7 @@ public class Enchant<T extends EnchantmentConfig> implements Configurable<T> {
         final TagResolver maxLevelResolver = Placeholder.parsed("maxlevel", String.valueOf(maxLevel));
         final TagResolver costResolver = Placeholder.parsed("cost", CurrencyUtils.format(getCost(pickaxe.getEnchants().get(type),
                 1, pickaxe.getEnchantPrestiges().get(type))));
-        final double procChance = this.getConfig().getProcChance(pickaxe.getEnchants().get(type), pickaxe.getUuid());
+        final double procChance = this.getConfig().getLiveProcRate(pickaxe.getEnchants().get(type), pickaxe.getEnchantPrestiges().get(type), pickaxe.getUuid());
         final String procChanceString = MitchPickaxeModule.get().getDf().format(procChance);
         final TagResolver procChanceResolver = Placeholder.parsed("proc_chance", procChanceString + "%");
         final TagResolver levelRequiredResolver = Placeholder.parsed("level_required", ProfilePlayer.get(pickaxe.getPlayer()).getRank() >= this.getConfig().getLevelRequired()
